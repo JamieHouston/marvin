@@ -7,11 +7,12 @@ welcome_messages = ["Boring.", "Yawn", "If anyone needs proof of intelligent lif
 def random_message(message_list):
     return random.sample(message_list,1)[0]
 
-def say_hi():
-    return random_message(welcome_messages)
+def say_hi(flowbot):
+    flowbot.send_message(random_message(welcome_messages))
 
-def respond(message):
-        if "quote" in message:
-            return quotes.random_quote()
+def respond(flowbot, message):
     #elif random.random() < 0.5:
-        return random_message(generic_responses)
+    if "quote" in message:
+        flowbot.send_message(quotes.random_quote())
+    else:
+        flowbot.send_message(random_message(generic_responses))
