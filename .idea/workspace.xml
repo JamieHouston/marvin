@@ -2,11 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="1ae3c773-b428-4bd0-be67-55ca9a7c5c78" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/modules/interactive.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/modules/markov.db" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/modules/markov.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/utils/web.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/flowbot.py" afterPath="$PROJECT_DIR$/flowbot.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/utils/logger.py" afterPath="$PROJECT_DIR$/utils/logger.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/modules/interactive.py" afterPath="$PROJECT_DIR$/modules/interactive.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/modules/markov.py" afterPath="$PROJECT_DIR$/modules/markov.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/marvin.py" afterPath="$PROJECT_DIR$/marvin.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
@@ -48,7 +48,7 @@
       <file leaf-file-name="flowbot.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/flowbot.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1080">
+            <state line="59" column="33" selection-start="1846" selection-end="1846" vertical-scroll-proportion="0.0" vertical-offset="290" max-vertical-offset="1110">
               <folding>
                 <element signature="e#0#37#0" expanded="true" />
               </folding>
@@ -68,9 +68,9 @@
       <file leaf-file-name="marvin.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/marvin.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="23" column="36" selection-start="1060" selection-end="1060" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="480">
+            <state line="12" column="33" selection-start="1468" selection-end="1468" vertical-scroll-proportion="0.0" vertical-offset="80" max-vertical-offset="915">
               <folding>
-                <element signature="e#0#13#0" expanded="true" />
+                <element signature="e#0#9#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -85,10 +85,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="config.py" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="config.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/config.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="13" column="0" selection-start="359" selection-end="359" vertical-scroll-proportion="0.24283935" vertical-offset="0" max-vertical-offset="803">
+            <state line="15" column="19" selection-start="422" selection-end="422" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="315">
               <folding />
             </state>
           </provider>
@@ -97,7 +97,7 @@
       <file leaf-file-name="interactive.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/modules/interactive.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="184" column="29" selection-start="4099" selection-end="10129" vertical-scroll-proportion="0.0" vertical-offset="2060" max-vertical-offset="2850">
+            <state line="152" column="53" selection-start="8299" selection-end="8323" vertical-scroll-proportion="0.0" vertical-offset="1845" max-vertical-offset="2925">
               <folding />
             </state>
           </provider>
@@ -106,7 +106,7 @@
       <file leaf-file-name="markov.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/modules/markov.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="42" column="27" selection-start="1025" selection-end="1025" vertical-scroll-proportion="0.0" vertical-offset="360" max-vertical-offset="2895">
+            <state line="51" column="59" selection-start="1366" selection-end="1367" vertical-scroll-proportion="0.0" vertical-offset="543" max-vertical-offset="2925">
               <folding>
                 <element signature="e#144#157#0" expanded="true" />
               </folding>
@@ -114,19 +114,21 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="wikipedia.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/modules/wikipedia.py">
+      <file leaf-file-name="web.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/utils/web.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="167" column="39" selection-start="5240" selection-end="5240" vertical-scroll-proportion="0.0" vertical-offset="2505" max-vertical-offset="3030">
-              <folding />
+            <state line="9" column="41" selection-start="213" selection-end="213" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="225">
+              <folding>
+                <element signature="e#0#14#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name=".gitignore" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name=".gitignore" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/.gitignore">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="2" column="5" selection-start="21" selection-end="21" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="120">
+            <state line="3" column="5" selection-start="27" selection-end="27" vertical-scroll-proportion="0.05603985" vertical-offset="0" max-vertical-offset="803">
               <folding />
             </state>
           </provider>
@@ -150,7 +152,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/apikey.cfg" />
         <option value="$PROJECT_DIR$/quotes/chuck.txt" />
         <option value="$PROJECT_DIR$/phenny.py" />
         <option value="$PROJECT_DIR$/modules/quotes.py" />
@@ -159,13 +160,14 @@
         <option value="$PROJECT_DIR$/modules/wikipedia.py" />
         <option value="$PROJECT_DIR$/readme.md" />
         <option value="$PROJECT_DIR$/bot.py" />
-        <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/utils/logger.py" />
-        <option value="$PROJECT_DIR$/modules/markov.py" />
-        <option value="$PROJECT_DIR$/flowbot.py" />
         <option value="$PROJECT_DIR$/config.py" />
-        <option value="$PROJECT_DIR$/marvin.py" />
+        <option value="$PROJECT_DIR$/flowbot.py" />
+        <option value="$PROJECT_DIR$/modules/markov.py" />
+        <option value="$PROJECT_DIR$/utils/web.py" />
         <option value="$PROJECT_DIR$/modules/interactive.py" />
+        <option value="$PROJECT_DIR$/marvin.py" />
+        <option value="$PROJECT_DIR$/.gitignore" />
       </list>
     </option>
   </component>
@@ -321,7 +323,7 @@
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="recentsLimit" value="5" />
-    <property name="options.lastSelected" value="appearance" />
+    <property name="options.lastSelected" value="com.jetbrains.python.configuration.PythonSdkConfigurable" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="restartRequiresConfirmation" value="true" />
     <property name="FullScreen" value="false" />
@@ -583,13 +585,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/requirements.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1819">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/quotes/chuck.txt">
       <provider selected="true" editor-type-id="text-editor">
         <state line="611" column="1" selection-start="34501" selection-end="34501" vertical-scroll-proportion="0.0" vertical-offset="8396" max-vertical-offset="13095">
@@ -624,13 +619,6 @@
     <entry file="file://$PROJECT_DIR$/modules/quotes.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="24" column="40" selection-start="466" selection-end="466" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="675">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/.gitignore">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="2" column="5" selection-start="21" selection-end="21" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="120">
           <folding />
         </state>
       </provider>
@@ -670,43 +658,59 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/modules/markov.py">
+    <entry file="file://$PROJECT_DIR$/config.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="42" column="27" selection-start="1025" selection-end="1025" vertical-scroll-proportion="0.0" vertical-offset="360" max-vertical-offset="2895">
-          <folding>
-            <element signature="e#144#157#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/marvin.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="23" column="36" selection-start="1060" selection-end="1060" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="480">
-          <folding>
-            <element signature="e#0#13#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/modules/interactive.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="184" column="29" selection-start="4099" selection-end="10129" vertical-scroll-proportion="0.0" vertical-offset="2060" max-vertical-offset="2850">
+        <state line="15" column="19" selection-start="422" selection-end="422" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="315">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/flowbot.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1080">
+        <state line="59" column="33" selection-start="1846" selection-end="1846" vertical-scroll-proportion="0.0" vertical-offset="290" max-vertical-offset="1110">
           <folding>
             <element signature="e#0#37#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/config.py">
+    <entry file="file://$PROJECT_DIR$/modules/markov.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="13" column="0" selection-start="359" selection-end="359" vertical-scroll-proportion="0.24283935" vertical-offset="0" max-vertical-offset="803">
+        <state line="51" column="59" selection-start="1366" selection-end="1367" vertical-scroll-proportion="0.0" vertical-offset="543" max-vertical-offset="2925">
+          <folding>
+            <element signature="e#144#157#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/utils/web.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="9" column="41" selection-start="213" selection-end="213" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="225">
+          <folding>
+            <element signature="e#0#14#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/modules/interactive.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="152" column="53" selection-start="8299" selection-end="8323" vertical-scroll-proportion="0.0" vertical-offset="1845" max-vertical-offset="2925">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/marvin.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="12" column="33" selection-start="1468" selection-end="1468" vertical-scroll-proportion="0.0" vertical-offset="80" max-vertical-offset="915">
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="3" column="5" selection-start="27" selection-end="27" vertical-scroll-proportion="0.05603985" vertical-offset="0" max-vertical-offset="803">
           <folding />
         </state>
       </provider>

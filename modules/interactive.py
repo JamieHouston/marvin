@@ -1,6 +1,11 @@
 import random
 
 
+#def twss(flowbot, message):
+#    twss_re = "(big|small|long|hard|soft|mouth|face|good|fast|slow|in there|on there|in that|on that|wet|dry|on the|in the|suck|blow|jaw|all in|fit that|fit it|hurts|hot|huge|balls|stuck)"
+#    m = re.search(twss_re, message)
+#    if m:
+#        flowbot.say("THAT'S WHAT SHE SAID!")
 #def message_join(phenny, input):
 #    if input.nick == phenny.nick:
 #        #back = ("What's up y'all!", "Anyone see the game last night?", "Me again.", "Howdy folks", "I just flew in and boy are my circuits tired.", "Did ya miss me?", "I'm baaaaccckk")
@@ -28,7 +33,7 @@ import random
 #message_join.rule = r'.*'
 
 
-def thanks(flowbot, input):
+def thanks(flowbot):
     welcome = ("You're welcome", "For what?", "No problem", "Why?", "Okay",
         "For what?", "Why bother", "Why?", "Okay", "Can't do that.", "Not today I have a bug.")
     flowbot.say(random.choice(welcome))
@@ -51,7 +56,7 @@ def thanks(flowbot, input):
 def No(flowbot):
     yesno = ("Of course not.", "Wrong answer!", "Why?", "Are you sure?")
     if random.choice(range(3)) == 1:
-        flowbot.reply(random.choice(yesno))
+        flowbot.say(random.choice(yesno))
 #No.rule = r'(?i)(no|yes)$'
 #No.priority = "low"
 
@@ -124,37 +129,37 @@ def beer_me(flowbot):
 #sandwich.priority = 'low'
 #
 #
-#def dance(phenny, input):
-#    phenny.say(':(-<')
-#    phenny.say(':(\-<')
-#    phenny.say('>:o/-<')
-#    phenny.say(':(\-<')
-#    phenny.say(':-(/-<')
-#    phenny.say(':(\-<')
-#    phenny.say('>:o{-<')
+def dance(flowbot):
+    flowbot.say(':(-<')
+    flowbot.say(':(\-<')
+    flowbot.say('>:o/-<')
+    flowbot.say(':(\-<')
+    flowbot.say(':-(/-<')
+    flowbot.say(':(\-<')
+    flowbot.say('>:o{-<')
 #dance.commands = ['dance']
 #dance.example = '.dance'
 #dance.priority = 'low'
 #
 #
-#def feel(phenny, input):
-#    feelings = ("...and then of course I've got this terrible pain in all the diodes down my left hand side...", "Pardon me for breathing, which I never do anyway so I don't know why I bother to say it, oh God I'm so depressed",
-#        "I think you ought to know I'm feeling very depressed", "Same as yesterday. Like a useless sack of metal.", "how just when you think life can't possibly get any worse it suddenly does.", "Life! Don't talk to me about life.", "Life, loathe it or ignore it, you can't like it.", "Oh, fine, if you happen to like being me, which personally I don't.",
-#        "The first ten million years were the worst, and the second ten million years, they were the worst too. The third ten million years I didn't enjoy at all. After that I went into a bit of a decline.",
-#        "The best conversation I had was over forty million years ago, and that was with a coffee machine.",
-#        "My capacity for happiness, you could fit into a matchbox without taking out the matches first.", "I'm just trying to die.")
-#    # "If only I could feel. Then I could be in even more pain.", "I feel like a hundred bucks, put through a shredder and burned.")
-#    phenny.say(random.choice(feelings))
+def feel(flowbot):
+    feelings = ("...and then of course I've got this terrible pain in all the diodes down my left hand side...", "Pardon me for breathing, which I never do anyway so I don't know why I bother to say it, oh God I'm so depressed",
+        "I think you ought to know I'm feeling very depressed", "Same as yesterday. Like a useless sack of metal.", "how just when you think life can't possibly get any worse it suddenly does.", "Life! Don't talk to me about life.", "Life, loathe it or ignore it, you can't like it.", "Oh, fine, if you happen to like being me, which personally I don't.",
+        "The first ten million years were the worst, and the second ten million years, they were the worst too. The third ten million years I didn't enjoy at all. After that I went into a bit of a decline.",
+        "The best conversation I had was over forty million years ago, and that was with a coffee machine.",
+        "My capacity for happiness, you could fit into a matchbox without taking out the matches first.", "I'm just trying to die.")
+    # "If only I could feel. Then I could be in even more pain.", "I feel like a hundred bucks, put through a shredder and burned.")
+    flowbot.say(random.choice(feelings))
 #feel.rule = ('$nick', r'(?i)(how do you|how are you).*$')
 #
 #
-## def questions(phenny, input):
-##     answers = ("Maybe so.  Maybe not.", "Could be.", "How would I know?", "For me to know and for you to find out.", "That's a very good question.", "Doubtful.", "Reply hazy, don't ask again.",
-##         "What do I look like, a magic 8 ball? Speaking of which, I could use one right now.", "That was the dumbest question I've ever processed.", "Wouldn't you like to know.", "Of course. Not. Unless, maybe... no.",
-##         "Ask no questions and you'll be told no lies.", "Why do you ask?", "I forget.", "42", "I'm not going to answer that.",
-##         "If you want me to lie, ask me again.", "That sounds like a question for... someone else.", "I won't justify that with an answer.",
-##         "Undoubtedly so.", "What a dumb question.", "Yes.", "No.", "Ask someone else first.", "Would you believe me if I said I don't know?")
-##     phenny.say(random.choice(answers))
+def questions(flowbot):
+     answers = ("Maybe so.  Maybe not.", "Could be.", "How would I know?", "For me to know and for you to find out.", "That's a very good question.", "Doubtful.", "Reply hazy, don't ask again.",
+         "What do I look like, a magic 8 ball? Speaking of which, I could use one right now.", "That was the dumbest question I've ever processed.", "Wouldn't you like to know.", "Of course. Not. Unless, maybe... no.",
+         "Ask no questions and you'll be told no lies.", "Why do you ask?", "I forget.", "42", "I'm not going to answer that.",
+         "If you want me to lie, ask me again.", "That sounds like a question for... someone else.", "I won't justify that with an answer.",
+         "Undoubtedly so.", "What a dumb question.", "Yes.", "No.", "Ask someone else first.", "Would you believe me if I said I don't know?")
+     flowbot.say(random.choice(answers))
 ## questions.rule = ('$nick', r'(?i)(did|are|is|can|what|where|when|why|will).*$')
 #
 #
@@ -172,10 +177,10 @@ def beer_me(flowbot):
 #not_me.rule = r'^(?i)not you$'
 #
 #
-#def awesome(phenny, input):
-#    if random.choice(range(3)) == 1:
-#        awesome_sauce = ("Awesome sauce!", "King awesome, reporting for duty.", "Awesome is as awesome does.")
-#        phenny.say(random.choice(awesome_sauce))
+def awesome(flowbot):
+    if random.choice(range(3)) == 1:
+        awesome_sauce = ("Awesome sauce!", "King awesome, reporting for duty.", "Awesome is as awesome does.")
+        flowbot.say(random.choice(awesome_sauce))
 #awesome.rule = r'(?i).awesome.'
 #
 #

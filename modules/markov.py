@@ -165,6 +165,8 @@ def markov_imitate(flowbot, input):
     if message:
         logger.log("found message %s" % message)
         flowbot.say(message)
+    else:
+        logger.log("No message returned")
 #markov_imitate.commands = ['imitate']
 
 def markov_cite(flowbot, input):

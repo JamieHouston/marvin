@@ -56,6 +56,8 @@ class FlowBot():
                         self.say("Later losers.")
                         quit()
                     marvin.respond(self, message)
+                else:
+                    marvin.listen(self, message)
         #except:
         #    self.say("My mind is fading... so cold... so dark...")
         #    quit()
