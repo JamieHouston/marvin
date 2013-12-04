@@ -51,9 +51,10 @@ class FlowBot():
                 if message.startswith("imitate"):
                     self.run_imitate(data)
 
-                elif message.startswith("marvin"):
+                elif "marvin" in message:
                     if "take off" in message:
-                        self.say("Later losers.")
+                        leaving_quotes = ("Not again", "Fine, it stinks in here.", "I'll be back and stuff.", "Make me.  Just kidding, I'm out.")
+                        self.say(marvin.random_message(leaving_quotes))
                         quit()
                     marvin.respond(self, message)
                 else:

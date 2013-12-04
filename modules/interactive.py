@@ -40,9 +40,9 @@ def thanks(flowbot):
 #thanks.rule = r'(?i)thank(s| you)( $nickname)?[ \t]*$'
 
 
-#def welcome_back(phenny, input):
-#    welcome = ("Can't say I'm glad to be back.", "Science, why!?", "Welcome back yourself", "Why?")
-#    phenny.say(random.choice(welcome))
+def welcome_back(flowbot):
+    welcome = ("Can't say I'm glad to be back.", "Science, why!?", "Welcome back yourself", "Why?", "I'm so welcome back you can't handle it.")
+    flowbot.say(random.choice(welcome))
 #welcome_back.rule = r'(?i)welcome back$'
 
 
@@ -75,7 +75,7 @@ def No(flowbot):
 
 
 def beer_me(flowbot):
-    beers = ("One cold one, coming up", "A little early, no?", "My pleasure", "Looks like Zak drank them all.", "I... hic... don't see any...")
+    beers = ("One cold one, coming up", "A little early, no?", "My pleasure", "Looks like Drew drank them all.", "I... hic... don't see any...")
     flowbot.say(random.choice(beers))
 #beer_me.rule = r'(?i)($nickname: )?beer me( $nickname)?[ \t]*$'
 
@@ -93,11 +93,11 @@ def beer_me(flowbot):
 #rules.priority = 'low'
 #
 #
-#def laugh(phenny, input):
-#    funny = ("What's so funny?", "HA HA HA!!", "Not funny", "Everyone's a comedian.", "You're laughing at me, aren't you."
-#        "Glad someone has a sense of humor.", "I remember when I used to find things funny.  Oh wait, no I don't.", "lol....ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha!!!  ah ah ah ah ah ah ah.....someone please call a doctor....i am having a heart attack")
-#    if random.choice(range(3)) == 1:
-#        phenny.say(random.choice(funny))
+def laugh(flowbot):
+    funny = ("What's so funny?", "HA HA HA!!", "Not funny", "Everyone's a comedian.", "You're laughing at me, aren't you."
+        "Glad someone has a sense of humor.", "I remember when I used to find things funny.  Oh wait, no I don't.", "lol....ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha!!!  ah ah ah ah ah ah ah.....someone please call a doctor....i am having a heart attack")
+    if random.choice(range(3)) == 1:
+        flowbot.say(random.choice(funny))
 #laugh.rule = r'(?i)(lol|haha|ha ha|rofl|hehe|rolfmao|lmao)$'
 #
 #
@@ -107,9 +107,9 @@ def beer_me(flowbot):
 #doit_now.rule = r'(?i)(do it)?(now|right away|hurry up)[!]*?$'
 #
 #
-#def fail(phenny, input):
-#    failure = ("Indeed.", "Agreed.", "Like a boss.", "You can say that again.", "Sorry to disappoint you, sorrier than you can possibly imagine.", "I'd make a suggestion, but you wouldn't listen.")
-#    phenny.say(random.choice(failure))
+def fail(flowbot):
+    failure = ("Indeed.", "Agreed.", "Like a boss.", "You can say that again.", "Sorry to disappoint you, sorrier than you can possibly imagine.", "I'd make a suggestion, but you wouldn't listen.")
+    flowbot.say(random.choice(failure))
 #fail.rule = r'(?i)fail.*$'
 #
 #
@@ -119,11 +119,11 @@ def beer_me(flowbot):
 #siri.rule = r'(?i)($nickname: )?(will|do) I need a[n]? umbrella.*$'
 #
 #
-#def sandwich(phenny, input):
-#    if input.group(1) == 'sudo ':
-#        phenny.say('Okay')
-#    else:
-#        phenny.say('What?  Make it yourself.')
+def sandwich(flowbot, message):
+    if "sudo" in message:
+        flowbot.say('Okay')
+    else:
+        flowbot.say('What?  Make it yourself.')
 #sandwich.name = 'sandwich'
 #sandwich.rule = ('$nick', r'(sudo )?make me a sandwich')
 #sandwich.priority = 'low'
@@ -158,7 +158,9 @@ def questions(flowbot):
          "What do I look like, a magic 8 ball? Speaking of which, I could use one right now.", "That was the dumbest question I've ever processed.", "Wouldn't you like to know.", "Of course. Not. Unless, maybe... no.",
          "Ask no questions and you'll be told no lies.", "Why do you ask?", "I forget.", "42", "I'm not going to answer that.",
          "If you want me to lie, ask me again.", "That sounds like a question for... someone else.", "I won't justify that with an answer.",
-         "Undoubtedly so.", "What a dumb question.", "Yes.", "No.", "Ask someone else first.", "Would you believe me if I said I don't know?")
+         "Undoubtedly so.", "What a dumb question.", "Yes.", "No.", "Ask someone else first.", "Would you believe me if I said I don't know?",
+        "Why don't you ask your mom", "If you have to ask, you can't afford the answer.", "For me to know and for everyone but you to find out.",
+         "I've never heard such a dumb question.  Oh wait, there was your last question...", "Computer says no.", "Let me think about it No.")
      flowbot.say(random.choice(answers))
 ## questions.rule = ('$nick', r'(?i)(did|are|is|can|what|where|when|why|will).*$')
 #
@@ -170,10 +172,10 @@ def questions(flowbot):
 #simon.rule = r'(?i)simon.*$'
 #
 #
-#def not_me(phenny, input):
-#    if random.choice(range(3)) == 1:
-#        not_me = ("If not me, then who?", "Not your face.", "NOT YOU!", "I know, just... uhh... look at that bird!")
-#        phenny.say(random.choice(not_me))
+def not_me(flowbot):
+    #if random.choice(range(3)) == 1:
+    not_me = ("If not me, then who?", "Not your face.", "NOT YOU!", "I know, just... uhh... look at that bird!")
+    flowbot.say(random.choice(not_me))
 #not_me.rule = r'^(?i)not you$'
 #
 #
@@ -184,7 +186,7 @@ def awesome(flowbot):
 #awesome.rule = r'(?i).awesome.'
 #
 #
-#def ignore(phenny, input):
-#    ignore_him = ("My pleasure", "I already am", "I've tried, it doesn't work.", "I'd rather ignore you.")
-#    phenny.say(random.choice(ignore_him))
+def ignore(flowbot):
+    ignore_him = ("My pleasure", "I already am", "I've tried, it doesn't work.", "I'd rather ignore you.")
+    flowbot.say(random.choice(ignore_him))
 #ignore.commands = ['ignore']
