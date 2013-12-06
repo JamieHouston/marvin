@@ -8,7 +8,7 @@ import os,sys
 import pickle
 import random
 import re
-from utils import logger
+from util import logger
 
 class Markov(object):
     """
@@ -55,6 +55,7 @@ class Markov(object):
     def generate_message(self, person, size=15, seed_key=None):
         person_words = len(self.word_table.get(person, {}))
         if person_words < size:
+            logger.log("Not enough words to imitate.  Found %d words" % person_words)
             return
 
         if not seed_key:
@@ -78,6 +79,14 @@ class Markov(object):
                 message = list(gen_words)
 
         return ' '.join(message)
+
+    def knowledge(self, flowbot, input):
+        #flowbot.say(",".join(self.word_table.get(input.nick, {})))
+        words = self.word_table.get(input.nick)
+        if words and len(words):
+            flowbot.say(",".join(words.items()))
+        else:
+            flowbot.say("Not gonna happen.")
 
     def imitate(self, flowbot, input):
         #print >> sys.stderr, "Imitating: {0}".format(input.group(2))
@@ -161,11 +170,15 @@ def get_markov():
 
 def markov_imitate(flowbot, input):
     logger.log("trying to imitate")
-    message = get_markov().imitate(flowbot, input)
+    if ("debug" in input.content):
+        message = get_markov().knowledge(flowbot, input)
+    else:
+        message = get_markov().imitate(flowbot, input)
     if message:
         logger.log("found message %s" % message)
         flowbot.say(message)
     else:
+        flowbot.say("No way I'm imitating you.  This time.")
         logger.log("No message returned")
 #markov_imitate.commands = ['imitate']
 

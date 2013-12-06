@@ -1,0 +1,29 @@
+{
+  "connections":
+  {
+    "bot":
+    {
+      "flow_user_api_key": "123d58a0914e2f40fd3b97cd7d4b59fb",
+      "flow_token": "8552f71a80719bc583d27903b2027629",
+      "nick": "Marvin",
+      "channels": ["daptiv/bot"],
+      "debug": "True"
+    }
+  },
+  "disabled_plugins": [],
+  "disabled_commands": [],
+  "acls": {},
+  "api_keys": {},
+  "censored_strings":
+  [
+    "DCC SEND",
+    "1nj3ct",
+    "thewrestlinggame",
+    "startkeylogger",
+    "hybux",
+    "\\0",
+    "\\x01",
+    "!coz",
+    "!tell /x"
+  ]
+}

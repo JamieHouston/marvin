@@ -155,7 +155,7 @@ def feel(flowbot):
 #
 def questions(flowbot):
      answers = ("Maybe so.  Maybe not.", "Could be.", "How would I know?", "For me to know and for you to find out.", "That's a very good question.", "Doubtful.", "Reply hazy, don't ask again.",
-         "What do I look like, a magic 8 ball? Speaking of which, I could use one right now.", "That was the dumbest question I've ever processed.", "Wouldn't you like to know.", "Of course. Not. Unless, maybe... no.",
+         "What do I look like, a magic 8 ball?", "That was the dumbest question I've ever processed.", "Wouldn't you like to know.", "Of course. Not. Unless, maybe... no.",
          "Ask no questions and you'll be told no lies.", "Why do you ask?", "I forget.", "42", "I'm not going to answer that.",
          "If you want me to lie, ask me again.", "That sounds like a question for... someone else.", "I won't justify that with an answer.",
          "Undoubtedly so.", "What a dumb question.", "Yes.", "No.", "Ask someone else first.", "Would you believe me if I said I don't know?",
