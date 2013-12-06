@@ -8,3 +8,10 @@ def get_title(url):
         return soup.title.string
     except:
         return "Not logged in or bad url"
+
+def get_paragraph(url):
+    try:
+        soup = BeautifulSoup(urllib2.urlopen(url))
+        return soup.p.string
+    except:
+        return "Bank error in your favor"

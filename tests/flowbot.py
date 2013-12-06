@@ -1,5 +1,5 @@
 import unittest
-from core.flowbot import FlowBot
+from core import flowbot
 
 class TestParser(unittest.TestCase):
     @staticmethod
@@ -15,8 +15,7 @@ class TestParser(unittest.TestCase):
 
     def test_match_command(self):
         command = "target"
-        bot = {}
-        bot.commands= ["target","not"]
-        flowbot = FlowBot(TestParser.get_test_config())
-        result = flowbot.match_command(command)
+
+        commands= ["target","not"]
+        result = flowbot.match_command(commands, command)
         self.assertEquals(command, result)

@@ -3,7 +3,6 @@ from core import marvin
 from util import logger
 from modules import markov
 
-
 class Blob:
     def __init__(self, **entries):
         self.__dict__.update(entries)
@@ -37,19 +36,6 @@ class FlowBot():
         markov_input.nick = data['user']
         markov.markov_imitate(self, markov_input)
 
-    def match_command(command):
-        commands = list(bot.commands)
-
-        # do some fuzzy matching
-        for word in command.split():
-            prefix = filter(lambda x: x.startswith(word), commands)
-            if len(prefix) == 1:
-                return prefix[0]
-            elif prefix and command not in prefix:
-                return prefix
-
-        return command
-
     def parse_stream(self):
         #try:
         stream = JSONStream(self.FLOW_USER_API_KEY)
@@ -60,43 +46,8 @@ class FlowBot():
 
             if type(data) == dict and data['event'] == "message" and ('external_user_name' not in data or data['external_user_name'] != 'Marvin'):
                 input_command = data["content"].lower()
-                command = match_command(input_command)
-                if isinstance(command, list):  # multiple potential matches
-                    self.say("did you mean %s or %s?" % (', '.join(command[:-1]), command[-1]))
-                elif command in bot.commands:
-                    #input = Input(conn, *out)
-                    #input.trigger = trigger
-                    #input.inp_unstripped = m.group(2)
-                    #input.inp = input.inp_unstripped.strip()
+                marvin.input(input_command, bot, self)
 
-                    func, args = bot.commands[command]
-                    #func(input_command.split()[1])
-
-                    try:
-                        result = func(input_command.split()[1])
-                        self.say(result)
-                    except:
-                        self.say("Wow... that almost killed me... I should fix that.")
-                    #dispatch(input, "command", func, args, autohelp=True)
-                    #self.say("I should be doing the command '%s' but my creator isn't smart enough to make it work" % command)
-                else:
-                    self.run_markov(data)
-
-                    message = data['content'].lower()
-                    if message.startswith("imitate"):
-                        self.run_imitate(data)
-
-                    elif "marvin" in message:
-                        if "take off" in message:
-                            leaving_quotes = ("Not again", "Fine, it stinks in here.", "I'll be back and stuff.", "Make me.  Just kidding, I'm out.")
-                            self.say(marvin.random_message(leaving_quotes))
-                            quit()
-                        marvin.respond(self, message)
-                    else:
-                        marvin.listen(self, message)
-        #except:
-        #    self.say("My mind is fading... so cold... so dark...")
-        #    quit()
 
 
     def run(self):

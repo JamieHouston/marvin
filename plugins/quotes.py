@@ -2,6 +2,7 @@
 
 import os
 import random
+from util import hook
 
 l = list()
 
@@ -11,6 +12,7 @@ l = list()
 #    return quote_to_say
 #    #phenny.say(quote_to_say)
 
+@hook.regex("quote (?P<name>\w*)")
 def random_quote():
     quote_to_say =random.sample(l, 1)[0]
     return quote_to_say
