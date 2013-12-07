@@ -21,7 +21,7 @@ class Markov(object):
     max_words = 15
     chain_length = 2
     stop_word = '\n'
-    filename = 'markov.db'
+    filename = 'markov.txt'
     last = None
     activities = 0
 

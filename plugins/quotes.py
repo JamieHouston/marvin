@@ -13,7 +13,7 @@ l = list()
 #    #phenny.say(quote_to_say)
 
 @hook.regex("quote (?P<name>\w*)")
-def random_quote():
+def random_quote(input, output):
     quote_to_say =random.sample(l, 1)[0]
     return quote_to_say
 

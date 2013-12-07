@@ -16,7 +16,7 @@ class FlowBot():
         self.FLOW_USER_API_KEY = config["flow_user_api_key"]
         self.FLOW_TOKEN = config["flow_token"]
         self.FLOW_CHANNELS = config["channels"]
-        self.debug = config["debug"]
+        self.debug = bool(config["debug"])
         self.nick = config["nick"]
 
         self.chat = Chat(self.FLOW_TOKEN)
@@ -41,8 +41,8 @@ class FlowBot():
         stream = JSONStream(self.FLOW_USER_API_KEY)
         gen = stream.fetch(self.FLOW_CHANNELS, active=True)
         for data in gen:
-            if self.debug:
-                print data
+            #if self.debug:
+            #    print data
 
             if type(data) == dict and data['event'] == "message" and ('external_user_name' not in data or data['external_user_name'] != 'Marvin'):
                 input_command = data["content"].lower()
@@ -51,5 +51,5 @@ class FlowBot():
 
 
     def run(self):
-        #marvin.say_hi(self)
+        marvin.say_hi(self)
         self.parse_stream()

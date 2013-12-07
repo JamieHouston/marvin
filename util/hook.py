@@ -20,8 +20,8 @@ def _hook_add(func, add, name=''):
                 n_args -= 1
             if argspec.varargs:
                 n_args -= 1
-            if n_args != 1:
-                err = '%ss must take 1 non-keyword argument (%s)' % (name,
+            if n_args != 2:
+                err = '%ss must take 2 non-keyword arguments (%s)' % (name,
                             func.__name__)
                 raise ValueError(err)
 
