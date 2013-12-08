@@ -7,7 +7,9 @@
       "flow_token": "8552f71a80719bc583d27903b2027629",
       "nick": "Marvin",
       "channels": ["daptiv/bot"],
-      "debug": "False"
+      "debug": "False",
+      "username": "marvin.flowdock@gmail.com",
+      "password": "7ujm*IK<"
     }
   },
   "disabled_plugins": [],

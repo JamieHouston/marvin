@@ -65,5 +65,5 @@ while True:
             #main(conn, out)
         except Queue.Empty:
             pass
-    while all(conn.out.empty() for conn in bot.conns.itervalues()):
-        time.sleep(.1)
+        except Exception as e:
+            logger.log("boo: %s" % e)

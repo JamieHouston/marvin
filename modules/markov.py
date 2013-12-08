@@ -113,7 +113,7 @@ class Markov(object):
         #pdb.set_trace()
         #print >> sys.stderr, "Logging from {0} message: {1}".format(input.nick, input.group(0))
         sender = input.nick[:10]
-        message = input.content
+        message = input.message
         self.word_table.setdefault(sender, {})
 
         if message.startswith('/') or message.startswith('.'):
@@ -170,7 +170,7 @@ def get_markov():
 
 def markov_imitate(flowbot, input):
     logger.log("trying to imitate")
-    if ("debug" in input.content):
+    if ("debug" in input.message):
         message = get_markov().knowledge(flowbot, input)
     else:
         message = get_markov().imitate(flowbot, input)
@@ -189,7 +189,7 @@ def markov_cite(flowbot, input):
 #markov_cite.commands = ['cite']
 
 def markov_master(flowbot, input):
-    logger.log("logging markov message %s" % input.content)
+    logger.log("logging markov message %s" % input.message)
     marvin_kov = get_markov()
     message = marvin_kov.log(flowbot, input)
     if message:

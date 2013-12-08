@@ -30,74 +30,73 @@ def random_message(message_list):
 def say_hi(flowbot):
     flowbot.say(random_message(welcome_messages))
 
-def listen(flowbot, message):
+def listen(input, output):
+    message = input["message"]
     if "thanks" in message:
-        interactive.thanks(flowbot)
+        interactive.thanks(output)
     elif message.startswith('http'):
-        flowbot.say(web.get_title(message))
+        output.say(web.get_title(message))
     elif "yes" in message or "no" in message:
-        interactive.No(flowbot)
+        interactive.No(output)
     elif "awesome" in message:
-        interactive.awesome(flowbot)
+        interactive.awesome(output)
     elif "fail" in message:
-        interactive.fail(flowbot)
+        interactive.fail(output)
     elif "not you" in message:
-        interactive.not_me(flowbot)
+        interactive.not_me(output)
     else:
         logger.log("looking for twss in %s" % message)
         laugh_re = "(lol|haha|ha ha|rofl|hehe|rolfmao|lmao)"
         twss_re = "(big|small|long|hard|soft|mouth|face|good|fast|slow|in there|on there|in that|on that|wet|dry|suck|blow|jaw|all in|fit that|fit it|hurts|hot|huge|balls|stuck)"
 
         if re.search(laugh_re, message):
-            interactive.laugh(flowbot)
+            interactive.laugh(output)
         elif re.search(twss_re, message):
             if random.choice(range(3)) == 1:
-                flowbot.say("THAT'S WHAT SHE SAID!")
+                output.say("THAT'S WHAT SHE SAID!")
 
 
-def respond(flowbot, message):
-    #if "quote" in message:
-    #    flowbot.say(quotes.random_quote())
-    #if "dbdeploy" in message or "update database" in message:
-    #    daptiv_commands.db_deploy(flowbot)
+def respond(input, output):
+    message = input["message"]
     if "beer me" in message:
-        interactive.beer_me(flowbot)
+        interactive.beer_me(input, output)
     elif "slap" in message:
-        flowbot.send_message("/me slaps @everyone")
+        output.send_message("/me slaps @%s", input["nick"])
     elif "dance" in message:
-        interactive.dance(flowbot)
+        interactive.dance(input, output)
     elif "sandwich" in message:
-        interactive.sandwich(flowbot, message)
+        interactive.sandwich(input, output)
     elif "ignore" in message:
-        interactive.ignore(flowbot)
+        interactive.ignore(input, output)
     elif "welcome back" in message:
-        interactive.welcome_back(flowbot)
+        interactive.welcome_back(input, output)
     else:
         feel_re = "(how do you|how are you)"
         questions_re = "(did|are|is|can|what|where|when|why|will)"
 
         if re.search(feel_re, message):
-            interactive.feel(flowbot)
+            interactive.feel(input, output)
         elif re.search(questions_re, message):
-            interactive.questions(flowbot)
+            interactive.questions(input, output)
         else:
             logger.log("nothing to say but random messages")
-            flowbot.say(random_message(generic_responses))
+            output.say("%s, %s" % (input["nick"],random_message(generic_responses)))
 
-def input(input_command, bot, flowbot):
+def input(input, output, bot):
     try:
+        input_command = input["message"]
         if (input_command.startswith(".")):
             input_command = input_command[1:]
             pieces = input_command.split(' ')
             command = match_command(list(bot.commands), pieces[0])
             if isinstance(command, list):  # multiple potential matches
-                flowbot.say("did you mean %s or %s?" % (', '.join(command[:-1]), command[-1]))
+                output.say("did you mean %s or %s?" % (', '.join(command[:-1]), command[-1]))
             elif command in bot.commands:
                 func, args = bot.commands[command]
 
                 try:
                     input_string = " ".join(pieces[1:])
-                    func(input_string, flowbot)
+                    func(input_string, output)
                 except Exception as e:
                     logger.log("Almost died from command: %s" % e)
                     #flowbot.say("Wow... that almost killed me... I should fix that.")
@@ -106,11 +105,11 @@ def input(input_command, bot, flowbot):
             for func, args in bot.plugs['regex']:
                 m = args['re'].search(input_command)
                 if m:
-                    func(m, flowbot)
+                    func(m, output)
                     #flowbot.say(result)
                     continue;
 
-            #flowbot.run_markov(data)
+            #output.run_markov(input)
 
             #message = data['content'].lower()
             #if input_command.startswith("imitate"):
@@ -119,12 +118,12 @@ def input(input_command, bot, flowbot):
             if "marvin" in input_command:
                 if "take off" in input_command or "go home" in input_command or "go away" in input_command:
                     leaving_quotes = ("Not again", "Fine, it stinks in here.", "I'll be back and stuff.", "Make me.  Just kidding, I'm out.")
-                    flowbot.say(random_message(leaving_quotes))
+                    output.say(random_message(leaving_quotes))
                     quit()
-                respond(flowbot, input_command)
+                respond(input, output)
             else:
-                listen(flowbot, input_command)
+                listen(input, output)
     except Exception as e:
         logger.log(e)
-        flowbot.say(random_message(death_messages))
+        output.say(random_message(death_messages))
         quit()
