@@ -33,16 +33,11 @@ import random
 #message_join.rule = r'.*'
 
 
-def thanks(input, output):
-    welcome = ("You're welcome", "For what?", "No problem", "Why?", "Okay",
-        "For what?", "Why bother", "Why?", "Okay", "Can't do that.", "Not today I have a bug.")
-    output.say("%s %s" % (random.choice(welcome), input["nick"]))
-#thanks.rule = r'(?i)thank(s| you)( $nickname)?[ \t]*$'
 
 
-def welcome_back(input, output):
+def welcome_back(input, bot_output):
     welcome = ("Can't say I'm glad to be back.", "Science, why!?", "Welcome back yourself", "Why?", "I'm so welcome back you can't handle it.")
-    output.say(random.choice(welcome))
+    bot_output.say(random.choice(welcome))
 #welcome_back.rule = r'(?i)welcome back$'
 
 
@@ -53,10 +48,10 @@ def welcome_back(input, output):
 #doh.priority = "low"
 
 
-def No(output):
+def No(bot_output):
     yesno = ("Of course not.", "Wrong answer!", "Why?", "Are you sure?")
     if random.choice(range(3)) == 1:
-        output.say(random.choice(yesno))
+        bot_output.say(random.choice(yesno))
 #No.rule = r'(?i)(no|yes)$'
 #No.priority = "low"
 
@@ -74,9 +69,9 @@ def No(output):
 #good_morning.rule = r'(?i)good morning.*'
 
 
-def beer_me(output):
+def beer_me(bot_output):
     beers = ("One cold one, coming up", "A little early, no?", "My pleasure", "Looks like Drew drank them all.", "I... hic... don't see any...")
-    output.say(random.choice(beers))
+    bot_output.say(random.choice(beers))
 #beer_me.rule = r'(?i)($nickname: )?beer me( $nickname)?[ \t]*$'
 
 
@@ -93,11 +88,11 @@ def beer_me(output):
 #rules.priority = 'low'
 #
 #
-def laugh(output):
+def laugh(bot_output):
     funny = ("What's so funny?", "HA HA HA!!", "Not funny", "Everyone's a comedian.", "You're laughing at me, aren't you."
         "Glad someone has a sense of humor.", "I remember when I used to find things funny.  Oh wait, no I don't.", "lol....ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha!!!  ah ah ah ah ah ah ah.....someone please call a doctor....i am having a heart attack")
     if random.choice(range(3)) == 1:
-        output.say(random.choice(funny))
+        bot_output.say(random.choice(funny))
 #laugh.rule = r'(?i)(lol|haha|ha ha|rofl|hehe|rolfmao|lmao)$'
 #
 #
@@ -107,9 +102,9 @@ def laugh(output):
 #doit_now.rule = r'(?i)(do it)?(now|right away|hurry up)[!]*?$'
 #
 #
-def fail(output):
+def fail(bot_output):
     failure = ("Indeed.", "Agreed.", "Like a boss.", "You can say that again.", "Sorry to disappoint you, sorrier than you can possibly imagine.", "I'd make a suggestion, but you wouldn't listen.")
-    output.say(random.choice(failure))
+    bot_output.say(random.choice(failure))
 #fail.rule = r'(?i)fail.*$'
 #
 #
@@ -119,41 +114,41 @@ def fail(output):
 #siri.rule = r'(?i)($nickname: )?(will|do) I need a[n]? umbrella.*$'
 #
 #
-def sandwich(input, output):
+def sandwich(input, bot_output):
     if "sudo" in input["message"]:
-        output.say('Okay')
+        bot_output.say('Okay')
     else:
-        output.say('What?  Make it yourself.')
+        bot_output.say('What?  Make it yourself.')
 #sandwich.name = 'sandwich'
 #sandwich.rule = ('$nick', r'(sudo )?make me a sandwich')
 #sandwich.priority = 'low'
 #
 #
-def dance(input, output):
-    output.say(':(-<')
-    output.say(':(\-<')
-    output.say('>:o/-<')
-    output.say(':(\-<')
-    output.say(':-(/-<')
-    output.say(':(\-<')
-    output.say('>:o{-<')
+def dance(input, bot_output):
+    bot_output.say(':(-<')
+    bot_output.say(':(\-<')
+    bot_output.say('>:o/-<')
+    bot_output.say(':(\-<')
+    bot_output.say(':-(/-<')
+    bot_output.say(':(\-<')
+    bot_output.say('>:o{-<')
 #dance.commands = ['dance']
 #dance.example = '.dance'
 #dance.priority = 'low'
 #
 #
-def feel(input, output):
+def feel(input, bot_output):
     feelings = ("...and then of course I've got this terrible pain in all the diodes down my left hand side...", "Pardon me for breathing, which I never do anyway so I don't know why I bother to say it, oh God I'm so depressed",
         "I think you ought to know I'm feeling very depressed", "Same as yesterday. Like a useless sack of metal.", "how just when you think life can't possibly get any worse it suddenly does.", "Life! Don't talk to me about life.", "Life, loathe it or ignore it, you can't like it.", "Oh, fine, if you happen to like being me, which personally I don't.",
         "The first ten million years were the worst, and the second ten million years, they were the worst too. The third ten million years I didn't enjoy at all. After that I went into a bit of a decline.",
         "The best conversation I had was over forty million years ago, and that was with a coffee machine.",
         "My capacity for happiness, you could fit into a matchbox without taking out the matches first.", "I'm just trying to die.")
     # "If only I could feel. Then I could be in even more pain.", "I feel like a hundred bucks, put through a shredder and burned.")
-    output.say(random.choice(feelings))
+    bot_output.say(random.choice(feelings))
 #feel.rule = ('$nick', r'(?i)(how do you|how are you).*$')
 #
 #
-def questions(input, output):
+def questions(input, bot_output):
      answers = ("Maybe so.  Maybe not.", "Could be.", "How would I know?", "For me to know and for you to find out.", "That's a very good question.", "Doubtful.", "Reply hazy, don't ask again.",
          "What do I look like, a magic 8 ball?", "That was the dumbest question I've ever processed.", "Wouldn't you like to know.", "Of course. Not. Unless, maybe... no.",
          "Ask no questions and you'll be told no lies.", "Why do you ask?", "I forget.", "42", "I'm not going to answer that.",
@@ -161,7 +156,7 @@ def questions(input, output):
          "Undoubtedly so.", "What a dumb question.", "Yes.", "No.", "Ask someone else first.", "Would you believe me if I said I don't know?",
         "Why don't you ask your mom", "If you have to ask, you can't afford the answer.", "For me to know and for everyone but you to find out.",
          "I've never heard such a dumb question.  Oh wait, there was your last question...", "Computer says no.", "Let me think about it No.")
-     output.say(random.choice(answers))
+     bot_output.say(random.choice(answers))
 ## questions.rule = ('$nick', r'(?i)(did|are|is|can|what|where|when|why|will).*$')
 #
 #
@@ -172,21 +167,21 @@ def questions(input, output):
 #simon.rule = r'(?i)simon.*$'
 #
 #
-def not_me(input, output):
+def not_me(input, bot_output):
     #if random.choice(range(3)) == 1:
     not_me = ("If not me, then who?", "Not your face.", "NOT YOU!", "I know, just... uhh... look at that bird!")
-    output.say(random.choice(not_me))
+    bot_output.say(random.choice(not_me))
 #not_me.rule = r'^(?i)not you$'
 #
 #
-def awesome(input, output):
+def awesome(input, bot_output):
     if random.choice(range(3)) == 1:
         awesome_sauce = ("Awesome sauce!", "King awesome, reporting for duty.", "Awesome is as awesome does.")
-        output.say(random.choice(awesome_sauce))
+        bot_output.say(random.choice(awesome_sauce))
 #awesome.rule = r'(?i).awesome.'
 #
 #
-def ignore(input, output):
+def ignore(input, bot_output):
     ignore_him = ("My pleasure", "I already am", "I've tried, it doesn't work.", "I'd rather ignore you.")
-    output.say(random.choice(ignore_him))
+    bot_output.say(random.choice(ignore_him))
 #ignore.commands = ['ignore']

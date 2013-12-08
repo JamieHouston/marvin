@@ -4,6 +4,7 @@ import os
 import Queue
 import sys
 import time
+from adapters import console, flowbot
 from util import logger
 import logging
 
@@ -23,6 +24,7 @@ print 'Loading plugins'
 # bootstrap the reloader
 eval(compile(open(os.path.join('core', 'reload.py'), 'U').read(),
     os.path.join('core', 'reload.py'), 'exec'))
+
 reload(init=True)
 
 config()
@@ -36,7 +38,8 @@ bot.conns = {}
 
 try:
     for name, conf in bot.config['connections'].iteritems():
-        bot.conns[name] = FlowBot(conf)
+        #bot.conns[name] = BotOutput(conf)
+        bot.conns[name] = console.ConsoleOutput(conf)
         #if conf.get('ssl'):
         #    bot.conns[name] = SSLIRC(conf['server'], conf['nick'], conf=conf,
         #            port=conf.get('port', 6667), channels=conf['channels'],
@@ -60,7 +63,7 @@ while True:
 
     for conn in bot.conns.itervalues():
         try:
-            conn.run()
+            conn.run(bot)
             #out = conn.out.get_nowait()
             #main(conn, out)
         except Queue.Empty:

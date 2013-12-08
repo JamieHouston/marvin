@@ -1,11 +1,11 @@
 import config
-from core.flowbot import FlowBot
+from adapters.flowbot import BotOutput
 from util import logger
 
 
 def main():
     logger.log('starting')
-    bot = FlowBot(config)
+    bot = BotOutput(config)
     logger.log('running')
     bot.run()
 

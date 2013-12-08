@@ -1,13 +1,9 @@
 from flowdock import JSONStream, Chat
 from core import marvin
-from util import logger, web
+from util import logger, web, dictionaryutils
 from modules import markov
 
-class Blob:
-    def __init__(self, **entries):
-        self.__dict__.update(entries)
-
-class FlowBot():
+class BotOutput():
 
     def __init__(self, config):
         self.setup(config)
@@ -51,18 +47,18 @@ class FlowBot():
 
 
     def run_markov(self, data):
-        markov_input = Blob(**data)
+        markov_input = dictionaryutils.DictToObject(**data)
         user_id = data['nick']
         markov_input.nick = self.get_user(user_id)
         markov.markov_master(self, markov_input)
 
     def run_imitate(self, data):
-        markov_input = Blob(**data)
+        markov_input = dictionaryutils.DictToObject(**data)
         user_id = data['nick']
         markov_input.nick = self.get_user(user_id)
         markov.markov_imitate(self, markov_input)
 
-    def parse_stream(self):
+    def _parse_stream(self, bot):
         stream = JSONStream(self.flow_user_api_key)
         gen = stream.fetch(self.channels, active=True)
         for data in gen:
@@ -71,9 +67,9 @@ class FlowBot():
                     "message": data["content"].lower(),
                     "nick": self.get_user(data["user"])["nick"]
                 }
-                marvin.input(input, self, bot)
+                marvin.process(input, self, bot)
 
 
-    def run(self):
+    def run(self, bot):
         marvin.say_hi(self)
-        self.parse_stream()
+        self._parse_stream(bot)

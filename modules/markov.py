@@ -80,22 +80,22 @@ class Markov(object):
 
         return ' '.join(message)
 
-    def knowledge(self, flowbot, input):
+    def knowledge(self, output, input):
         #flowbot.say(",".join(self.word_table.get(input.nick, {})))
         words = self.word_table.get(input.nick)
         if words and len(words):
-            flowbot.say(",".join(words.items()))
+            bot_output.say(",".join(words.items()))
         else:
-            flowbot.say("Not gonna happen.")
+            bot_output.say("Not gonna happen.")
 
-    def imitate(self, flowbot, input):
+    def imitate(self, bot_output, input):
         #print >> sys.stderr, "Imitating: {0}".format(input.group(2))
         #person = input.group(2).strip()[:10]
         person = input.nick
-        if person != flowbot.nick:
+        if person != bot_output.nick:
             return self.generate_message(person)
 
-    def cite(self, flowbot, input):
+    def cite(self, bot_output, input):
         if self.last:
             return self.last
 
@@ -103,13 +103,13 @@ class Markov(object):
         """Convert to lower-case and strip out all quotation marks"""
         return re.sub('[\"\']', '', message.lower())
 
-    def is_ping(self, message, flowbot):
-        return re.match('^%s[:,\s]' % flowbot.nick, message) is not None
+    def is_ping(self, message, bot_output):
+        return re.match('^%s[:,\s]' % bot_output.nick, message) is not None
 
-    def fix_ping(self, message, flowbot):
-        return re.sub('^%s[:,\s]\s*' % flowbot.nick, '', message)
+    def fix_ping(self, message, bot_output):
+        return re.sub('^%s[:,\s]\s*' % bot_output.nick, '', message)
 
-    def log(self, flowbot, input):
+    def log(self, bot_output, input):
         #pdb.set_trace()
         #print >> sys.stderr, "Logging from {0} message: {1}".format(input.nick, input.group(0))
         sender = input.nick[:10]
@@ -120,15 +120,15 @@ class Markov(object):
             return
 
         try:
-            say_something = self.is_ping(message, flowbot) or sender != flowbot.nick and random.random() < self.chattiness
+            say_something = self.is_ping(message, bot_output) or sender != bot_output.nick and random.random() < self.chattiness
             #print >> sys.stderr, "Say something is: {0}".format(say_something)
         except AttributeError:
             say_something = False
         messages = []
         seed_key = None
 
-        if self.is_ping(message, flowbot):
-            message = self.fix_ping(message, flowbot)
+        if self.is_ping(message, bot_output):
+            message = self.fix_ping(message, bot_output)
 
         for words in self.split_message(self.sanitize_message(message)):
             key = tuple(words[:-1])
@@ -168,32 +168,32 @@ class BotInfo:
 def get_markov():
     return BotInfo.bot
 
-def markov_imitate(flowbot, input):
+def markov_imitate(bot_output, input):
     logger.log("trying to imitate")
     if ("debug" in input.message):
-        message = get_markov().knowledge(flowbot, input)
+        message = get_markov().knowledge(bot_output, input)
     else:
-        message = get_markov().imitate(flowbot, input)
+        message = get_markov().imitate(bot_output, input)
     if message:
         logger.log("found message %s" % message)
-        flowbot.say(message)
+        bot_output.say(message)
     else:
-        flowbot.say("No way I'm imitating you.  This time.")
+        bot_output.say("No way I'm imitating you.  This time.")
         logger.log("No message returned")
 #markov_imitate.commands = ['imitate']
 
-def markov_cite(flowbot, input):
-    message = get_markov().cite(flowbot, input)
+def markov_cite(bot_output, input):
+    message = get_markov().cite(bot_output, input)
     if message:
-        flowbot.say(message)
+        bot_output.say(message)
 #markov_cite.commands = ['cite']
 
-def markov_master(flowbot, input):
+def markov_master(bot_output, input):
     logger.log("logging markov message %s" % input.message)
     marvin_kov = get_markov()
-    message = marvin_kov.log(flowbot, input)
+    message = marvin_kov.log(bot_output, input)
     if message:
-        flowbot.say(message)
+        bot_output.say(message)
 
 #markov_master.rule = r'(.*)'
 
