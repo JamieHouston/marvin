@@ -7,15 +7,20 @@
       "flow_token": "8552f71a80719bc583d27903b2027629",
       "nick": "Marvin",
       "channels": ["daptiv/bot"],
-      "debug": "False",
-      "username": "marvin.flowdock@gmail.com",
-      "password": "7ujm*IK<"
+      "debug": "False"
     }
   },
   "disabled_plugins": [],
   "disabled_commands": [],
   "acls": {},
   "api_keys": {},
+  "logins":{
+    "github":{
+        "login": "foresterh",
+        "password": "Pryth1ian"
+    }
+  },
+
   "censored_strings":
   [
     "DCC SEND",

@@ -1,5 +1,13 @@
 from core import marvin
-from util.dictionaryutils import BotInput
+from util.dictionaryutils import Blob
+
+class BotInput(object):
+    def __getitem__(self, val):
+        return self.__dict__[val]
+
+    def __setitem__(self, key, value):
+        self[key] = value
+
 class ConsoleOutput():
     def __init__(self, config):
         print "Hello"
@@ -10,16 +18,15 @@ class ConsoleOutput():
 
 
     def run(self, bot):
-        nick = raw_input("What shall I call you? ")
-        print "Well hello there %s.  What can I do for you?" % nick
+        self.nick = raw_input("What shall I call you? ")
+        print("Well hello there {}.  What can I do for you?".format(self.nick))
         while True:
             message = raw_input("> ")
             if "exit" in message:
-                print "Well that's rude.  Goodbye"
+                print("Well that's rude.  Goodbye")
                 exit()
-            input = BotInput({
-                    "message": message,
-                    "nick": nick
-                })
-            marvin.process(input, self, bot)
+            bot_input = BotInput()
+            bot_input.message = message
+            bot_input.nick =self.nick
+            marvin.process(bot_input, self, bot)
 

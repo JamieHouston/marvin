@@ -3,8 +3,8 @@
 import os
 import Queue
 import sys
-import time
 from adapters import console, flowbot
+from util.exceptionwithcontext import ExceptionWithContext
 from util import logger
 import logging
 
@@ -35,18 +35,13 @@ if not hasattr(bot, 'config'):
 logger.log("Connecting to IRC")
 
 bot.conns = {}
-
+bot.logins = {}
 try:
     for name, conf in bot.config['connections'].iteritems():
-        #bot.conns[name] = BotOutput(conf)
+        #bot.conns[name] = flowbot.BotOutput(conf)
         bot.conns[name] = console.ConsoleOutput(conf)
-        #if conf.get('ssl'):
-        #    bot.conns[name] = SSLIRC(conf['server'], conf['nick'], conf=conf,
-        #            port=conf.get('port', 6667), channels=conf['channels'],
-        #            ignore_certificate_errors=conf.get('ignore_cert', True))
-        #else:
-        #    bot.conns[name] = IRC(conf['server'], conf['nick'], conf=conf,
-        #            port=conf.get('port', 6667), channels=conf['channels'])
+    for name, conf in bot.config['logins'].iteritems():
+        bot.logins[name] = conf
 except Exception, e:
     logger.log("malformed config file %s" % e, logging.ERROR)
     sys.exit()
@@ -68,5 +63,5 @@ while True:
             #main(conn, out)
         except Queue.Empty:
             pass
-        except Exception as e:
-            logger.log("boo: %s" % e)
+        except:
+            raise ExceptionWithContext("bot died before his time")

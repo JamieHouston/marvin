@@ -81,7 +81,7 @@ def respond(bot_input, bot_output):
 
 def process(bot_input, bot_output, bot):
     try:
-        input_command = bot_input["message"]
+        input_command = bot_input["message"].lower()
         if (input_command.startswith(".")):
             input_command = input_command[1:]
             pieces = input_command.split(' ')
@@ -97,13 +97,17 @@ def process(bot_input, bot_output, bot):
                 except Exception as e:
                     logger.log("Almost died from command: %s" % e)
                     bot_output.say("Wow... that almost killed me... I should fix that.")
+            else:
+                bot_output.say("What the hell am I supposed to do with that command?")
         else:
             # REGEXES
             for func, args in bot.plugs['regex']:
                 m = args['re'].search(input_command)
                 if m:
                     bot_input.groupdict = m.groupdict
-                    func(input, bot_output)
+                    if func.func_name in bot.logins:
+                        bot_input.credentials = bot.logins[func.func_name]
+                    func(bot_input, bot_output)
                     #flowbot.say(result)
                     continue;
 

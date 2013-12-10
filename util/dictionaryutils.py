@@ -30,19 +30,12 @@ def unflatten_dictx(flat_dict):
     return result
 
 
-class DictToObject:
+class Blob:
     def __init__(self, **entries):
         self.__dict__.update(entries)
 
+    def __getitem__(self, val):
+        return self.__dict__[val]
 
-
-class BotInput:
-    def __init__(self, **entries):
-        self.__dict__.update(entries)
-
-        # make dict keys accessible as attributes
-    def __getattr__(self, key):
-        return self[key]
-
-    def __setattr__(self, key, value):
+    def __setitem__(self, key, value):
         self[key] = value

@@ -3,6 +3,14 @@ from core import marvin
 from util import logger, web, dictionaryutils
 from modules import markov
 
+class BotInput(object):
+    def __getitem__(self, val):
+        return self.__dict__[val]
+
+    def __setitem__(self, key, value):
+        self[key] = value
+
+
 class BotOutput():
 
     def __init__(self, config):
@@ -63,11 +71,11 @@ class BotOutput():
         gen = stream.fetch(self.channels, active=True)
         for data in gen:
             if type(data) == dict and data['event'] == "message" and ('external_user_name' not in data or data['external_user_name'] != 'Marvin'):
-                input = {
-                    "message": data["content"].lower(),
-                    "nick": self.get_user(data["user"])["nick"]
-                }
-                marvin.process(input, self, bot)
+                bot_input = BotInput()
+                bot_input.message = data["content"].lower()
+                bot_input.nick =self.get_user(data["user"])["nick"]
+
+                marvin.process(bot_input, self, bot)
 
 
     def run(self, bot):

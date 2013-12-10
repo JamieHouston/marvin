@@ -12,10 +12,10 @@ l = list()
 #    return quote_to_say
 #    #phenny.say(quote_to_say)
 
-@hook.regex("quote (?P<name>\w*)")
-def random_quote(input, output):
+@hook.command
+def quote(input, output):
     quote_to_say =random.sample(l, 1)[0]
-    return quote_to_say
+    output.say(quote_to_say)
 
 
 def load_quotes(quote_list, file):
