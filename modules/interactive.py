@@ -48,10 +48,10 @@ def welcome_back(input, bot_output):
 #doh.priority = "low"
 
 
-def No(bot_output):
-    yesno = ("Of course not.", "Wrong answer!", "Why?", "Are you sure?")
-    if random.choice(range(3)) == 1:
-        bot_output.say(random.choice(yesno))
+# def No(bot_output):
+#     yesno = ("Of course not.", "Wrong answer!", "Why?", "Are you sure?")
+#     if random.choice(range(3)) == 1:
+#         bot_output.say(random.choice(yesno))
 #No.rule = r'(?i)(no|yes)$'
 #No.priority = "low"
 
@@ -63,7 +63,7 @@ def No(bot_output):
 
 
 #def good_morning(phenny, input):
-#    morning = ("Morning, {0}", "Is it already morning?", "Yes it is.", "Wha? Oh... thanks for waking me, {0}", "Not here it isn't.", "Right back atcha, {0}")
+#    morning = ("Morning, {0}", "Is it already morning?", "Yes it is.", "Wha? Oh... athanks for waking me, {0}", "Not here it isn't.", "Right back atcha, {0}")
 #    message = random.choice(morning).format(input.nick)
 #    phenny.reply(message)
 #good_morning.rule = r'(?i)good morning.*'
@@ -174,11 +174,11 @@ def not_me(input, bot_output):
 #not_me.rule = r'^(?i)not you$'
 #
 #
-def awesome(input, bot_output):
-    if random.choice(range(3)) == 1:
-        awesome_sauce = ("Awesome sauce!", "King awesome, reporting for duty.", "Awesome is as awesome does.")
-        bot_output.say(random.choice(awesome_sauce))
-#awesome.rule = r'(?i).awesome.'
+# def awesome(input, bot_output):
+#     if random.choice(range(3)) == 1:
+#         awesome_sauce = ("Awesome sauce!", "King awesome, reporting for duty.", "Awesome is as awesome does.")
+#         bot_output.say(random.choice(awesome_sauce))
+# #awesome.ruaue = r'(?i).awesome.'
 #
 #
 def ignore(input, bot_output):

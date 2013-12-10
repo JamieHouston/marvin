@@ -29,29 +29,6 @@ def random_message(message_list):
 def say_hi(bot_output):
     bot_output.say(random_message(welcome_messages))
 
-def listen(bot_input, bot_output):
-    message = bot_input.message
-    if message.startswith('http'):
-        bot_output.say(web.get_title(message))
-    elif "yes" in message or "no" in message:
-        interactive.No(bot_output)
-    elif "awesome" in message:
-        interactive.awesome(bot_output)
-    elif "fail" in message:
-        interactive.fail(bot_output)
-    elif "not you" in message:
-        interactive.not_me(bot_output)
-    else:
-        logger.log("looking for twss in %s" % message)
-        laugh_re = "(lol|haha|ha ha|rofl|hehe|rolfmao|lmao)"
-        twss_re = "(big|small|long|hard|soft|mouth|face|good|fast|slow|in there|on there|in that|on that|wet|dry|suck|blow|jaw|all in|fit that|fit it|hurts|hot|huge|balls|stuck)"
-
-        if re.search(laugh_re, message):
-            interactive.laugh(bot_output)
-        elif re.search(twss_re, message):
-            if random.choice(range(3)) == 1:
-                bot_output.say("THAT'S WHAT SHE SAID!")
-
 
 def respond(bot_input, bot_output):
     message = bot_input.message
@@ -79,21 +56,22 @@ def respond(bot_input, bot_output):
             logger.log("nothing to say but random messages")
             bot_output.say("%s, %s" % (bot_input.nick,random_message(generic_responses)))
 
-def process(bot_input, bot_output, bot):
+def process(bot_input, bot_output):
     try:
         input_command = bot_input["message"].lower()
         if (input_command.startswith(".")):
             input_command = input_command[1:]
             pieces = input_command.split(' ')
-            command = match_command(list(bot.commands), pieces[0])
+            command = match_command(list(bot_input.bot.commands), pieces[0])
             if isinstance(command, list):  # multiple potential matches
                 bot_output.say("did you mean %s or %s?" % (', '.join(command[:-1]), command[-1]))
-            elif command in bot.commands:
-                func, args = bot.commands[command]
+            elif command in bot_input.bot.commands:
+                func, args = bot_input.bot.commands[command]
 
                 try:
                     input_string = " ".join(pieces[1:])
-                    func(input_string, bot_output)
+                    bot_input.input_string = input_string
+                    func(bot_input, bot_output)
                 except Exception as e:
                     logger.log("Almost died from command: %s" % e)
                     bot_output.say("Wow... that almost killed me... I should fix that.")
@@ -101,12 +79,13 @@ def process(bot_input, bot_output, bot):
                 bot_output.say("What the hell am I supposed to do with that command?")
         else:
             # REGEXES
-            for func, args in bot.plugs['regex']:
+            for func, args in bot_input.bot.plugs['regex']:
                 m = args['re'].search(input_command)
                 if m:
                     bot_input.groupdict = m.groupdict
-                    if func.func_name in bot.logins:
-                        bot_input.credentials = bot.logins[func.func_name]
+                    bot_input.input_string = input_command
+                    if func.func_name in bot_input.bot.logins:
+                        bot_input.credentials = bot_input.bot.logins[func.func_name]
                     func(bot_input, bot_output)
                     #flowbot.say(result)
                     continue;
@@ -123,8 +102,7 @@ def process(bot_input, bot_output, bot):
                     bot_output.say(random_message(leaving_quotes))
                     quit()
                 respond(bot_input, bot_output)
-            else:
-                listen(bot_input, bot_output)
+
     except Exception as e:
         logger.log(e)
         bot_output.say(random_message(death_messages))

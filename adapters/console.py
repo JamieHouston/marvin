@@ -28,5 +28,6 @@ class ConsoleOutput():
             bot_input = BotInput()
             bot_input.message = message
             bot_input.nick =self.nick
-            marvin.process(bot_input, self, bot)
+            bot_input.bot = bot
+            marvin.process(bot_input, self)
 

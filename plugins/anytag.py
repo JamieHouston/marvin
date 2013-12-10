@@ -3,6 +3,7 @@ from util import hook, storage
 
 @hook.regex(r'(add )(?P<item>[\w\d\s]*)( to )(the |my )?(?P<list>[\w\d]*)( list)?')
 def add_to_list(bot_input, bot_output):
+    "add [item] to [list name] -- adds something to a list that can be viewed or randomly selected from"
     if bot_input.groupdict():
         item = bot_input.groupdict()["item"]
         list_name = bot_input.groupdict()["list"]

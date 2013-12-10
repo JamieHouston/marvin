@@ -1,0 +1,5 @@
+PyGithub==1.21
+beautifulsoup4==4.3.2
+redis==2.8
+requests==2.1
+APScheduler==2.1.1

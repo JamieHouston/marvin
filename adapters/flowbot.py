@@ -74,6 +74,7 @@ class BotOutput():
                 bot_input = BotInput()
                 bot_input.message = data["content"].lower()
                 bot_input.nick =self.get_user(data["user"])["nick"]
+                bot_input.bot = bot
 
                 marvin.process(bot_input, self, bot)
 
