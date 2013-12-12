@@ -1,5 +1,5 @@
 import random
-from util import logger
+from util import logger,storage
 
 generic_responses = ["Keep talking... I'm listening...", "Should I pretend to care or are you good?", "That's about as interesting as a dead hummingbird.", "You talkin to me?", "Why you gotta say that?", "Really? So what.", "Yes?", "Take off, hoser.", "I'll pretend I care...", "Busy", "I can't get that. I'm in the zone.","That's fascinating"]
 welcome_messages = ("I could use a drink", "BUUURRRPPPPP", "I'm completely operational and all my circuits are functioning normally", "Yeah, they're real.", "It's got a hemi", "Happy Monday.  Wait... what day is it again?", "Man what a crazy rush", "Did anyone else see that?", "ZING!", "Boring.", "Yawn", "If anyone needs proof of intelligent life, don't look in this channel.", "And the bear says 'not on my lawn, please.'", "Heeeeeerrreeee's Marvin", "I just flew in and boy are my jokes bad.", "This is your bot on flowdock.",
@@ -26,11 +26,19 @@ def say_hi(bot_output):
 
 def process(bot_input, bot_output):
     try:
-        #markov.log(bot_input, bot_output)
-        if bot_input.nick.lower() == "hector" and random.choice(range(3)) == 1:
-            bot_output.say("!silence")
+        #markov.log(bot_input, bot_output))
+
 
         input_command = bot_input["message"].lower()
+
+
+        if input_command.startswith("!"):
+            if random.choice(range(3)) == 1:
+                heckle = storage.get_list("hector")
+                bot_output.say(random.choice(heckle))
+            else:
+                storage.add_to_list("hector", input_command)
+
         if (input_command.startswith(".")):
             input_command = input_command[1:]
             pieces = input_command.split(' ')

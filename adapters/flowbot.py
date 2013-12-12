@@ -80,7 +80,10 @@ class BotOutput():
                     bot_input.message = data["content"].lower()
                 else:
                     break
-                bot_input.nick =self.get_user(data["user"])["nick"]
+                if "nick" in data["user"]:
+                    bot_input.nick =self.get_user(data["user"])["nick"]
+                else:
+                    bot_input.nick = "anonymous"
                 bot_input.bot = bot
 
                 marvin.process(bot_input, self)

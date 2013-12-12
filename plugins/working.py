@@ -9,7 +9,7 @@ def working_on(bot_input, bot_output):
         bot_output.say("Got it.  {0} is working on {1}.  At least that's what I should tell the boss...".format(nick, task))
 
 @hook.regex(r'(what is (?P<nick>[\w\d]*)')
-def working_on(bot_input, bot_output):
+def working_list(bot_input, bot_output):
     if bot_input.groupdict():
         nick = bot_input.groupdict()["nick"]
         task = storage.get_value("workingon:{0}".format(nick))
