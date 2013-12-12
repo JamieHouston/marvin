@@ -10,18 +10,24 @@ Now it's own bot.
 
 -To use
 install requirements
-$ pip install -r requirements.txt
+
+    $ pip install -r requirements.txt
 
 copy core/config.copy.py to core/config.py and update logins and passwords (to use flowdock and any authenticated apis like github)
-$ cp core/config.copy.py core/config.python
+
+    $ cp core/config.copy.py core/config.python
 
 mark bot.py as executable or just run with python:
-$ python bot.py
+
+    $ python bot.py
 
 add argument to determine adapter (where input and output come from).  Currently only accepts flowbot (flowdock) and console
-$ python bot.py -a flowbot
+
+    $ python bot.py -a flowbot
 
 when all else fails
+     
+$
 $ python bot.py -h
 
 --Storage
