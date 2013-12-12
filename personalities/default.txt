@@ -1,0 +1,19 @@
+{
+    "generic_responses": ["For me to poop on.",],
+    "welcome_messages": ["I'm not a robot.",],
+    "death_messages": ["I'm dead.  You're not.  So there."],
+    "awesome_sauce": ["Awesome sauce!",],
+    "beers": ["One cold one, coming up",],
+    "doit": ["I'm givin it all I got, captain.",],
+    "doh": ["D'oh - a deer!  A female deer!",],
+    "failure": ["Indeed.",],
+    "good_morning":["Good night, {0}",],
+    "good_night": ["You'll be back",],
+    "ignore": ["My pleasure",],
+    "funny": ["What's so funny?", "HA HA HA!!", "Not funny", "Everyone's a comedian.",],
+    "not_me": ["I know, just... uhh... look at that bird!",],
+    "answers": ["Maybe so.  Maybe not.","Could be.",],
+    "youre_welcome": ["You're welcome, {0}","For what {0}?",],
+    "yes_no": ["Of course not.",],
+    "welcome_back": ["Why?","I'm so welcome back you can't handle it."]
+}

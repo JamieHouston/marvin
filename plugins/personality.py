@@ -1,10 +1,6 @@
-#!/usr/bin/env python
-__author__ = 'Steve Hayes'
-
-import os
 import random
 import json
-from util import hook
+from util import hook, logger
 
 l = list()
 
@@ -29,7 +25,11 @@ def get_personality(bot_input, bot_output):
 
 def load_personality(personality_name):
     new_personality = ''
-    f = open('personalities/{0}.txt'.format(personality_name.lower()), 'r')
+    try:
+        f = open('personalities/{0}.txt'.format(personality_name.lower()), 'r')
+    except:
+        #logger.log("Couldn't load file {0}".format(personality_name))
+        f = open('personalities/default.txt'.format(personality_name.lower()), 'r')
     for line in f:
         line = line.strip()
         if line == '%':

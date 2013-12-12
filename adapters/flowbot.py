@@ -30,7 +30,7 @@ class BotOutput():
 
     def say(self, msg):
         logger.log("sending message %s" % msg[:20])
-        self.chat.post(msg, self.nick, self.user)
+        self.chat.post(msg, self.nick)
 
     def private_message(self, msg):
         logger.log("sending private message %s" % msg)
@@ -81,7 +81,7 @@ class BotOutput():
         stream = JSONStream(self.flow_user_api_key)
         gen = stream.fetch(self.channels, active=True)
         for data in gen:
-            logger.log(data)
+            #logger.log(data)
             process_message = type(data) == dict and (data['event'] == "message" or data['event'] == "comment")
             if process_message and ('external_user_name' not in data or data['external_user_name'].lower() != self.nick.lower()):
                 bot_input = BotInput()

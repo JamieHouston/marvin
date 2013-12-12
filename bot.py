@@ -3,6 +3,7 @@
 import os
 import sys
 import adapters
+import time
 from adapters import console,flowbot
 from util import logger
 import logging
@@ -54,8 +55,6 @@ bot.logins = {}
 try:
     for name, conf in bot.config['connections'].iteritems():
         conf["responses"] = personality.load_personality(conf["nick"])
-        #bot.conns[name] = flowbot.BotOutput(conf)
-        #bot.conns[name] = console.ConsoleOutput(conf)
         bot.conns[name] = adapter_class.BotOutput(conf)
     for name, conf in bot.config['logins'].iteritems():
         bot.logins[name] = conf
@@ -79,4 +78,7 @@ while True:
             #out = conn.out.get_nowait()
             #main(conn, out)
         except:
-            logger.log("dead")
+            logger.log("Unexpected error: %s" % sys.exc_info()[0])
+
+        logger.log("So tired... sleeping for 5 seconds")
+        time.sleep(5)

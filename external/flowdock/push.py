@@ -41,6 +41,6 @@ class TeamInbox(PushAPI):
 class Chat(PushAPI):
     API_URL = PUSH_CHAT_API_URL
 
-    def post(self, content, external_user_name, user, tags=None):
+    def post(self, content, external_user_name, tags=None):
         assert len(content) <= 8096, 'The `content` argument length must be 8096 characters or less.'
         return super(Chat, self).post(locals())

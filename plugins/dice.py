@@ -34,9 +34,9 @@ def nrolls(count, n):
 
 @hook.command('roll')
 @hook.command
-def dice(input, output):
-    response = roll_dice(input)
-    output.say(response)
+def dice(bot_input, bot_output):
+    response = roll_dice(bot_input.message)
+    bot_output.say(response)
 
 def roll_dice(inp):
     ".dice <diceroll> -- simulates dicerolls, e.g. .dice 2d20-d5+4 roll 2 " \
