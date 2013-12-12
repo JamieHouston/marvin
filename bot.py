@@ -78,7 +78,5 @@ while True:
             conn.run(bot)
             #out = conn.out.get_nowait()
             #main(conn, out)
-        except Queue.Empty:
-            pass
         except:
-            raise ExceptionWithContext("bot died before his time")
+            logger.log("dead")

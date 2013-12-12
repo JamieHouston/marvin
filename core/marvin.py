@@ -39,6 +39,14 @@ def process(bot_input, bot_output):
             else:
                 storage.add_to_list("hector", input_command)
 
+        if input_command.startswith("wheatley"):
+            if random.choice(range(3)) == 1:
+                heckle = storage.get_list("wheatley")
+                bot_output.say(random.choice(heckle))
+            else:
+                storage.add_to_list("wheatley", input_command)
+
+
         if (input_command.startswith(".")):
             input_command = input_command[1:]
             pieces = input_command.split(' ')
