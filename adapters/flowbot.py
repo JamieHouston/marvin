@@ -24,6 +24,7 @@ class BotOutput():
         self.username = config["username"]
         self.password = config["password"]
         self.users = []
+        self.responses = config["responses"]
 
         self.chat = Chat(self.flow_token)
 

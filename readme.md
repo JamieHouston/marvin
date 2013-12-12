@@ -15,7 +15,7 @@ install requirements
 
 copy core/config.copy.py to core/config.py and update logins and passwords (to use flowdock and any authenticated apis like github)
 
-    $ cp core/config.copy.py core/config.python
+    $ cp core/config.copy.py core/config.py
 
 mark bot.py as executable or just run with python:
 
