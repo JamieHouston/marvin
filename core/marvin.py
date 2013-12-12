@@ -68,7 +68,7 @@ def process(bot_input, bot_output):
             #if input_command.startswith("imitate"):
             #    flowbot.run_imitate(data)
 
-            if bot_input.nick in input_command:
+            if bot_input.bot.nick in input_command:
                 if "take off" in input_command or "go home" in input_command or "go away" in input_command:
                     leaving_quotes = ("Not again", "Fine, it stinks in here.", "I'll be back and stuff.", "Make me.  Just kidding, I'm out.")
                     bot_output.say(random.choice(leaving_quotes))
