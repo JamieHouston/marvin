@@ -1,4 +1,5 @@
 import random
+from sys import exit
 from util import logger,storage
 
 generic_responses = ["Keep talking... I'm listening...", "Should I pretend to care or are you good?", "That's about as interesting as a dead hummingbird.", "You talkin to me?", "Why you gotta say that?", "Really? So what.", "Yes?", "Take off, hoser.", "I'll pretend I care...", "Busy", "I can't get that. I'm in the zone.","That's fascinating"]
@@ -84,7 +85,7 @@ def process(bot_input, bot_output):
             #if input_command.startswith("imitate"):
             #    flowbot.run_imitate(data)
 
-            if bot_output.nick in input_command:
+            if bot_output.nick.lower() in input_command:
                 if "take off" in input_command or "go home" in input_command or "go away" in input_command:
                     leaving_quotes = ("Not again", "Fine, it stinks in here.", "I'll be back and stuff.", "Make me.  Just kidding, I'm out.")
                     bot_output.say(random.choice(leaving_quotes))
