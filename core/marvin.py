@@ -1,4 +1,5 @@
 import random
+from sys import exit
 from util import logger,storage
 
 def match_command(commands, command):
@@ -75,7 +76,7 @@ def process(bot_input, bot_output):
             #if input_command.startswith("imitate"):
             #    flowbot.run_imitate(data)
 
-            if bot_output.nick in input_command:
+            if bot_output.nick.lower() in input_command:
                 if "take off" in input_command or "go home" in input_command or "go away" in input_command:
                     bot_output.say(random.choice(bot_output.responses["death_messages"]))
                     quit()
