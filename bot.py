@@ -7,6 +7,7 @@ from adapters import console,flowbot
 from util import logger
 import logging
 import argparse
+from plugins import personality
 
 
 
@@ -52,6 +53,7 @@ bot.conns = {}
 bot.logins = {}
 try:
     for name, conf in bot.config['connections'].iteritems():
+        conf["responses"] = personality.load_personality(conf["nick"])
         #bot.conns[name] = flowbot.BotOutput(conf)
         #bot.conns[name] = console.ConsoleOutput(conf)
         bot.conns[name] = adapter_class.BotOutput(conf)

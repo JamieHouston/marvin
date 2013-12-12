@@ -21,7 +21,7 @@ def match_command(commands, command):
     return None
 
 def say_hi(bot_output):
-    bot_output.say(random.choice(welcome_messages))
+    bot_output.say(random.choice(bot_output.responses["welcome_messages"]))
 
 
 def process(bot_input, bot_output):

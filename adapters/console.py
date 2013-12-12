@@ -11,6 +11,7 @@ class BotInput(object):
 class BotOutput():
     def __init__(self, config):
         print "Hello"
+        self.responses = config["responses"]
 
 
     def say(self, msg):
