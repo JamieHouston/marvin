@@ -106,8 +106,8 @@ def rules(bot_input, bot_output):
     for rule in rules:
         bot_output.say(rule)
 
-@hook.regex(r'^marvin(,|:|-| )?(did|are|is|can|what|where|when|why|will).*$')
-def questions(input, bot_output):
+@hook.regex(r'(,|:|-| )?(did|are|is|can|what|where|when|why|will).*$')
+def questions(bot_input, bot_output):
      answers = ("Maybe so.  Maybe not.", "Could be.", "How would I know?", "For me to know and for you to find out.", "That's a very good question.", "Doubtful.", "Reply hazy, don't ask again.",
          "What do I look like, a magic 8 ball?", "That was the dumbest question I've ever processed.", "Wouldn't you like to know.", "Of course. Not. Unless, maybe... no.",
          "Ask no questions and you'll be told no lies.", "Why do you ask?", "I forget.", "42", "I'm not going to answer that.",

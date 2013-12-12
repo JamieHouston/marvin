@@ -70,7 +70,7 @@ class BotOutput():
         gen = stream.fetch(self.channels, active=True)
         for data in gen:
             process_message = type(data) == dict and (data['event'] == "message" or data['event'] == "comment")
-            if process_message and ('external_user_name' not in data or data['external_user_name'] != 'Marvin'):
+            if process_message and ('external_user_name' not in data or data['external_user_name'].lower() != self.nick.lower()):
                 bot_input = BotInput()
                 if type(data['content']) is dict:
                     bot_input.message = data["content"]['text'].lower()
