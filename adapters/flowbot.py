@@ -1,4 +1,4 @@
-from flowdock import JSONStream, Chat
+from external.flowdock import JSONStream, Chat
 from core import marvin
 from util import logger, web, dictionaryutils
 
@@ -29,7 +29,7 @@ class BotOutput():
 
     def say(self, msg):
         logger.log("sending message %s" % msg[:20])
-        self.chat.post(msg, self.nick)
+        self.chat.post(msg, self.nick, self.user)
 
     def private_message(self, msg):
         logger.log("sending private message %s" % msg)
@@ -46,10 +46,19 @@ class BotOutput():
         return self.users
 
 
-    def get_user(self, user_id):
+    def get_user_by_id(self, user_id):
         if not self.users:
             self.get_users()
         user = [u for u in self.users if str(u["id"]) == user_id]
+        if user and len(user):
+            return user[0]
+        return "anonymous"
+
+
+    def get_user_by_name(self, user_name):
+        if not self.users:
+            self.get_users()
+        user = [u for u in self.users if str(u["nick"]) == user_name]
         if user and len(user):
             return user[0]
         return "anonymous"
@@ -71,6 +80,7 @@ class BotOutput():
         stream = JSONStream(self.flow_user_api_key)
         gen = stream.fetch(self.channels, active=True)
         for data in gen:
+            logger.log(data)
             process_message = type(data) == dict and (data['event'] == "message" or data['event'] == "comment")
             if process_message and ('external_user_name' not in data or data['external_user_name'].lower() != self.nick.lower()):
                 bot_input = BotInput()
@@ -81,7 +91,7 @@ class BotOutput():
                 else:
                     break
                 if "nick" in data["user"]:
-                    bot_input.nick =self.get_user(data["user"])["nick"]
+                    bot_input.nick =self.get_user_by_id(data["user"])["nick"]
                 else:
                     bot_input.nick = "anonymous"
                 bot_input.bot = bot
@@ -90,5 +100,6 @@ class BotOutput():
 
 
     def run(self, bot):
+        self.user = str(self.get_user_by_name(self.nick)["id"])
         marvin.say_hi(self)
         self._parse_stream(bot)

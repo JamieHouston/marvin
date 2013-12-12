@@ -1,11 +1,9 @@
 #!/usr/bin/env python
 
 import os
-import Queue
 import sys
 import adapters
 from adapters import console,flowbot
-from util.exceptionwithcontext import ExceptionWithContext
 from util import logger
 import logging
 import argparse
