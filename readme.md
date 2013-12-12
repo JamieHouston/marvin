@@ -9,7 +9,12 @@ Got it's roots from pyFlowbot and Phenny and a few other distant cousins.
 Now it's own bot.
 
 -To use
+install requirements
+$ pip install -r requirements.txt
+
 copy core/config.copy.py to core/config.py and update logins and passwords (to use flowdock and any authenticated apis like github)
+$ cp core/config.copy.py core/config.python
+
 mark bot.py as executable or just run with python:
 $ python bot.py
 
