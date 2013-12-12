@@ -50,7 +50,9 @@ class BotOutput():
         if not self.users:
             self.get_users()
         user = [u for u in self.users if str(u["id"]) == user_id]
-        return user[0]
+        if user and len(user):
+            return user[0]
+        return "anonymous"
 
 
     def run_markov(self, data):
