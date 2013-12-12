@@ -18,3 +18,6 @@ $ python bot.py -a flowbot
 
 when all else fails
 $ python bot.py -h
+
+--Storage
+Storage module uses redis, so unless you change that, you should have redis running on the default settings.
