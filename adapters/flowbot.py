@@ -1,7 +1,6 @@
 from flowdock import JSONStream, Chat
 from core import marvin
 from util import logger, web, dictionaryutils
-from modules import markov
 
 class BotInput(object):
     def __getitem__(self, val):
@@ -29,7 +28,7 @@ class BotOutput():
         self.chat = Chat(self.flow_token)
 
     def say(self, msg):
-        logger.log("sending message %s" % msg)
+        logger.log("sending message %s" % msg[:20])
         self.chat.post(msg, self.nick)
 
     def private_message(self, msg):
@@ -70,13 +69,19 @@ class BotOutput():
         stream = JSONStream(self.flow_user_api_key)
         gen = stream.fetch(self.channels, active=True)
         for data in gen:
-            if type(data) == dict and data['event'] == "message" and ('external_user_name' not in data or data['external_user_name'] != 'Marvin'):
+            process_message = type(data) == dict and (data['event'] == "message" or data['event'] == "comment")
+            if process_message and ('external_user_name' not in data or data['external_user_name'] != 'Marvin'):
                 bot_input = BotInput()
-                bot_input.message = data["content"].lower()
+                if type(data['content']) is dict:
+                    bot_input.message = data["content"]['text'].lower()
+                elif "content" in data:
+                    bot_input.message = data["content"].lower()
+                else:
+                    break
                 bot_input.nick =self.get_user(data["user"])["nick"]
                 bot_input.bot = bot
 
-                marvin.process(bot_input, self, bot)
+                marvin.process(bot_input, self)
 
 
     def run(self, bot):

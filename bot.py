@@ -3,13 +3,29 @@
 import os
 import Queue
 import sys
-from adapters import console, flowbot
+import adapters
+from adapters import console,flowbot
 from util.exceptionwithcontext import ExceptionWithContext
 from util import logger
 import logging
+import argparse
+
+
+
+parser = argparse.ArgumentParser(description="It's a Bot.  Nuff Said")
+parser.add_argument('-a','--adapter', help='Adapter (console or flowbot).  Default is console.')
+
+args = parser.parse_args()
+
+adapter_name = args.adapter
+
+if not adapter_name or not hasattr(adapters, adapter_name.lower()):
+    logger.log("Adapter not found.  Try console or flowbot.  Using console")
+    adapter_name = "console"
+
+adapter_class = getattr(adapters, adapter_name.lower())
 
 sys.path += ['plugins']  # so 'import hook' works without duplication
-sys.path += ['lib']
 os.chdir(sys.path[0] or '.')  # do stuff relative to the install directory
 
 
@@ -39,7 +55,8 @@ bot.logins = {}
 try:
     for name, conf in bot.config['connections'].iteritems():
         #bot.conns[name] = flowbot.BotOutput(conf)
-        bot.conns[name] = console.ConsoleOutput(conf)
+        #bot.conns[name] = console.ConsoleOutput(conf)
+        bot.conns[name] = adapter_class.BotOutput(conf)
     for name, conf in bot.config['logins'].iteritems():
         bot.logins[name] = conf
 except Exception, e:

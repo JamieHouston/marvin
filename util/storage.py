@@ -21,3 +21,6 @@ def add_to_list(key, value):
 
 def get_list(key):
     return server.lrange(key,0,-1)
+
+def get_server():
+    return server

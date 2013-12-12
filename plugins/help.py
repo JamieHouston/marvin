@@ -30,7 +30,6 @@ def help(bot_input, bot_output):
 
     if not bot_input.input_string:
         bot_output.say("For details on a particular command, include it after help.")
-        bot_output.say("")
         bot_output.say("The available commands are: %s" % ', '.join(sorted(commands)))
     else:
         if bot_input.input_string in commands:

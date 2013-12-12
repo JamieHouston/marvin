@@ -8,7 +8,7 @@ class BotInput(object):
     def __setitem__(self, key, value):
         self[key] = value
 
-class ConsoleOutput():
+class BotOutput():
     def __init__(self, config):
         print "Hello"
 

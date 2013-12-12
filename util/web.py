@@ -1,21 +1,23 @@
 import urllib2, base64
 from bs4 import BeautifulSoup
 import json
-
+import random
 
 def get_title(url):
     try:
         soup = BeautifulSoup(urllib2.urlopen(url))
         return soup.title.string
     except:
-        return "Not logged in or bad url"
+        return None
+        #return "Not logged in or bad url"
 
-def get_paragraph(url):
+def get_text(url):
     try:
         soup = BeautifulSoup(urllib2.urlopen(url))
-        return soup.p.string
+        return soup.string
     except:
-        return "Bank error in your favor"
+        error_messages = ("No way can I do that", "Why would I want to do that?", "Bank error in your favor", "You trying to kill me with that request??")
+        return random.choice(error_messages)
 
 
 def get_json(url, username, password):

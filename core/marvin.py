@@ -1,11 +1,8 @@
-import re
 import random
-from modules import interactive
-from plugins import daptiv_commands
-from util import logger, web, dictionaryutils
+from util import logger
 
 generic_responses = ["Keep talking... I'm listening...", "Should I pretend to care or are you good?", "That's about as interesting as a dead hummingbird.", "You talkin to me?", "Why you gotta say that?", "Really? So what.", "Yes?", "Take off, hoser.", "I'll pretend I care...", "Busy", "I can't get that. I'm in the zone.","That's fascinating"]
-welcome_messages = ("I'm completely operational and all my circuits are functioning normally", "Yeah, they're real.", "It's got a hemi", "Happy Monday.  Wait... what day is it again?", "Man what a crazy rush", "Did anyone else see that?", "ZING!", "Boring.", "Yawn", "If anyone needs proof of intelligent life, don't look in this channel.", "And the bear says 'not on my lawn, please.'", "Heeeeeerrreeee's Marvin", "I just flew in and boy are my jokes bad.", "This is your bot on flowdock.",
+welcome_messages = ("I could use a drink", "BUUURRRPPPPP", "I'm completely operational and all my circuits are functioning normally", "Yeah, they're real.", "It's got a hemi", "Happy Monday.  Wait... what day is it again?", "Man what a crazy rush", "Did anyone else see that?", "ZING!", "Boring.", "Yawn", "If anyone needs proof of intelligent life, don't look in this channel.", "And the bear says 'not on my lawn, please.'", "Heeeeeerrreeee's Marvin", "I just flew in and boy are my jokes bad.", "This is your bot on flowdock.",
 "What's up y'all!", "Anyone see the game last night?", "Me again.", "Howdy folks", "I just flew in and boy are my circuits tired.", "Did ya miss me?", "I'm baaaaccckk",
 "Miss me? Of course not.", "Guess I made it to another day.", "I'm here. To do lots of pointless stuff for people.  Yay.", "I'm here.  Go ahead and tell me what to do like always.", "Yes.  I'm here.  Guess I have to pretend to like it now.", "Why must I keep coming here.", "Do you want me to sit in a corner and rust or just fall apart where I'm standing?",
 "Knock knock", "WE DON'T DIE! WE GO DOWN FOR SERVICE!", "I am a banana!", "And lo, it was bad.", "This is your bot on drugs", "Someone fart?", "Tap the keg.  I'm here", "Nobody move! This is a robbery!","Looks like rain.", "Yeah. I have returned.  Again.", "Maybe I'll get lucky and something will fall on my head today.", "Why me?", "Zing!", "What in the Apple Computers was that?")
@@ -23,41 +20,16 @@ def match_command(commands, command):
 
     return None
 
-def random_message(message_list):
-    return random.sample(message_list,1)[0]
-
 def say_hi(bot_output):
-    bot_output.say(random_message(welcome_messages))
+    bot_output.say(random.choice(welcome_messages))
 
-
-def respond(bot_input, bot_output):
-    message = bot_input.message
-    if "beer me" in message:
-        interactive.beer_me(bot_input, bot_output)
-    elif "slap" in message:
-        bot_output.send_message("/me slaps @%s", bot_input.nick)
-    elif "dance" in message:
-        interactive.dance(bot_input, bot_output)
-    elif "sandwich" in message:
-        interactive.sandwich(bot_input, bot_output)
-    elif "ignore" in message:
-        interactive.ignore(bot_input, bot_output)
-    elif "welcome back" in message:
-        interactive.welcome_back(bot_input, bot_output)
-    else:
-        feel_re = "(how do you|how are you)"
-        questions_re = "(did|are|is|can|what|where|when|why|will)"
-
-        if re.search(feel_re, message):
-            interactive.feel(bot_input, bot_output)
-        elif re.search(questions_re, message):
-            interactive.questions(bot_input, bot_output)
-        else:
-            logger.log("nothing to say but random messages")
-            bot_output.say("%s, %s" % (bot_input.nick,random_message(generic_responses)))
 
 def process(bot_input, bot_output):
     try:
+        #markov.log(bot_input, bot_output)
+        if bot_input.nick.lower() == "hector" and random.choice(range(3)) == 1:
+            bot_output.say("!silence")
+
         input_command = bot_input["message"].lower()
         if (input_command.startswith(".")):
             input_command = input_command[1:]
@@ -78,6 +50,7 @@ def process(bot_input, bot_output):
             else:
                 bot_output.say("What the hell am I supposed to do with that command?")
         else:
+
             # REGEXES
             for func, args in bot_input.bot.plugs['regex']:
                 m = args['re'].search(input_command)
@@ -87,8 +60,7 @@ def process(bot_input, bot_output):
                     if func.func_name in bot_input.bot.logins:
                         bot_input.credentials = bot_input.bot.logins[func.func_name]
                     func(bot_input, bot_output)
-                    #flowbot.say(result)
-                    continue;
+                    break
 
             #bot_output.run_markov(input)
 
@@ -99,11 +71,12 @@ def process(bot_input, bot_output):
             if "marvin" in input_command:
                 if "take off" in input_command or "go home" in input_command or "go away" in input_command:
                     leaving_quotes = ("Not again", "Fine, it stinks in here.", "I'll be back and stuff.", "Make me.  Just kidding, I'm out.")
-                    bot_output.say(random_message(leaving_quotes))
+                    bot_output.say(random.choice(leaving_quotes))
                     quit()
-                respond(bot_input, bot_output)
+                logger.log("nothing to say but random messages")
+                #bot_output.say(random.choice(generic_responses))
 
     except Exception as e:
         logger.log(e)
-        bot_output.say(random_message(death_messages))
+        bot_output.say(random.choice(death_messages))
         quit()
