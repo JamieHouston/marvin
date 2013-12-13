@@ -4,17 +4,18 @@ from util import hook, web
 def add_to_lunch(bot_input, bot_output):
     username = bot_input.nick
     email = bot_output.get_user_by_name(username)["email"]
-    rest = bot_input.groupdict()["rest"]
+    restaurant_name = bot_input.groupdict()["rest"]
 
     rests = web.get_json("http://lunchpad.hq.daptiv.com:3000/restaurants")
     restId = 0
     for it in rests:
-        if it["name"] == rest:
+        if it["name"] == restaurant_name:
             restId = it["_id"]
 
     url = "http://lunchpad.hq.daptiv.com:3000/restaurant/{0}/add/{1}".format(restId,email)
     result = web.get_json(url)
-    bot_output('added you to restaurant')
+    bot_output.say('added you to %s.  Enjoy your lunch, sir.' % restaurant_name)
+    bot_output.say("Just kidding. I hope they poison you.")
 
 
 #@hook.regex(r'lunchbot[((?! add).*$)$')

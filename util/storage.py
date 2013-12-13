@@ -60,3 +60,7 @@ def set_hash_value(hash_list_name, key, value):
 def delete_hash_value(hash_list_name, key):
     if server:
         server.hdel(hash_list_name, key)
+
+def get_hash_keys(hash_list_name):
+    if server:
+        return server.smembers(hash_list_name)

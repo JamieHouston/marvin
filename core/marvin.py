@@ -27,7 +27,7 @@ def process(bot_input, bot_output):
         time.sleep(30)
         return
 
-    direct_message = bot_output.nick.lower() in input_command
+    direct_message = bot_output.nick.lower() in input_command or "lunchbot" in input_command
 
     if input_command.startswith("!"):
         if random.choice(range(3)) == 1:
