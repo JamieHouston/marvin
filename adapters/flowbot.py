@@ -33,7 +33,11 @@ class BotOutput():
 
     def say(self, msg):
         logger.log("sending message %s" % msg[:20])
-        self.chat.post(msg, self.nick)
+        url = "https://api.flowdock.com/flows/{0}/{1}/messages".format("daptiv", "hackday")
+        data = {"event": "message", "content": msg}
+        response = web.post_json(url, self.username, self.password, **data)
+        #logger.log("response: " + response)
+        #self.chat.post(msg, self.nick)
 
     def private_message(self, msg):
         logger.log("sending private message %s" % msg)

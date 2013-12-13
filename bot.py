@@ -89,5 +89,5 @@ while (last_error - last_run).seconds > 10:
                 logger.log("error info: " + str(info))
             #logger.log("Unexpected error: %s" % sys.exc_info())
             last_error = datetime.now()
-        logger.log("So tired... sleeping for 5 seconds")
-        time.sleep(5)
+            logger.log("So tired... sleeping for 5 seconds")
+            time.sleep(5)

@@ -1,7 +1,15 @@
-import urllib2, base64
+import urllib2, base64, urllib
 from bs4 import BeautifulSoup
 import json
 import random
+
+
+def build_request(url, username, password):
+    request = urllib2.Request(url)
+    base64string = base64.encodestring('%s:%s' % (username, password)).replace('\n', '')
+    request.add_header("Authorization", "Basic %s" % base64string)
+    return request
+
 
 def get_title(url):
     try:
@@ -21,13 +29,19 @@ def get_text(url):
 
 
 def get_json(url, username, password):
-    request = urllib2.Request(url)
-    base64string = base64.encodestring('%s:%s' % (username, password)).replace('\n', '')
-    request.add_header("Authorization", "Basic %s" % base64string)
-    #result = urllib2.urlopen(request)
-
-    #request = urllib2.Request(url)
+    request = build_request(url, username, password)
     page = urllib2.urlopen(request)
     data = page.read()
     decoded_data = json.loads(data)
     return decoded_data
+
+
+def post_json(url, username, password, **kwargs):
+    request = build_request(url, username, password)
+    request.add_data(urllib.urlencode(kwargs))
+
+    page = urllib2.urlopen(request)
+    data = page.read()
+    if (data):
+        return json.loads(data)
+    return data
