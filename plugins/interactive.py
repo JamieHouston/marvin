@@ -2,6 +2,10 @@ from util import hook
 import random
 
 
+@hook.command
+def ping(bot_input, bot_output):
+    bot_output.say("I'm gonna ping my foot in your face.")
+
 @hook.regex(r'awesome')
 def awesome(bot_input, bot_output):
     if random.choice(range(3)) == 1:
