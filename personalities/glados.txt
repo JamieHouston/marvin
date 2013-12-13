@@ -65,7 +65,10 @@
         "I already am",
         "I've tried, it doesn't work."],
     "funny": [
-        "What's so funny?", "HA HA HA!!", "Not funny", "Everyone's a comedian.",
+        "What's so funny?",
+        "HA HA HA!!",
+        "Not funny",
+        "Everyone's a comedian.",
         "You're laughing at me, aren't you.",
         "Glad someone has a sense of humor.",
         "Yes, it's funny because most of it actually happened.",
