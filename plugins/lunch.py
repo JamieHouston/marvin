@@ -2,15 +2,16 @@ from util import hook, web
 
 @hook.regex(r'lunchbot add me to (?P<rest>.*)')
 def add_to_lunch(bot_input, bot_output):
-	username = bot_input.nick
-	email = bot_output.get_user_by_name(username)
+    username = bot_input.nick
+    email = bot_output.get_user_by_name(username)["email"]
+    url = "http://lunchpad.hq.daptiv.com:3000/restaurant/{0}/add/{1}".format(bot_input.groupdict()["rest"],email)
+    result = web.get_json(url)
+    bot_output('added you to restaurant')
 
-	result = web.get_json("http://lunchpad.hq.daptiv.com:3000/restaurant/" + bot_input.groupdict()["rest"] + "/add/" + email)
-	bot_output('added you to restaurant')
 
-
-@hook.regex(r'lunchbot.*')
-def lunch(bot_input, bot_output):
+#@hook.regex(r'lunchbot[((?! add).*$)$')
+@hook.command
+def lunchbot(bot_input, bot_output):
     rests = web.get_json("http://lunchpad.hq.daptiv.com:3000/restaurants/trending")
     to_say = []
 

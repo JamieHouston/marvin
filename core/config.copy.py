@@ -24,6 +24,7 @@ if not os.path.exists('config'):
               "master": "NICKNAME"
             }
           },
+          "enabled_plugins": [],
           "disabled_plugins": [],
           "disabled_commands": [],
           "acls": {},

@@ -33,8 +33,9 @@ def get_json(url, username=None, password=None):
     request = build_request(url, username, password)
     page = urllib2.urlopen(request)
     data = page.read()
-    decoded_data = json.loads(data)
-    return decoded_data
+    if data:
+        return json.loads(data)
+    return None
 
 
 def post_json(url, username, password, **kwargs):
@@ -43,6 +44,6 @@ def post_json(url, username, password, **kwargs):
 
     page = urllib2.urlopen(request)
     data = page.read()
-    if (data):
+    if data:
         return json.loads(data)
     return data

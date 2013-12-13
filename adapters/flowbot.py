@@ -35,6 +35,8 @@ class BotOutput():
 
 
     def say(self, msg):
+        if not msg or len(msg) < 1:
+            return
         #msg = self.filter_words(msg)
         logger.log("sending message %s" % msg[:20])
         url = "https://api.flowdock.com/flows/{0}/{1}/messages".format("daptiv", "hackday")
@@ -92,9 +94,9 @@ class BotOutput():
             if process_message and ("user" in data and self.user != data["user"]):
                 bot_input = BotInput()
                 if type(data['content']) is dict:
-                    bot_input.message = data["content"]['text'].lower()
+                    bot_input.message = data["content"]['text']
                 elif "content" in data:
-                    bot_input.message = data["content"].lower()
+                    bot_input.message = data["content"]
                 else:
                     break
                 if ("user" in data and int(data["user"]) > 0):

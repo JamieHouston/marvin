@@ -69,9 +69,11 @@ def process(bot_input, bot_output):
         if (direct_message or bot_output.chattiness > random.random()):
         # REGEXES
             for func, args in bot_input.bot.plugs['regex']:
-                m = args['re'].search(input_command)
+                m = args['re'].search(bot_input["message"])
                 if m:
+                    # todo: update groupdict with inp
                     bot_input.groupdict = m.groupdict
+                    bot_input.inp = m.groupdict()
                     bot_input.input_string = input_command
                     if func.func_name in bot_input.bot.credentials:
                         bot_input.credentials = bot_input.bot.credentials[func.func_name]
