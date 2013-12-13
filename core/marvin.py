@@ -1,3 +1,4 @@
+import time
 import random
 import sys
 from util import logger,storage
@@ -20,6 +21,11 @@ def say_hi(bot_output):
 def process(bot_input, bot_output):
     # try:
     input_command = bot_input["message"].lower()
+
+    if input_command == "SHUT UP":
+        bot_output.say("SHUTTING UP")
+        time.sleep(30)
+        return
 
     direct_message = bot_output.nick.lower() in input_command
 
