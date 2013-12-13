@@ -1,5 +1,5 @@
 import random
-from sys import exit
+import sys
 from util import logger,storage
 
 def match_command(commands, command):
@@ -17,48 +17,48 @@ def say_hi(bot_output):
     bot_output.say(random.choice(bot_output.responses["welcome_messages"]))
 
 def process(bot_input, bot_output):
-    try:
-        #markov.log(bot_input, bot_output))
+    # try:
+    input_command = bot_input["message"].lower()
 
+    direct_message = bot_output.nick.lower() in input_command
 
-        input_command = bot_input["message"].lower()
-
-        if input_command.startswith("!"):
-            if random.choice(range(3)) == 1:
-                heckle = storage.get_list("hector")
-                bot_output.say(random.choice(heckle))
-            else:
-                storage.add_to_list("hector", input_command)
-
-        if input_command.startswith("wheatley"):
-            if random.choice(range(3)) == 1:
-                heckle = storage.get_list("wheatley")
-                bot_output.say(random.choice(heckle))
-            else:
-                storage.add_to_list("wheatley", input_command)
-
-
-        if (input_command.startswith(".")):
-            input_command = input_command[1:]
-            pieces = input_command.split(' ')
-            command = match_command(list(bot_input.bot.commands), pieces[0])
-            if isinstance(command, list):  # multiple potential matches
-                bot_output.say("did you mean %s or %s?" % (', '.join(command[:-1]), command[-1]))
-            elif command in bot_input.bot.commands:
-                func, args = bot_input.bot.commands[command]
-
-                try:
-                    input_string = " ".join(pieces[1:])
-                    bot_input.input_string = input_string
-                    func(bot_input, bot_output)
-                except Exception as e:
-                    logger.log("Almost died from command: %s" % e)
-                    bot_output.say("Wow... that almost killed me... I should fix that.")
-            else:
-                bot_output.say("What the hell am I supposed to do with that command?")
+    if input_command.startswith("!"):
+        if random.choice(range(3)) == 1:
+            heckle = storage.get_list("hector")
+            bot_output.say(random.choice(heckle))
         else:
+            storage.add_to_list("hector", input_command)
 
-            # REGEXES
+    if input_command.startswith("wheatley"):
+        if random.choice(range(3)) == 1:
+            heckle = storage.get_list("wheatley")
+            bot_output.say(random.choice(heckle))
+        else:
+            storage.add_to_list("wheatley", input_command)
+
+
+    if (input_command.startswith(".")):
+        input_command = input_command[1:]
+        pieces = input_command.split(' ')
+        command = match_command(list(bot_input.bot.commands), pieces[0])
+        if isinstance(command, list):  # multiple potential matches
+            bot_output.say("did you mean %s or %s?" % (', '.join(command[:-1]), command[-1]))
+        elif command in bot_input.bot.commands:
+            func, args = bot_input.bot.commands[command]
+
+            try:
+                input_string = " ".join(pieces[1:])
+                bot_input.input_string = input_string
+                func(bot_input, bot_output)
+            except Exception as e:
+                logger.log("Almost died from command: %s" % e)
+                bot_output.say("Wow... that almost killed me... I should fix that.")
+        else:
+            bot_output.say("What the hell am I supposed to do with that command?")
+    else:
+
+        if (direct_message or bot_output.chattiness > random.random()):
+        # REGEXES
             for func, args in bot_input.bot.plugs['regex']:
                 m = args['re'].search(input_command)
                 if m:
@@ -69,14 +69,15 @@ def process(bot_input, bot_output):
                     func(bot_input, bot_output)
                     break
 
-            if bot_output.nick.lower() in input_command:
+            if direct_message and bot_output.master.lower() in bot_input.nick.lower():
                 if "take off" in input_command or "go home" in input_command or "go away" in input_command:
-                    bot_output.say(random.choice(bot_output.responses["death_messages"]))
-                    quit()
+                    try:
+                        bot_output.say(random.choice(bot_output.responses["death_messages"]))
+                    except:
+                        logger.log("Too stupid to quit.")
+                    sys.exit("later")
                 logger.log("nothing to say but random messages")
-                #bot_output.say(random.choice(generic_responses))
 
-    except Exception as e:
-        logger.log(e)
-        bot_output.say(random.choice(bot_output.responses["death_messages"]))
-        quit()
+    # except:
+    #     logger.log("dying")
+    #     bot_output.say(random.choice(bot_output.responses["death_messages"]))

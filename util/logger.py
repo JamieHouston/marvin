@@ -21,3 +21,6 @@ internal_logger.addHandler(ch)
 def log(message, level = logging.DEBUG):
     internal_logger.log(level, message)
 
+
+def error(trace):
+    internal_logger.error("Problem boss: " + trace, exc_info=True)

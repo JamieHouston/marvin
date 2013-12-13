@@ -4,6 +4,7 @@ import os
 import sys
 import adapters
 import time
+from datetime import datetime,timedelta
 from adapters import console,flowbot
 from util import logger
 import logging
@@ -68,17 +69,25 @@ if not os.path.exists(bot.persist_dir):
 
 logger.log("Running main loop")
 
-while True:
+last_error = datetime(2000,1,1)
+last_run = datetime.now()
+
+while (last_error - last_run).seconds > 10:
     reload()  # these functions only do things
     config()  # if changes have occured
 
     for conn in bot.conns.itervalues():
         try:
+            last_run = datetime.now()
             conn.run(bot)
             #out = conn.out.get_nowait()
             #main(conn, out)
+        except SystemExit as ex:
+            last_error = last_run
         except:
-            logger.log("Unexpected error: %s" % sys.exc_info()[0])
-
+            for info in sys.exc_info():
+                logger.log("error info: " + str(info))
+            #logger.log("Unexpected error: %s" % sys.exc_info())
+            last_error = datetime.now()
         logger.log("So tired... sleeping for 5 seconds")
         time.sleep(5)

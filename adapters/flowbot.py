@@ -17,12 +17,15 @@ class BotOutput():
 
     def setup(self, config):
         self.flow_user_api_key = config["flow_user_api_key"]
+        # chattiness on a scale of 0 to 1 (most is every time)
+        self.chattiness = 0.5
         self.flow_token = config["flow_token"]
         self.channels = config["channels"]
         self.debug = bool(config["debug"])
         self.nick = config["nick"]
         self.username = config["username"]
         self.password = config["password"]
+        self.master = config["master"]
         self.users = []
         self.responses = config["responses"]
 
@@ -91,8 +94,10 @@ class BotOutput():
                     bot_input.message = data["content"].lower()
                 else:
                     break
-                if "nick" in data["user"]:
-                    bot_input.nick =self.get_user_by_id(data["user"])["nick"]
+                if ("user" in data and int(data["user"]) > 0):
+                    bot_input.nick = self.get_user_by_id(data["user"])["nick"]
+                elif ("external_name" in data):
+                    bot_input.nick = data["external_name"]
                 else:
                     bot_input.nick = "anonymous"
                 bot_input.bot = bot

@@ -20,7 +20,8 @@ if not os.path.exists('config'):
               "channels": ["daptiv/bot"],
               "debug": "False",
               "username": "USERNAME",
-              "password": "PASSWORD"
+              "password": "PASSWORD",
+              "master": "NICKNAME"
             }
           },
           "disabled_plugins": [],
