@@ -57,7 +57,7 @@ try:
     for name, conf in bot.config['connections'].iteritems():
         conf["responses"] = personality.load_personality(conf["nick"])
         bot.conns[name] = adapter_class.BotOutput(conf)
-    for name, conf in bot.config['logins'].iteritems():
+    for name, conf in bot.config['credentials'].iteritems():
         bot.credentials[name] = conf
 except Exception, e:
     logger.log("malformed config file %s" % e, logging.ERROR)
