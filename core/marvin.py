@@ -63,8 +63,8 @@ def process(bot_input, bot_output):
         else:
             bot_output.say("What the hell am I supposed to do with that command?")
     else:
-        if not direct_message:
-            markov.handle(bot_input, bot_output)
+        # if not direct_message:
+        #     markov.handle(bot_input, bot_output)
 
         if (direct_message or bot_output.chattiness > random.random()):
         # REGEXES
