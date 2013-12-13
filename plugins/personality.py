@@ -20,12 +20,22 @@ def get_personality(bot_input, bot_output):
                 if bot_personality:
                     bot_output.say("Personality Override. Loading " + personality_name)
                     bot_output.responses = bot_personality
+                    bot_output.personality = personality_name
                 else:
                     bot_output.say("It seems that test subject, I mean {0} is no longer...available").format(personality_name)
             except:
                 bot_output.say("nice try, asshole")
         else:
             bot_output.say("I'm schizophrenic, and so am I")
+
+
+@hook.regex(r'who dat')
+def get_current_personality(bot_input, bot_output):
+    bot_output.say("THIS IS {0}".format(bot_output.personality))
+
+@hook.regex(r'who is your jedi master')
+def get_current_master(bot_input, bot_output):
+    bot_output.say("I serve {0}".format(bot_output.master))
 
 
 def load_personality(personality_name):

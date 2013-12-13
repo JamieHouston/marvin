@@ -29,6 +29,8 @@ class BotOutput():
         self.master = config["master"]
         self.users = []
         self.responses = config["responses"]
+        self.personality = config["personality"]
+
 
     def filter_words(self, msg):
         return msg.replace("ass","[expletive]")
