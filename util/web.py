@@ -4,10 +4,11 @@ import json
 import random
 
 
-def build_request(url, username, password):
+def build_request(url, username=None, password=None):
     request = urllib2.Request(url)
-    base64string = base64.encodestring('%s:%s' % (username, password)).replace('\n', '')
-    request.add_header("Authorization", "Basic %s" % base64string)
+    if username and password:
+        base64string = base64.encodestring('%s:%s' % (username, password)).replace('\n', '')
+        request.add_header("Authorization", "Basic %s" % base64string)
     return request
 
 
@@ -28,7 +29,7 @@ def get_text(url):
         return random.choice(error_messages)
 
 
-def get_json(url, username, password):
+def get_json(url, username=None, password=None):
     request = build_request(url, username, password)
     page = urllib2.urlopen(request)
     data = page.read()

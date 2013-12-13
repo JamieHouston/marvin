@@ -52,13 +52,13 @@ if not hasattr(bot, 'config'):
 logger.log("Connecting to IRC")
 
 bot.conns = {}
-bot.logins = {}
+bot.credentials = {}
 try:
     for name, conf in bot.config['connections'].iteritems():
         conf["responses"] = personality.load_personality(conf["nick"])
         bot.conns[name] = adapter_class.BotOutput(conf)
     for name, conf in bot.config['logins'].iteritems():
-        bot.logins[name] = conf
+        bot.credentials[name] = conf
 except Exception, e:
     logger.log("malformed config file %s" % e, logging.ERROR)
     sys.exit()

@@ -28,7 +28,7 @@ if not os.path.exists('config'):
           "disabled_commands": [],
           "acls": {},
           "api_keys": {},
-          "logins":{
+          "credentials":{
             "github":{
                 "login": "USERNAME",
                 "password": "PASSWORD"
