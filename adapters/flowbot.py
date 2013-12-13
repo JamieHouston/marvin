@@ -1,4 +1,4 @@
-from external.flowdock import JSONStream, Chat
+from flowdock import JSONStream
 from core import marvin
 from util import logger, web, dictionaryutils
 import random
@@ -29,8 +29,6 @@ class BotOutput():
         self.master = config["master"]
         self.users = []
         self.responses = config["responses"]
-
-        self.chat = Chat(self.flow_token)
 
     def say(self, msg):
         logger.log("sending message %s" % msg[:20])
@@ -93,7 +91,7 @@ class BotOutput():
         for data in gen:
             #logger.log(data)
             process_message = type(data) == dict and (data['event'] == "message" or data['event'] == "comment")
-            if process_message and ('external_user_name' not in data or data['external_user_name'].lower() != self.nick.lower()):
+            if process_message and ("user" in data and self.user != data["user"]):
                 bot_input = BotInput()
                 if type(data['content']) is dict:
                     bot_input.message = data["content"]['text'].lower()
