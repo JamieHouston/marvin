@@ -1,6 +1,7 @@
 from external.flowdock import JSONStream, Chat
 from core import marvin
 from util import logger, web, dictionaryutils
+import random
 
 class BotInput(object):
     def __getitem__(self, val):
@@ -39,9 +40,11 @@ class BotOutput():
         #logger.log("response: " + response)
         #self.chat.post(msg, self.nick)
 
-    def private_message(self, msg):
-        logger.log("sending private message %s" % msg)
-        self.chat.post(msg, self.nick)
+    def private_message(self, user, msg):
+        logger.log("sending private message %s" % msg[:20])
+        url = "https://api.flowdock.com/private/{0}/messages".format(user)
+        data = {"event": "message", "content": msg}
+        response = web.post_json(url, self.username, self.password, **data)
 
 
     def get_users(self):
@@ -99,6 +102,8 @@ class BotOutput():
                 else:
                     break
                 if ("user" in data and int(data["user"]) > 0):
+                    if (random.random() > 0.9):
+                        self.private_message(data["user"], random.choice(self.responses["private_messages"]))
                     bot_input.nick = self.get_user_by_id(data["user"])["nick"]
                 elif ("external_name" in data):
                     bot_input.nick = data["external_name"]

@@ -15,5 +15,6 @@
     "answers": ["Maybe so.  Maybe not.","Could be.",],
     "youre_welcome": ["You're welcome, {0}","For what {0}?",],
     "yes_no": ["Of course not.",],
-    "welcome_back": ["Why?","I'm so welcome back you can't handle it."]
+    "welcome_back": ["Why?","I'm so welcome back you can't handle it."],
+    "private_message": ["I know what you did last summer",]
 }
