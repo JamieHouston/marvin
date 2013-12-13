@@ -27,7 +27,7 @@ def show_random_list_item(bot_input, bot_output):
     if bot_input.groupdict():
         list_name = bot_input.groupdict()["request"]
         if storage.has_key(list_name):
-            result = random.choice(storage.get_list(list_name))
+            result = storage.get_random_value(list_name)
             bot_output.say("I pick %s" % result)
         else:
             bot_output.say("There's as many items on that list as there are friends in your phone.")
