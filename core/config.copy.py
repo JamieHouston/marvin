@@ -36,7 +36,8 @@ if not os.path.exists('config'):
             "target_process":{
                 "login": "USERNAME",
                 "password": "PASSWORD",
-                "url": "http://daptiv.tpondemand.com/api/v1/"
+                "url": "http://daptiv.tpondemand.com/api/v1/",
+                "team_id": ""
             },
             "teamcity":{
                 login: "USERNAME",
