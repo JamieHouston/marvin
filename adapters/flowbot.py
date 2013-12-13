@@ -19,7 +19,7 @@ class BotOutput():
     def setup(self, config):
         self.flow_user_api_key = config["flow_user_api_key"]
         # chattiness on a scale of 0 to 1 (most is every time)
-        self.chattiness = 0.5
+        self.chattiness = 0.9
         self.flow_token = config["flow_token"]
         self.channels = config["channels"]
         self.debug = bool(config["debug"])
@@ -30,13 +30,16 @@ class BotOutput():
         self.users = []
         self.responses = config["responses"]
 
+    # def filter_words(self, msg):
+    #     return msg.replace("s","th")
+
+
     def say(self, msg):
+        #msg = self.filter_words(msg)
         logger.log("sending message %s" % msg[:20])
         url = "https://api.flowdock.com/flows/{0}/{1}/messages".format("daptiv", "hackday")
         data = {"event": "message", "content": msg}
         response = web.post_json(url, self.username, self.password, **data)
-        #logger.log("response: " + response)
-        #self.chat.post(msg, self.nick)
 
     def private_message(self, user, msg):
         logger.log("sending private message %s" % msg[:20])
@@ -72,24 +75,10 @@ class BotOutput():
             return user[0]
         return "anonymous"
 
-
-    def run_markov(self, data):
-        markov_input = dictionaryutils.DictToObject(**data)
-        user_id = data['nick']
-        markov_input.nick = self.get_user(user_id)
-        markov.markov_master(self, markov_input)
-
-    def run_imitate(self, data):
-        markov_input = dictionaryutils.DictToObject(**data)
-        user_id = data['nick']
-        markov_input.nick = self.get_user(user_id)
-        markov.markov_imitate(self, markov_input)
-
     def _parse_stream(self, bot):
         stream = JSONStream(self.flow_user_api_key)
         gen = stream.fetch(self.channels, active=True)
         for data in gen:
-            #logger.log(data)
             process_message = type(data) == dict and (data['event'] == "message" or data['event'] == "comment")
             if process_message and ("user" in data and self.user != data["user"]):
                 bot_input = BotInput()

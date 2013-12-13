@@ -32,9 +32,12 @@ if not os.path.exists('config'):
             "github":{
                 "login": "USERNAME",
                 "password": "PASSWORD"
-            }
+            },
+            "target_process":{
+                "login": "USERNAME",
+                "password": "PASSWORD",
+                "url": "http://daptiv.tpondemand.com/api/v1/"}
           },
-
           "censored_strings":
           [
             "DCC SEND",

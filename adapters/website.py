@@ -1,6 +1,12 @@
-class BotOutput():
+from twisted.internet import protocol, reactor
 
-    def __init__(self, config):
-        self.setup(config)
+class Echo(protocol.Protocol):
+    def dataReceived(self, data):
+        self.transport.write("Marvin received message: " + data)
 
-    def run(self, bot):
+class EchoFactory(protocol.Factory):
+    def buildProtocol(self, addr):
+        return Echo()
+
+reactor.listenTCP(1234, EchoFactory())
+reactor.run()
