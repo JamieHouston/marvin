@@ -6,8 +6,9 @@ import random
 
 def build_request(url, username, password):
     request = urllib2.Request(url)
-    base64string = base64.encodestring('%s:%s' % (username, password)).replace('\n', '')
-    request.add_header("Authorization", "Basic %s" % base64string)
+    if username and password:
+        base64string = base64.encodestring('%s:%s' % (username, password)).replace('\n', '')
+        request.add_header("Authorization", "Basic %s" % base64string)
     return request
 
 

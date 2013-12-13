@@ -58,8 +58,7 @@ def process(bot_input, bot_output):
             bot_output.say("What the hell am I supposed to do with that command?")
     else:
         if not direct_message:
-            markov.log(bot_input, bot_output)
-
+            markov.handle(bot_input, bot_output)
 
         if (direct_message or bot_output.chattiness > random.random()):
         # REGEXES
@@ -68,8 +67,8 @@ def process(bot_input, bot_output):
                 if m:
                     bot_input.groupdict = m.groupdict
                     bot_input.input_string = input_command
-                    if func.func_name in bot_input.bot.logins:
-                        bot_input.credentials = bot_input.bot.logins[func.func_name]
+                    if func.func_name in bot_input.bot.credentials:
+                        bot_input.credentials = bot_input.bot.credentials[func.func_name]
                     func(bot_input, bot_output)
                     break
 

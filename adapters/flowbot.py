@@ -19,7 +19,7 @@ class BotOutput():
     def setup(self, config):
         self.flow_user_api_key = config["flow_user_api_key"]
         # chattiness on a scale of 0 to 1 (most is every time)
-        self.chattiness = 0.9
+        self.chattiness = 0.1
         self.flow_token = config["flow_token"]
         self.channels = config["channels"]
         self.debug = bool(config["debug"])
@@ -89,7 +89,7 @@ class BotOutput():
                 else:
                     break
                 if ("user" in data and int(data["user"]) > 0):
-                    if (random.random() > 0.9):
+                    if (random.random() < self.chattiness):
                         self.private_message(data["user"], random.choice(self.responses["private_messages"]))
                     bot_input.nick = self.get_user_by_id(data["user"])["nick"]
                 elif ("external_name" in data):
