@@ -1,6 +1,7 @@
 # coding: utf-8
 import requests
 from re import match, IGNORECASE
+from util import logger
 
 PUSH_TEAM_INBOX_API_URL = "https://api.flowdock.com/v1/messages/team_inbox/%s"
 PUSH_CHAT_API_URL = "https://api.flowdock.com/v1/messages/chat/%s"
@@ -23,6 +24,7 @@ class PushAPI(object):
         data = dict((k, v) for k, v in data.iteritems() if k != 'self' and v is not None)
         response = requests.post(self.api_url, data=data)
         if not response.ok:
+            logger.log("Response failed with status code: {0} and reason: {1}".format(response.status_code, response.reason))
             response.raise_for_status()
         return True
 

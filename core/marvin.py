@@ -23,7 +23,6 @@ def process(bot_input, bot_output):
 
         input_command = bot_input["message"].lower()
 
-
         if input_command.startswith("!"):
             if random.choice(range(3)) == 1:
                 heckle = storage.get_list("hector")
@@ -69,12 +68,6 @@ def process(bot_input, bot_output):
                         bot_input.credentials = bot_input.bot.logins[func.func_name]
                     func(bot_input, bot_output)
                     break
-
-            #bot_output.run_markov(input)
-
-            #message = data['content'].lower()
-            #if input_command.startswith("imitate"):
-            #    flowbot.run_imitate(data)
 
             if bot_output.nick.lower() in input_command:
                 if "take off" in input_command or "go home" in input_command or "go away" in input_command:
