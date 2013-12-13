@@ -19,7 +19,7 @@ class BotOutput():
     def setup(self, config):
         self.flow_user_api_key = config["flow_user_api_key"]
         # chattiness on a scale of 0 to 1 (most is every time)
-        self.chattiness = 0.1
+        self.chattiness = 0.01
         self.flow_token = config["flow_token"]
         self.channels = config["channels"]
         self.debug = bool(config["debug"])

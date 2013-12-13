@@ -120,7 +120,8 @@
         "Welcome back yourself",
         "Why?",
         "I'm so welcome back you can't handle it."],
-    "private_messages": ["You wanna hang out after work?",
+    "private_messages": [
+        "You wanna hang out after work?",
         "I saw what you did there.",
         "Don't tell anyone about this message",
         "SHUT UP!"]
