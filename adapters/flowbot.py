@@ -30,14 +30,14 @@ class BotOutput():
         self.users = []
         self.responses = config["responses"]
 
-    # def filter_words(self, msg):
-    #     return msg.replace("s","th")
+    def filter_words(self, msg):
+        return msg.replace("ass","[expletive]")
 
 
     def say(self, msg):
         if not msg or len(msg) < 1:
             return
-        #msg = self.filter_words(msg)
+        msg = self.filter_words(msg)
         logger.log("sending message %s" % msg[:20])
         url = "https://api.flowdock.com/flows/{0}/{1}/messages".format("daptiv", "hackday")
         data = {"event": "message", "content": msg}

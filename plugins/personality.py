@@ -14,12 +14,17 @@ def personality(bot_input, bot_output):
 def get_personality(bot_input, bot_output):
     if bot_input.groupdict():
         personality_name = bot_input.groupdict()["name"]
-        if personality_name:
-            bot_personality = load_personality(personality_name)
-            if bot_personality:
-                bot_output.say("Personality Override. Loading " + personality_name)
-            else:
-                bot_output.say("It seems that test subject, I mean {0} is no longer...available").format(personality_name)
+        if personality_name and personality_name.lower() != bot_output.nick.lower():
+            try:
+                bot_personality = load_personality(personality_name)
+                if bot_personality:
+                    bot_output.say("Personality Override. Loading " + personality_name)
+                else:
+                    bot_output.say("It seems that test subject, I mean {0} is no longer...available").format(personality_name)
+            except:
+                bot_output.say("nice try, asshole")
+        else:
+            bot_output.say("I'm schizophrenic, and so am I")
 
 
 def load_personality(personality_name):
