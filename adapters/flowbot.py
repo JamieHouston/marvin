@@ -75,6 +75,15 @@ class BotOutput():
             return user[0]
         return "anonymous"
 
+
+    def get_user_by_email(self, user_email):
+        if not self.users:
+            self.get_users()
+        user = [u for u in self.users if str(u["email"]) == user_email]
+        if user and len(user):
+            return user[0]
+        return "anonymous"
+
     def _parse_stream(self, bot):
         stream = JSONStream(self.flow_user_api_key)
         gen = stream.fetch(self.channels, active=True)
