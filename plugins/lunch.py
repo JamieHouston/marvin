@@ -11,7 +11,8 @@ def lunch(bot_input, bot_output):
     		flowuser = bot_output.get_user_by_email(user)["nick"]
     		to_say.append("- " + flowuser)
 
-    bot_output.say(to_say.join('\n'))
+    joined = '\n'.join(to_say)
+    bot_output.say(joined)
 
 # @hook.regex(r'where is (?P<user>.*) for lunch')
 # def eat_lunch(bot_input, bot_output):
