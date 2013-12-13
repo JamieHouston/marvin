@@ -37,7 +37,7 @@ def json_date_as_datetime(jd):
     return datetime.datetime(1970, 1, 1) \
         + datetime.timedelta(microseconds=ms * 1000)
 
-@hook.regex(r'^\s*t(?:arget)?\ {0,2}p(?:rocess)?\ {1,2}recent\ {1,2}(?:(?P<days>\d{1,2})\ {0,2}da?y?s?|(?P<hours>\d{1,2})\ {0,2}ho?u?r?s?)?\s*$')
+@hook.regex(r'^\s*t(?:arget)?\ {0,2}p(?:rocess)?\ {1,2}recent\ {1,2}(?:(?P<days>\d{1,2})\ {0,2}da?y?s?|(?P<hours>\d{1,2})\ {0,2}ho?u?r?s?)\s*$')
 def target_process(bot_input, bot_output):
     tp = Target_Process(bot_input.credentials["url"], bot_input.credentials["login"], bot_input.credentials["password"])
 
@@ -47,9 +47,11 @@ def target_process(bot_input, bot_output):
     if days is not None:
         comparison_date =  datetime.datetime.now() + datetime.timedelta(-1*int(days))
         output_string = "Stories modified in the last " + days + " days: \n"
+        bug_string = "Bugs modified in the last " + days + " days: \n"
     else:
         comparison_date =  datetime.datetime.now() + datetime.timedelta(0, 0, 0, 0, 0, -1*int(hours))
         output_string = "Stories modified in the last " + hours + " hours: \n"
+        bug_string = "Bugs modified in the last " + days + " days: \n"
 
     for user_story in json.loads(tp.get_object("UserStories?include=[Name,EntityState,ModifyDate,Effort]&where=(ModifyDate%20gte%20" + comparison_date.strftime("'%Y-%m-%d'") + ")%20and%20(Team.Id%20eq%20" + bot_input.credentials["team_id"] + ")"))["Items"]:
 
@@ -85,6 +87,40 @@ def target_process(bot_input, bot_output):
                 output_string += padding + " => " + user + " added this " + effort + " story on " + modifiedDateStr + "\n"
 
             lastEffort = effort
+            lastState = state
+
+    output_string += "\n\n" + bug_string
+
+    for bug in json.loads(tp.get_object("Bugs?include=[Name,UserStory,EntityState,ModifyDate]&where=(ModifyDate%20gte%20" + comparison_date.strftime("'%Y-%m-%d'") + ")%20and%20(Team.Id%20eq%20" + bot_input.credentials["team_id"] + ")"))["Items"]:
+
+        bug_id = str(bug["Id"])
+        story_id = str(bug["UserStory"]["Id"])
+        padding = " " * len(bug_id + " - ")
+
+        if json_date_as_datetime(user_story["ModifyDate"]) < comparison_date:
+            continue
+
+        output_string += "\n\t" + ("\n\t" + padding).join(textwrap.wrap(bug_id  + " - " + bug["Name"] + " [" + bug["EntityState"]["Name"] + "]", 80)) + "\n"
+
+        lastState = None
+
+        for bug_history in json.loads(tp.get_object("BugHistories/?include=[EntityState,Modifier,Date]&where=Bug.Id%20eq%20" + bug_id))["Items"]:
+
+            modifiedDate = json_date_as_datetime(bug_history["Date"])
+            modifiedDateStr = modifiedDate.strftime("%m/%d/%y %I:%M%p").replace(" 0", " ")
+
+            if json_date_as_datetime(bug_history["Date"]) < comparison_date:
+                continue
+
+            state = bug_history["EntityState"]["Name"]
+            user = bug_history["Modifier"]["FirstName"] + " " + bug_history["Modifier"]["LastName"]
+
+            if lastState:
+                if lastState != state:
+                    output_string += padding + " => " + user + " modified the state from " + lastState + " -> " + state + " on " + modifiedDateStr + "\n"
+            else:
+                output_string += padding + " => " + user + " created this bug on " + modifiedDateStr + "\n"
+
             lastState = state
 
     bot_output.say(output_string)
