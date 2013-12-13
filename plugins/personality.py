@@ -16,11 +16,10 @@ def get_personality(bot_input, bot_output):
         personality_name = bot_input.groupdict()["name"]
         if personality_name:
             bot_personality = load_personality(personality_name)
-            messages = json.loads(bot_personality)
             if bot_personality:
-                bot_output.say("Personality Override. Loading " + bot_personality)
+                bot_output.say("Personality Override. Loading " + personality_name)
             else:
-                bot_output.say("It seems that test subject is no longer...available")
+                bot_output.say("It seems that test subject, I mean {0} is no longer...available").format(personality_name)
 
 
 def load_personality(personality_name):
