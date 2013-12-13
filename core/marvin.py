@@ -22,7 +22,7 @@ def process(bot_input, bot_output):
     # try:
     input_command = bot_input["message"].lower()
 
-    if input_command == "SHUT UP":
+    if input_command == "shut up":
         bot_output.say("SHUTTING UP")
         time.sleep(30)
         return
@@ -88,7 +88,7 @@ def process(bot_input, bot_output):
 
             logger.log("nothing to say but random messages")
             bot_input.message = bot_input.message.replace(bot_output.nick.lower(), '')
-            chat.eliza(bot_input, bot_output)
+            #chat.eliza(bot_input, bot_output)
 
     # except:
     #     logger.log("dying")
