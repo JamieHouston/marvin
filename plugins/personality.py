@@ -18,8 +18,8 @@ def get_personality(bot_input, bot_output):
             try:
                 bot_personality = load_personality(personality_name)
                 if bot_personality:
-                    bot_output.say("Personality Override. Loading " + personality_name)
                     bot_output.responses = bot_personality
+                    bot_output.say("Personality Override. Loading " + personality_name)
                 else:
                     bot_output.say("It seems that test subject, I mean {0} is no longer...available").format(personality_name)
             except:

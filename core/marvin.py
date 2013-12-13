@@ -32,14 +32,14 @@ def process(bot_input, bot_output):
     if input_command.startswith("!"):
         if random.choice(range(3)) == 1:
             heckle = storage.get_list("hector")
-            bot_output.say(random.choice(heckle))
+            bot_output.say(random.choice(list(heckle)))
         else:
             storage.add_to_list("hector", input_command)
 
     if input_command.startswith("wheatley"):
         if random.choice(range(3)) == 1:
             heckle = storage.get_list("wheatley")
-            bot_output.say(random.choice(heckle))
+            bot_output.say(random.choice(list(heckle)))
         else:
             storage.add_to_list("wheatley", input_command)
 

@@ -39,6 +39,7 @@ class BotOutput():
             return
         msg = self.filter_words(msg)
         logger.log("sending message %s" % msg[:20])
+        # TODO: Grab flow from config (not hackday)
         url = "https://api.flowdock.com/flows/{0}/{1}/messages".format("daptiv", "hackday")
         data = {"event": "message", "content": msg}
         response = web.post_json(url, self.username, self.password, **data)
@@ -72,7 +73,7 @@ class BotOutput():
     def get_user_by_name(self, user_name):
         if not self.users:
             self.get_users()
-        user = [u for u in self.users if str(u["nick"]) == user_name]
+        user = [u for u in self.users if str(u["nick"]).lower() == user_name.lower()]
         if user and len(user):
             return user[0]
         return "anonymous"
@@ -101,6 +102,7 @@ class BotOutput():
                     break
                 if ("user" in data and int(data["user"]) > 0):
                     if (random.random() < self.chattiness):
+                        self.user_id = data["user"]
                         self.private_message(data["user"], random.choice(self.responses["private_messages"]))
                     bot_input.nick = self.get_user_by_id(data["user"])["nick"]
                 elif ("external_name" in data):
