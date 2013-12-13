@@ -6,10 +6,10 @@ def lunch(bot_input, bot_output):
     to_say = []
 
     for rest in rests:
-    	to_say.append(rest["name"])
-    	for user in rest["users"]:
-    		flowuser = bot_output.get_user_by_email(user)["nick"]
-    		to_say.append("- " + flowuser)
+        to_say.append(rest["name"])
+        for user in rest["users"]:
+            flowuser = bot_output.get_user_by_email(user)["nick"]
+            to_say.append("- " + flowuser)
 
     joined = '\n'.join(to_say)
     bot_output.say(joined)
