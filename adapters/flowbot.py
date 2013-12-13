@@ -82,7 +82,7 @@ class BotOutput():
         user = [u for u in self.users if str(u["email"]) == user_email]
         if user and len(user):
             return user[0]
-        return "anonymous"
+        return {"nick": user_email}
 
     def _parse_stream(self, bot):
         stream = JSONStream(self.flow_user_api_key)
