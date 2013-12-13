@@ -51,8 +51,6 @@ def target_process(bot_input, bot_output):
         comparison_date =  datetime.datetime.now() + datetime.timedelta(0, 0, 0, 0, 0, -1*int(hours))
         output_string = "Stories modified in the last " + hours + " hours: \n"
 
-    url = "UserStories?incude=[Name,EntityState,ModifyDate,Effort]&where=(ModifyDate%20gte%20" + comparison_date.strftime("'%Y-%m-%d'") + ")%20and%20(Team.Id%20eq%2" + bot_input.credentials["team_id"] + ")"
-
     for user_story in json.loads(tp.get_object("UserStories?include=[Name,EntityState,ModifyDate,Effort]&where=(ModifyDate%20gte%20" + comparison_date.strftime("'%Y-%m-%d'") + ")%20and%20(Team.Id%20eq%20" + bot_input.credentials["team_id"] + ")"))["Items"]:
 
         story_id = str(user_story["Id"])
