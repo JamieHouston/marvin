@@ -12,6 +12,9 @@ class BotOutput():
     def __init__(self, config):
         print "Hello"
         self.responses = config["responses"]
+        self.chattiness = 0.5
+        self.nick = config["nick"]
+        self.master = config["master"]
 
 
     def say(self, msg):
@@ -19,8 +22,8 @@ class BotOutput():
 
 
     def run(self, bot):
-        self.nick = raw_input("What shall I call you? ")
-        print("Well hello there {}.  What can I do for you?".format(self.nick))
+        nick = raw_input("What shall I call you? ")
+        print("Well hello there {}.  What can I do for you?".format(nick))
         while True:
             message = raw_input("> ")
             if "exit" in message:
@@ -28,7 +31,6 @@ class BotOutput():
                 exit()
             bot_input = BotInput()
             bot_input.message = message
-            bot_input.nick =self.nick
             bot_input.bot = bot
+            bot_input.nick = nick
             marvin.process(bot_input, self)
-

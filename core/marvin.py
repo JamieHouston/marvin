@@ -1,6 +1,7 @@
 import random
 import sys
 from util import logger,storage
+from plugins import markov, chat
 
 def match_command(commands, command):
 
@@ -56,6 +57,9 @@ def process(bot_input, bot_output):
         else:
             bot_output.say("What the hell am I supposed to do with that command?")
     else:
+        if not direct_message:
+            markov.log(bot_input, bot_output)
+
 
         if (direct_message or bot_output.chattiness > random.random()):
         # REGEXES
@@ -76,7 +80,10 @@ def process(bot_input, bot_output):
                     except:
                         logger.log("Too stupid to quit.")
                     sys.exit("later")
-                logger.log("nothing to say but random messages")
+
+            logger.log("nothing to say but random messages")
+            bot_input.message = bot_input.message.replace(bot_output.nick.lower(), '')
+            chat.eliza(bot_input, bot_output)
 
     # except:
     #     logger.log("dying")
