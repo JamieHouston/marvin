@@ -38,7 +38,7 @@ if not os.path.exists('config'):
                 "login": "USERNAME",
                 "password": "PASSWORD",
                 "url": "http://daptiv.tpondemand.com/api/v1/",
-                "team_id": ""
+                "team_name": "HRV"
             },
             "teamcity":{
                 login: "USERNAME",

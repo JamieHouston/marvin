@@ -53,7 +53,7 @@ def target_process(bot_input, bot_output):
         output_string = "Stories modified in the last " + hours + " hours: \n"
         bug_string = "Bugs modified in the last " + hours + " hours: \n"
 
-    for user_story in json.loads(tp.get_object("UserStories?include=[Name,EntityState,ModifyDate,Effort]&where=(ModifyDate%20gte%20" + comparison_date.strftime("'%Y-%m-%d'") + ")%20and%20(Team.Id%20eq%20" + bot_input.credentials["team_id"] + ")"))["Items"]:
+    for user_story in json.loads(tp.get_object("UserStories?include=[Name,EntityState,ModifyDate,Effort]&where=(ModifyDate%20gte%20" + comparison_date.strftime("'%Y-%m-%d'") + ")%20and%20(Team.Name%20eq%20'" + bot_input.credentials["team_name"] + "')"))["Items"]:
 
         story_id = str(user_story["Id"])
         padding = " " * len(story_id + " - ")
@@ -92,7 +92,7 @@ def target_process(bot_input, bot_output):
     bot_output.say(output_string.encode('UTF-8'))
     output_string = bug_string
 
-    for bug in json.loads(tp.get_object("Bugs?include=[Name,UserStory,EntityState,ModifyDate]&where=(ModifyDate%20gte%20" + comparison_date.strftime("'%Y-%m-%d'") + ")%20and%20(Team.Id%20eq%20" + bot_input.credentials["team_id"] + ")"))["Items"]:
+    for bug in json.loads(tp.get_object("Bugs?include=[Name,UserStory,EntityState,ModifyDate]&where=(ModifyDate%20gte%20" + comparison_date.strftime("'%Y-%m-%d'") + ")%20and%20(Team.Name%20eq%20'" + bot_input.credentials["team_name"] + "')"))["Items"]:
 
         bug_id = str(bug["Id"])
         story_id = str(bug["UserStory"]["Id"])
