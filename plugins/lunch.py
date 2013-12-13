@@ -4,7 +4,15 @@ from util import hook, web
 def add_to_lunch(bot_input, bot_output):
     username = bot_input.nick
     email = bot_output.get_user_by_name(username)["email"]
-    url = "http://lunchpad.hq.daptiv.com:3000/restaurant/{0}/add/{1}".format(bot_input.groupdict()["rest"],email)
+    rest = bot_input.groupdict()["rest"]
+
+    rests = web.get_json("http://lunchpad.hq.daptiv.com:3000/restaurants")
+    restId = 0
+    for it in rests:
+        if it["name"] == rest:
+            restId = it["_id"]
+
+    url = "http://lunchpad.hq.daptiv.com:3000/restaurant/{0}/add/{1}".format(restId,email)
     result = web.get_json(url)
     bot_output('added you to restaurant')
 
