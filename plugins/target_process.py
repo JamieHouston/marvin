@@ -97,7 +97,7 @@ def target_process(bot_input, bot_output):
         story_id = str(bug["UserStory"]["Id"])
         padding = " " * len(bug_id + " - ")
 
-        if json_date_as_datetime(user_story["ModifyDate"]) < comparison_date:
+        if json_date_as_datetime(bug["ModifyDate"]) < comparison_date:
             continue
 
         output_string += "\n\t" + ("\n\t" + padding).join(textwrap.wrap(bug_id  + " - " + bug["Name"] + " [" + bug["EntityState"]["Name"] + "]", 80)) + "\n"
