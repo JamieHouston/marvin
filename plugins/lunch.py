@@ -10,7 +10,6 @@ def lunch(bot_input, bot_output):
     	for user in rest["users"]:
     		flowuser = bot_output.get_user_by_email(user)["nick"]
     		bot_output.say("- " + flowuser)
-    	bot_output.say("")
 
 # @hook.regex(r'where is (?P<user>.*) for lunch')
 # def eat_lunch(bot_input, bot_output):
