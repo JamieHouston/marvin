@@ -40,7 +40,7 @@ class BotOutput():
         msg = self.filter_words(msg)
         logger.log("sending message %s" % msg[:20])
         # TODO: Grab flow from config (not hackday)
-        url = "https://api.flowdock.com/flows/{0}/{1}/messages".format("daptiv", "hackday")
+        url = "https://api.flowdock.com/flows/{0}/{1}/messages".format("daptiv", "bot")
         data = {"event": "message", "content": msg}
         response = web.post_json(url, self.username, self.password, **data)
 

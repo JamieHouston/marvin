@@ -4,7 +4,7 @@ import random
 
 @hook.command
 def ping(bot_input, bot_output):
-    bot_output.say("I'm gonna ping my foot in your face.")
+    bot_output.say(random.choice(bot_output.responses["pinging"]))
 
 @hook.regex(r'awesome')
 def awesome(bot_input, bot_output):
@@ -90,7 +90,7 @@ def questions(bot_input, bot_output):
 
 @hook.command
 def slap(bot_input, bot_output):
-    bot_output.say("/me slaps @%s", bot_input.nick)
+    bot_output.say("/me slaps @%s" % bot_input.nick)
 
 
 @hook.regex(r'(sudo )?make me a sandwich')

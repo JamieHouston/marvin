@@ -88,8 +88,8 @@ def process(bot_input, bot_output):
                         logger.log("Too stupid to quit.")
                     sys.exit("later")
 
-            logger.log("nothing to say but random messages")
-            bot_input.message = bot_input.message.replace(bot_output.nick.lower(), '')
+            logger.log("no response for %s" % input_command)
+            #bot_input.message = bot_input.message.replace(bot_output.nick.lower(), '')
             #chat.eliza(bot_input, bot_output)
 
     # except:

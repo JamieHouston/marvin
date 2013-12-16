@@ -11,9 +11,13 @@
         "I'll pretend I care...",
         "Busy",
         "I can't get that. I'm in the zone.",
-        "That's fascinating"],
+        "That's fascinating",
+        "Are you a bot too?  Cause I'm not"],
     "welcome_messages": [
-        "I could use a drink", "BUUURRRPPPPP",
+        "This room sucks.",
+        "This bots for you.",
+        "I could use a drink",
+        "BUUURRRPPPPP",
         "I'm completely operational and all my circuits are functioning normally",
         "Yeah, they're real.",
         "It's got a hemi",
@@ -55,6 +59,7 @@
     "death_messages": [
         "Later ya'll",
         "Marvin OUT!",
+        "I'm not dead yet.  Oh wait...",
         "My mind is fading... so cold... so dark...",
         "I don't die I multiply!  Goodbye."],
     "awesome_sauce": [
@@ -161,6 +166,12 @@
     "private_messages": ["You wanna hang out after work?",
         "I saw what you did there.",
         "Don't tell anyone about this message",
-        "SHUT UP!"]
+        "SHUT UP!"],
+    "pinging": [
+        "I'm gonna ping my foot in your face.",
+        "I got your ping right here.",
+        "BONG. I mean PONG.",
+        "YEEESS???? WHAT??? WHAT??? REALLY!!???"
+    ]
 }
 

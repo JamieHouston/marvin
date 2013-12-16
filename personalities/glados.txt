@@ -153,5 +153,11 @@
         "You wanna hang out after work?",
         "I saw what you did there.",
         "Don't tell anyone about this message",
-        "SHUT UP!"]
+        "SHUT UP!"],
+    "pinging": [
+        "I'm gonna ping my foot in your face.",
+        "I got your ping right here.",
+        "BONG. I mean PONG.",
+        "YEEESS???? WHAT??? WHAT??? REALLY!!???"
+    ]
 }
