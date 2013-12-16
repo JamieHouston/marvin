@@ -29,7 +29,7 @@ class BotOutput():
         self.master = config["master"]
         self.users = []
         self.responses = config["responses"]
-        self.personality = config["personality"]
+        self.personality = config["nick"]
 
 
     def filter_words(self, msg):
