@@ -71,11 +71,13 @@ def target_process(bot_input, bot_output):
             modifiedDate = json_date_as_datetime(user_story_history["Date"])
             modifiedDateStr = modifiedDate.strftime("%m/%d/%y %I:%M%p").replace(" 0", " ")
 
+            state = user_story_history["EntityState"]["Name"]
+
             if json_date_as_datetime(user_story_history["Date"]) < comparison_date:
+                lastState = state
                 continue
 
             effort = str(user_story_history["Effort"]) + "pt"
-            state = user_story_history["EntityState"]["Name"]
             user = user_story_history["Modifier"]["FirstName"] + " " + user_story_history["Modifier"]["LastName"]
 
             if lastState:
@@ -110,10 +112,12 @@ def target_process(bot_input, bot_output):
             modifiedDate = json_date_as_datetime(bug_history["Date"])
             modifiedDateStr = modifiedDate.strftime("%m/%d/%y %I:%M%p").replace(" 0", " ")
 
+            state = bug_history["EntityState"]["Name"]
+
             if json_date_as_datetime(bug_history["Date"]) < comparison_date:
+                lastState = state
                 continue
 
-            state = bug_history["EntityState"]["Name"]
             user = bug_history["Modifier"]["FirstName"] + " " + bug_history["Modifier"]["LastName"]
 
             if lastState:

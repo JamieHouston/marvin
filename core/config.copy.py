@@ -21,7 +21,8 @@ if not os.path.exists('config'):
               "debug": "False",
               "username": "USERNAME",
               "password": "PASSWORD",
-              "master": "NICKNAME"
+              "master": "NICKNAME",
+              "personality": "DEFAULT"
             }
           },
           "enabled_plugins": [],
