@@ -23,6 +23,7 @@ def help(bot_input, bot_output):
     commands = dict((value, key) for key, value in funcs.iteritems())
 
     bot_output.say("You do need help.  But I supposed I can offer some insight into how to talk to something as advanced as myself.")
+    bot_output.say("I am the Marginally Accurate Resource for Vocalizing Immature Communication")
     bot_output.say("You can ask me to run commands, ask me questions, and just talk to me.")
     bot_output.say("To run a command, preface it with a period (.)")
     bot_output.say("To talk to me, just include my name and if I haven't commited bot suicide recently I'll reply.  Although you may not like what I have to say...")

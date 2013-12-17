@@ -17,4 +17,4 @@ def chattiness(bot_input, bot_output):
         else:
             bot_output.say("Soo.... I can only chat between 1 and 100 times out every 100 chances I get.  So... enter a 1, or 100, or a number between those, m'kay?")
     else:
-        bot_output.say("Current chattiness is {0} out of every 100 times.  Pass chattiness number in to update".format(bot_output.chattiness))
+        bot_output.say("Current chattiness is {0} out of every 100 times.  Pass chattiness number in to update".format(int(bot_output.chattiness * 100)))

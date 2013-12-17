@@ -57,6 +57,7 @@
         "Zing!",
         "What in the Apple Computers was that?"],
     "death_messages": [
+        "Th-th-th-that's all f-folks",
         "Later ya'll",
         "Marvin OUT!",
         "I'm not dead yet.  Oh wait...",

@@ -25,7 +25,7 @@ class Target_Process():
         return response.read()
 
 def json_date_as_datetime(jd):
-    sign = jd[-7]
+    sign = jd[-7]lp
     if sign not in '-+' or len(jd) == 13:
         ms = int(jd[6:-2])
     else:

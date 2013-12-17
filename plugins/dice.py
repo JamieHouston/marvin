@@ -42,12 +42,9 @@ def roll_dice(inp):
     ".dice <diceroll> -- simulates dicerolls, e.g. .dice 2d20-d5+4 roll 2 " \
         "D20s, subtract 1D5, add 4"
 
-    try:  # if inp is a re.match object...
-        (inp, desc) = inp.groups()
-    except AttributeError:
-        if "getting drunk" in inp:
-            return "You rolled a 20 and passed out."
-        (inp, desc) = valid_diceroll_re.match(inp).groups()
+    if "getting drunk" in inp:
+        return "You rolled a 20 and passed out."
+    (inp, desc) = valid_diceroll_re.match(inp).groups()
 
     if "d" not in inp:
         return

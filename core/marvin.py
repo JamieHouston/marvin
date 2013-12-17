@@ -54,6 +54,8 @@ def process(bot_input, bot_output):
             func, args = bot_input.bot.commands[command]
 
             try:
+                if func.func_name in bot_input.bot.credentials:
+                    bot_input.credentials = bot_input.bot.credentials[func.func_name]
                 input_string = " ".join(pieces[1:])
                 bot_input.input_string = input_string
                 func(bot_input, bot_output)

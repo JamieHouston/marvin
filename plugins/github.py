@@ -1,11 +1,11 @@
 from util import hook
 from github import Github
 
-@hook.regex(r'(github )(?P<name>[\w\d\s]*)')
+@hook.command
 def github(bot_input, bot_output):
     found_requests = False
-    if bot_input.groupdict():
-        github_name = bot_input.groupdict()["name"]
+    if bot_input.input_string:
+        github_name = bot_input.input_string
 
         gi = Github(bot_input.credentials["login"], bot_input.credentials["password"])
         org = gi.get_organization("daptiv")
