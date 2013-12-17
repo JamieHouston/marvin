@@ -72,18 +72,19 @@ def target_process(bot_input, bot_output):
             modifiedDateStr = modifiedDate.strftime("%m/%d/%y %I:%M%p").replace(" 0", " ")
 
             state = user_story_history["EntityState"]["Name"]
+            effort = str(user_story_history["Effort"]) + "pt"
 
             if json_date_as_datetime(user_story_history["Date"]) < comparison_date:
                 lastState = state
+                lastEffort = effort
                 continue
 
-            effort = str(user_story_history["Effort"]) + "pt"
             user = user_story_history["Modifier"]["FirstName"] + " " + user_story_history["Modifier"]["LastName"]
 
             if lastState:
                 if lastState != state:
                     output_string += padding + " => " + user + " modified the state from " + lastState + " -> " + state + " on " + modifiedDateStr + "\n"
-                if lastEffort and lastEffort != effort:
+                if lastEffort != effort:
                     output_string += padding + " => " + user + " changed the effort from " + lastEffort + " -> " + effort + " on " + modifiedDateStr + "\n"
             else:
                 output_string += padding + " => " + user + " added this " + effort + " story on " + modifiedDateStr + "\n"
