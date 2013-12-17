@@ -35,7 +35,7 @@ def nrolls(count, n):
 @hook.command('roll')
 @hook.command
 def dice(bot_input, bot_output):
-    response = roll_dice(bot_input.message)
+    response = roll_dice(bot_input.input_string)
     bot_output.say(response)
 
 def roll_dice(inp):
@@ -44,7 +44,11 @@ def roll_dice(inp):
 
     if "getting drunk" in inp:
         return "You rolled a 20 and passed out."
-    (inp, desc) = valid_diceroll_re.match(inp).groups()
+
+    try:
+        (inp, desc) = valid_diceroll_re.match(inp).groups()
+    except:
+        return "I'm gonna roll my foot in your face you don't shutup."
 
     if "d" not in inp:
         return

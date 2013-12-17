@@ -14,6 +14,11 @@
         "That's fascinating",
         "Are you a bot too?  Cause I'm not"],
     "welcome_messages": [
+        "I can haz cheeseburger?  I'm really hungry.",
+        "I don't do windows!",
+        "This bot for rent.",
+        "Peanut butter jelly time",
+        "Come here often?",
         "This room sucks.",
         "This bots for you.",
         "I could use a drink",
