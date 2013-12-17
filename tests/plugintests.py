@@ -1,5 +1,5 @@
 from unittest import TestCase
-from plugintests import anytag
+from plugins import anytag
 
 
 class AnyTagTests(TestCase):

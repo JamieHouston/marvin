@@ -84,7 +84,7 @@ while (last_error - last_run).seconds > 10:
             #main(conn, out)
         except SystemExit as ex:
             last_error = last_run
-        except:
+        except Exception as e:
             for info in sys.exc_info():
                 logger.log("error info: " + str(info))
             #logger.log("Unexpected error: %s" % sys.exc_info())

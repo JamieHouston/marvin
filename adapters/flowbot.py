@@ -103,10 +103,11 @@ class BotOutput():
                 else:
                     break
                 if ("user" in data and int(data["user"]) > 0):
+                    bot_input.nick = self.get_user_by_id(data["user"])["nick"]
                     if (random.random() < self.chattiness):
                         self.user_id = data["user"]
+                        logger.log("Randomly sending message to %s" % bot_input.nick)
                         self.private_message(data["user"], random.choice(self.responses["private_messages"]))
-                    bot_input.nick = self.get_user_by_id(data["user"])["nick"]
                 elif ("external_name" in data):
                     bot_input.nick = data["external_name"]
                 else:

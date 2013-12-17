@@ -83,7 +83,7 @@ def target_process(bot_input, bot_output):
             if lastState:
                 if lastState != state:
                     output_string += padding + " => " + user + " modified the state from " + lastState + " -> " + state + " on " + modifiedDateStr + "\n"
-                if lastEffort != effort:
+                if lastEffort and lastEffort != effort:
                     output_string += padding + " => " + user + " changed the effort from " + lastEffort + " -> " + effort + " on " + modifiedDateStr + "\n"
             else:
                 output_string += padding + " => " + user + " added this " + effort + " story on " + modifiedDateStr + "\n"

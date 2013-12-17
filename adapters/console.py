@@ -12,7 +12,7 @@ class BotOutput():
     def __init__(self, config):
         print "Hello"
         self.responses = config["responses"]
-        self.chattiness = 0.5
+        self.chattiness = 0.01
         self.nick = config["nick"]
         self.master = config["master"]
 
