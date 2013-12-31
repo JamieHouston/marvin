@@ -1,5 +1,4 @@
 config
-config.py
 *.pyc
 *.log
 .idea

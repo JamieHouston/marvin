@@ -21,6 +21,8 @@ def github(bot_input, bot_output):
             for pull in open_pull_requests:
                 if search_string in pull.body:
                     found_requests = True
-                    bot_output.say("%s - %s" % (pull.title, pull.html_url))
+                    bot_output.say("{0} - {1}/files?w=1".format(pull.title, pull.html_url))
         if not found_requests:
             bot_output.say("How weak... nothing for you...")
+    else:
+        bot_output.say("Who the hell are you?  Try .github <username>.  And if you pass in angle brackets I will return you to sender, postage unpaid.")
