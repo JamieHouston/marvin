@@ -17,17 +17,27 @@ if not os.path.exists('config'):
               "flow_user_api_key": "API_KEY",
               "flow_token": "FLOW_TOKEN",
               "nick": "Marvin",
-              "channels": ["daptiv/bot"],
+              "channel": "daptiv/bot",
               "debug": "False",
               "username": "USERNAME",
               "password": "PASSWORD",
               "master": "NICKNAME",
-              "personality": "DEFAULT"
+              "chattiness": 0.01
+            },
+            "console":
+            {
+              "nick": "Marvin",
+              "debug": "False",
+              "master": "NICKNAME",
             }
           },
           "enabled_plugins": [],
           "disabled_plugins": [],
           "disabled_commands": [],
+          "redis_connection": {
+            "server": "localhost",
+            "port": : 6379
+          },
           "acls": {},
           "api_keys": {},
           "credentials":{

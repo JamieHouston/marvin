@@ -19,9 +19,9 @@ class BotOutput():
     def setup(self, config):
         self.flow_user_api_key = config["flow_user_api_key"]
         # chattiness on a scale of 0 to 1 (most is every time)
-        self.chattiness = 0.01
+        self.chattiness = config["chattiness"]
         self.flow_token = config["flow_token"]
-        self.channels = config["channels"]
+        self.channel = config["channel"]
         self.debug = bool(config["debug"])
         self.nick = config["nick"]
         self.username = config["username"]
@@ -43,7 +43,8 @@ class BotOutput():
         msg = self.filter_words(msg)
         logger.log("sending message %s" % msg[:20])
         # TODO: Grab flow from config (not hackday)
-        url = "https://api.flowdock.com/flows/{0}/{1}/messages".format("daptiv", "bot")
+        channel_pieces = self.channel.split("/")
+        url = "https://api.flowdock.com/flows/%s/%s/messages" % (channel_pieces[0], channel_pieces[1])
         data = {"event": "message", "content": msg}
         response = web.post_json(url, self.username, self.password, **data)
 
@@ -92,7 +93,7 @@ class BotOutput():
 
     def _parse_stream(self, bot):
         stream = JSONStream(self.flow_user_api_key)
-        gen = stream.fetch(self.channels, active=True)
+        gen = stream.fetch([self.channel], active=True)
         for data in gen:
             process_message = type(data) == dict and (data['event'] == "message" or data['event'] == "comment")
             if process_message and ("user" in data and self.user != data["user"]):

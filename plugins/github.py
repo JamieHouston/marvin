@@ -7,9 +7,9 @@ def github(bot_input, bot_output):
     found_requests = False
     if bot_input.input_string:
         github_name = bot_input.input_string
-        storage.set_value("github:%s" % bot_output.nick, github_name)
+        storage.set_hash_value("github:users", bot_input.nick, github_name)
     else:
-        github_name = storage.get_value("github:%s" % bot_output.nick)
+        github_name = storage.get_hash_value("github:users", bot_input.nick)
 
     if github_name:
         gi = Github(bot_input.credentials["login"], bot_input.credentials["password"])
