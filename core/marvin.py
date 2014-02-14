@@ -91,8 +91,8 @@ def process(bot_input, bot_output):
                     sys.exit("later")
 
             logger.log("no response for %s" % input_command)
-            #bot_input.message = bot_input.message.replace(bot_output.nick.lower(), '')
-            #chat.eliza(bot_input, bot_output)
+            bot_input.message = bot_input.message.replace(bot_output.nick.lower(), '')
+            chat.eliza(bot_input, bot_output)
 
     # except:
     #     logger.log("dying")

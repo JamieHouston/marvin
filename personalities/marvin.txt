@@ -14,6 +14,8 @@
         "That's fascinating",
         "Are you a bot too?  Cause I'm not"],
     "welcome_messages": [
+        "I think that door just sighed.",
+        "I have a million ideas, but, they all point to certain death.",
         "I can haz cheeseburger?  I'm really hungry.",
         "I don't do windows!",
         "This bot for rent.",
@@ -178,5 +180,19 @@
         "I got your ping right here.",
         "BONG. I mean PONG.",
         "YEEESS???? WHAT??? WHAT??? REALLY!!???"
+    ],
+    "nothing_for_you": [
+        "How weak... nothing for you",
+        "Don't see anything.  Are you sure you looked in the right place?",
+        "YOU GOT NOTHING!",
+        "Nothing there.  Just like last time you asked."
+    ],
+    "feelings":[
+        "I think you ought to know I'm feeling very depressed.",
+        "Life? Don't talk to me about life!",
+        "You can blame the Sirius Cybernetics Corporation for making androids with GPP... ",
+        "I've been talking to the main computer and it hates me.",
+        "Here I am, brain the size of a planet, and they ask me to take you to the bridge. Call that job satisfaction, 'cause I don't. ",
+
     ]
 }

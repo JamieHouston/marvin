@@ -14,8 +14,8 @@ l = list()
 
 @hook.command
 def quote(bot_input, bot_output):
-    ".q/.quote [#chan] [nick] [#n]/.quote add <nick> <msg> -- gets " \
-        "random or [#n]th quote by <nick> or from <#chan>/adds quote"
+    ".q/.quote -- gets random quote from stored ones"\
+    "<bot_name> quote <quote_source> - grabs a random quote from <quote_source> if I can"
     quote_to_say =random.sample(l, 1)[0]
     bot_output.say(quote_to_say)
 
