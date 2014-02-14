@@ -55,7 +55,7 @@ bot.conns = {}
 bot.credentials = {}
 try:
     for name, conf in bot.config['connections'].iteritems():
-        conf["responses"] = personality.load_personality(conf["nick"])
+        conf["responses"] = personality.load_personality(conf["nick"].lower())
         bot.conns[name] = adapter_class.BotOutput(conf)
     for name, conf in bot.config['credentials'].iteritems():
         bot.credentials[name] = conf
