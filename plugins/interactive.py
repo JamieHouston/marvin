@@ -121,3 +121,4 @@ def welcome_back(bot_input, bot_output):
 
 @hook.regex('how do you feel')
 def feelings(bot_input, bot_output):
+    bot_output.say(random.choice(bot_output.responses["feelings"]))
