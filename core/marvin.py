@@ -68,6 +68,7 @@ def process(bot_input, bot_output):
         # if not direct_message:
         #     markov.handle(bot_input, bot_output)
 
+        spoken = False
         if (direct_message or bot_output.chattiness > random.random()):
         # REGEXES
             for func, args in bot_input.bot.plugs['regex']:
@@ -80,19 +81,21 @@ def process(bot_input, bot_output):
                     if func.func_name in bot_input.bot.credentials:
                         bot_input.credentials = bot_input.bot.credentials[func.func_name]
                     func(bot_input, bot_output)
+                    spoken = True
                     break
 
             if direct_message and bot_output.master.lower() in bot_input.nick.lower():
                 if "take off" in input_command or "go home" in input_command or "go away" in input_command:
                     try:
                         bot_output.say(random.choice(bot_output.responses["death_messages"]))
+                        spoken = True
                     except:
                         logger.log("Too stupid to quit.")
                     sys.exit("later")
-
-            logger.log("no response for %s" % input_command)
-            bot_input.message = bot_input.message.replace(bot_output.nick.lower(), '')
-            chat.eliza(bot_input, bot_output)
+            if not spoken:
+                logger.log("no response for %s" % input_command)
+                bot_input.message = bot_input.message.replace(bot_output.nick.lower(), '')
+                chat.eliza(bot_input, bot_output)
 
     # except:
     #     logger.log("dying")
