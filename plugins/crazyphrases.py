@@ -41,10 +41,10 @@ def crazy_phrases_users(bot_input, bot_output):
 
 
 @hook.regex(r'crazy phrases score', run_always=True)
-def crazy_phrases_users(bot_input, bot_output):
+def crazy_phrases_score(bot_input, bot_output):
     messages = []
-    for user, points in user_points:
-        messages.append(user + " has " + points)
+    for user, points in user_points.iteritems():
+        messages.append("%s has %d" % (user,points))
     bot_output.say("Current Score: ")
     bot_output.say(", ".join(messages))
 
@@ -56,8 +56,8 @@ def check_phrases(bot_input, bot_output):
             if user == bot_input.nick:
                 user_points[user] = user_points[user] + 1
                 user_info = bot_output.get_user_by_name(user)
-                bot_output.private_message(str(user_info["id"]), "You got a point.  Current score for you is: " + user_points[user])
+                bot_output.private_message(str(user_info["id"]), "You got a point.  Current score for you is: %s" % user_points[user])
             else:
                 bot_output.say("Woot!  Phrase that pays!")
-                bot_output.say(user + " had the phrase: " + phrase)
+                bot_output.say("%s had the phrase: %s" % (user, phrase))
                 bot_output.say("Good job " + bot_input.nick)
