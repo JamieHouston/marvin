@@ -8,8 +8,7 @@ Licensed under the Eiffel Forum License 2.
 http://inamidst.com/phenny/
 """
 
-import web
-from util import hook
+from util import hook,web
 
 @hook.command
 def calculate(bot_input, bot_output):

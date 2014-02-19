@@ -76,7 +76,6 @@ def process(bot_input, bot_output):
                     if func.func_name in bot_input.bot.credentials:
                         bot_input.credentials = bot_input.bot.credentials[func.func_name]
                     func(bot_input, bot_output)
-                    return
 
 
         if direct_message and bot_output.master.lower() in bot_input.nick.lower():
@@ -86,8 +85,8 @@ def process(bot_input, bot_output):
                 except:
                     logger.log("Too stupid to quit.")
                 sys.exit("later")
-        else:
-            markov.handle(bot_input, bot_output)
+        # else:
+        #     markov.handle(bot_input, bot_output)
 
         if bot_output.chattiness > random.random() and not bot_output.spoken:
             bot_input.message = bot_input.message.replace(bot_output.nick.lower(), '')

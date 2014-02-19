@@ -22,16 +22,20 @@ def help(bot_input, bot_output):
 
     commands = dict((value, key) for key, value in funcs.iteritems())
 
-    bot_output.say("You do need help.  But I supposed I can offer some insight into how to talk to something as advanced as myself.")
-    bot_output.say("I am the Marginally Accurate Resource for Vocalizing Immature Communication")
-    bot_output.say("You can ask me to run commands, ask me questions, and just talk to me.")
-    bot_output.say("To run a command, preface it with a period (.)")
-    bot_output.say("To talk to me, just include my name and if I haven't commited bot suicide recently I'll reply.  Although you may not like what I have to say...")
-    bot_output.say("Like the NSA, I'm always listening, so if I pick up on something someone says and I have a smart-ass response, make no mistake that I will answer it.")
+    help_text = []
+
+    help_text.append("You do need help.  But I supposed I can offer some insight into how to talk to something as advanced as myself.")
+    help_text.append("I am the Marginally Accurate Resource for Vocalizing Immature Communication")
+    help_text.append("You can ask me to run commands, ask me questions, and just talk to me.")
+    help_text.append("To run a command, preface it with a period (.)")
+    help_text.append("To talk to me, just include my name and if I haven't commited bot suicide recently I'll reply.  Although you may not like what I have to say...")
+    help_text.append("Like the NSA, I'm always listening, so if I pick up on something someone says and I have a smart-ass response, make no mistake that I will answer it.")
 
     if not bot_input.input_string:
-        bot_output.say("For details on a particular command, include it after help.")
-        bot_output.say("The available commands are: %s" % ', '.join(sorted(commands)))
+        help_text.append("For details on a particular command, include it after help.")
+        help_text.append("The available commands are: %s" % ', '.join(sorted(commands)))
     else:
         if bot_input.input_string in commands:
-            bot_output.say(commands[bot_input.input_string].__doc__)
+            help_text.append(commands[bot_input.input_string].__doc__)
+
+    bot_output.say('\n'.join(help_text))

@@ -21,7 +21,7 @@ phrases = (
     "I need to merge"
 )
 user_phrases = {}
-
+user_points = {}
 @hook.regex(r'play crazy phrases', run_always=True)
 def crazy_phrases(bot_input, bot_output):
     phrase = random.choice(phrases)
@@ -31,16 +31,31 @@ def crazy_phrases(bot_input, bot_output):
     user = bot_output.get_user_by_name(bot_input.nick)
     bot_output.private_message(str(user["id"]), "Your phrase is: %s" % phrase)
 
+
 @hook.regex(r'crazy phrases users', run_always=True)
 def crazy_phrases_users(bot_input, bot_output):
     users = user_phrases.keys()
     bot_output.say("Current Users Playing: ")
     bot_output.say(", ".join(users))
 
+
+@hook.regex(r'crazy phrases score', run_always=True)
+def crazy_phrases_users(bot_input, bot_output):
+    messages = []
+    for user, points in user_points:
+        messages.append(user + " has " + points)
+    bot_output.say("Current Score: ")
+    bot_output.say(", ".join(messages))
+
+
 @hook.regex(r'.*', run_always=True)
 def check_phrases(bot_input, bot_output):
     for user, phrase in user_phrases.iteritems():
         if phrase == textutils.sanitize_message(bot_input.message):
+            if user == bot_input.nick:
+                user_points[user] = (user_points[user] or 0) + 1
+                user = bot_output.get_user_by_name(bot_input.nick)
+                bot_output.private_message(str(user["id"]), "You got a point.  Current score for you is: " + user_points[user])
             bot_output.say("Woot!  Phrase that pays!")
             bot_output.say(user + " had the phrase: " + phrase)
             bot_output.say("Good job " + bot_input.nick)
