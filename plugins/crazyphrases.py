@@ -28,6 +28,7 @@ def crazy_phrases(bot_input, bot_output):
     #storage.set_hash_value(list_name, bot_input.nick, phrase)
     bot_output.say("you're in {0}".format(bot_input.nick))
     user_phrases[bot_input.nick] = textutils.sanitize_message(phrase)
+    user_points[bot_input.nick] = 1
     user = bot_output.get_user_by_name(bot_input.nick)
     bot_output.private_message(str(user["id"]), "Your phrase is: %s" % phrase)
 
@@ -53,9 +54,10 @@ def check_phrases(bot_input, bot_output):
     for user, phrase in user_phrases.iteritems():
         if phrase == textutils.sanitize_message(bot_input.message):
             if user == bot_input.nick:
-                user_points[user] = (user_points[user] or 0) + 1
-                user = bot_output.get_user_by_name(bot_input.nick)
-                bot_output.private_message(str(user["id"]), "You got a point.  Current score for you is: " + user_points[user])
-            bot_output.say("Woot!  Phrase that pays!")
-            bot_output.say(user + " had the phrase: " + phrase)
-            bot_output.say("Good job " + bot_input.nick)
+                user_points[user] = user_points[user] + 1
+                user_info = bot_output.get_user_by_name(user)
+                bot_output.private_message(str(user_info["id"]), "You got a point.  Current score for you is: " + user_points[user])
+            else:
+                bot_output.say("Woot!  Phrase that pays!")
+                bot_output.say(user + " had the phrase: " + phrase)
+                bot_output.say("Good job " + bot_input.nick)
