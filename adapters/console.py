@@ -22,6 +22,13 @@ class BotOutput():
         print msg
         self.spoken = True
 
+    def private_message(self, user, msg):
+        print "Private message to %s: %s" % (user, msg)
+
+
+    def get_user_by_name(self, user_name):
+        return {"nick": user_name, "id": 0}
+
 
     def run(self, bot):
         nick = raw_input("What shall I call you? ")

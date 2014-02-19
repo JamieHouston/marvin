@@ -1,7 +1,6 @@
 #!/usr/bin/python
 import random
-import re
-from util import storage, hook
+from util import storage, textutils
 
 chain_length = 2
 max_words = 30
@@ -14,9 +13,6 @@ stop_word = '\x02'
 def make_key(k):
     return '-'.join((prefix, k))
 
-
-def sanitize_message(message):
-    return re.sub('[\"\']', '', message.lower())
 
 
 def split_message(message):
@@ -67,7 +63,7 @@ def generate_message(seed):
 
 def handle(bot_input, bot_output):
     # speak only when spoken to, or when the spirit moves me
-    say_something = random.random() < bot_output.chattiness
+    say_something = random.random() < (bot_output.chattiness / 10)
 
     messages = []
 
@@ -79,7 +75,7 @@ def handle(bot_input, bot_output):
 
     # split up the incoming message into chunks that are 1 word longer than
     # the size of the chain, e.g. ['what', 'up', 'bro'], ['up', 'bro', '\x02']
-    for words in split_message(sanitize_message(message)):
+    for words in split_message(textutils.sanitize_message(message)):
         # grab everything but the last word
         key = separator.join(words[:-1])
 

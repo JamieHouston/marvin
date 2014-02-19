@@ -80,7 +80,7 @@ class BotOutput():
         user = [u for u in self.users if str(u["nick"]).lower() == user_name.lower()]
         if user and len(user):
             return user[0]
-        return "anonymous"
+        return {"nick": "anonymous", "id": 0}
 
 
     def get_user_by_email(self, user_email):
