@@ -1,4 +1,4 @@
-from util import hook, textutils
+from util import hook, textutils, storage
 import random
 
 list_name = "game:crazyphrases:users"
@@ -22,13 +22,15 @@ phrases = (
 )
 user_phrases = {}
 user_points = {}
+list_name = "crazyphrases:points"
+
 @hook.regex(r'play crazy phrases', run_always=True)
 def crazy_phrases(bot_input, bot_output):
     phrase = random.choice(phrases)
     #storage.set_hash_value(list_name, bot_input.nick, phrase)
     bot_output.say("you're in {0}".format(bot_input.nick))
     user_phrases[bot_input.nick] = textutils.sanitize_message(phrase)
-    user_points[bot_input.nick] = 1
+    user_points[bot_input.nick] = storage.get_hash_value(list_name, bot_input.nick) or 0
     user = bot_output.get_user_by_name(bot_input.nick)
     bot_output.private_message(str(user["id"]), "Your phrase is: %s" % phrase)
 
@@ -55,9 +57,12 @@ def check_phrases(bot_input, bot_output):
         if phrase == textutils.sanitize_message(bot_input.message):
             if user == bot_input.nick:
                 user_points[user] = user_points[user] + 1
+                storage.set_hash_value(list_name, bot_input.nick, user_points[user])
                 user_info = bot_output.get_user_by_name(user)
                 bot_output.private_message(str(user_info["id"]), "You got a point.  Current score for you is: %s" % user_points[user])
             else:
                 bot_output.say("Woot!  Phrase that pays!")
                 bot_output.say("%s had the phrase: %s" % (user, phrase))
                 bot_output.say("Good job " + bot_input.nick)
+                user_points[user] = user_points[bot_input.nick] + 1
+                storage.set_hash_value(list_name, bot_input.nick, user_points[user])
