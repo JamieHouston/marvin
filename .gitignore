@@ -3,3 +3,4 @@ config
 *.log
 .idea
 .idea/*
+node_modules
