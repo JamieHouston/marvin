@@ -92,12 +92,13 @@ def api_key(key):
     return annotate
 
 
-def regex(regex, flags=0, **kwargs):
+def regex(regex, flags=0, run_always=False, **kwargs):
     args = kwargs
 
     def regex_wrapper(func):
         args['name'] = func.func_name
         args['regex'] = regex
+        args['run_always'] = run_always
         args['re'] = re.compile(regex, flags)
         _hook_add(func, ['regex', (func, args)], 'regex')
         return func

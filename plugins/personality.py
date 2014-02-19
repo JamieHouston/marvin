@@ -29,11 +29,11 @@ def get_personality(bot_input, bot_output):
             bot_output.say("I'm schizophrenic, and so am I")
 
 
-@hook.regex(r'who dat')
+@hook.regex(r'who dat', run_always=True)
 def get_current_personality(bot_input, bot_output):
     bot_output.say("THIS IS {0}".format(bot_output.personality))
 
-@hook.regex(r'who is your jedi master')
+@hook.regex(r'who is your jedi master', run_always=True)
 def get_current_master(bot_input, bot_output):
     bot_output.say("I serve {0}".format(bot_output.master))
 

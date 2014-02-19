@@ -37,7 +37,7 @@ def json_date_as_datetime(jd):
     return datetime.datetime(1970, 1, 1) \
         + datetime.timedelta(microseconds=ms * 1000)
 
-@hook.regex(r'\bt(?:arget)?\ {0,2}p(?:rocess)?\ {1,2}recent\ {1,2}(?:(?P<days>\d{1,2})\ {0,2}da?y?s?|(?P<hours>\d{1,2})\ {0,2}ho?u?r?s?)\s*$')
+@hook.regex(r'\bt(?:arget)?\ {0,2}p(?:rocess)?\ {1,2}recent\ {1,2}(?:(?P<days>\d{1,2})\ {0,2}da?y?s?|(?P<hours>\d{1,2})\ {0,2}ho?u?r?s?)\s*$', run_always=True)
 def target_process(bot_input, bot_output):
     tp = Target_Process(bot_input.credentials["url"], bot_input.credentials["login"], bot_input.credentials["password"])
 

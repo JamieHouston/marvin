@@ -42,11 +42,11 @@ class BotOutput():
             return
         msg = self.filter_words(msg)
         logger.log("sending message %s" % msg[:20])
-        # TODO: Grab flow from config (not hackday)
         channel_pieces = self.channel.split("/")
         url = "https://api.flowdock.com/flows/%s/%s/messages" % (channel_pieces[0], channel_pieces[1])
         data = {"event": "message", "content": msg}
         response = web.post_json(url, self.username, self.password, **data)
+        self.spoken = True
 
     def private_message(self, user, msg):
         logger.log("sending private message %s" % msg[:20])
@@ -97,6 +97,7 @@ class BotOutput():
         for data in gen:
             process_message = type(data) == dict and (data['event'] == "message" or data['event'] == "comment")
             if process_message and ("user" in data and self.user != data["user"]):
+                self.spoken = False
                 bot_input = BotInput()
                 if type(data['content']) is dict:
                     bot_input.message = data["content"]['text']

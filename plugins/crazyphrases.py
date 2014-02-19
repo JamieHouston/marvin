@@ -4,7 +4,7 @@ import random
 list_name = "game:crazyphrases:users"
 phrases = ("I can't wait until Monday", "That's very true.", "I can't believe I just thought that.")
 
-@hook.regex(r'play crazy phrases')
+@hook.regex(r'play crazy phrases', run_always=True)
 def crazy_phrases(bot_input, bot_output):
     phrase = random.choice(phrases)
     storage.set_hash_value(list_name, bot_input.nick, phrase)
@@ -12,7 +12,7 @@ def crazy_phrases(bot_input, bot_output):
     user = bot_output.get_user_by_name(bot_input.nick)
     bot_output.private_message(str(user["id"]), "Your phrase is: %s" % phrase)
 
-@hook.regex(r'crazy phrases users')
+@hook.regex(r'crazy phrases users', run_always=True)
 def crazy_phrases_users(bot_input, bot_output):
     users = storage.get_random_value(list_name)
     bot_output.say("Current Users Playing: ")

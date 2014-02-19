@@ -4,7 +4,6 @@ import re
 from util import storage, hook
 
 chain_length = 2
-chattiness = .1
 max_words = 30
 messages_to_generate = 5
 prefix = 'markov'
@@ -68,7 +67,7 @@ def generate_message(seed):
 
 def handle(bot_input, bot_output):
     # speak only when spoken to, or when the spirit moves me
-    say_something = random.random() < chattiness
+    say_something = random.random() < bot_output.chattiness
 
     messages = []
 
@@ -100,4 +99,4 @@ def handle(bot_input, bot_output):
                 messages.append(best_message)
 
     if len(messages):
-        bot_output.say("Computer says: {0}" % random.choice(messages))
+        bot_output.say(random.choice(messages))

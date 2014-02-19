@@ -12,7 +12,7 @@ def awesome(bot_input, bot_output):
         bot_output.say(random.choice(bot_output.responses["awesome_sauce"]))
 
 
-@hook.regex(r'beer me')
+@hook.regex(r'beer me', run_always=True)
 def beer_me(bot_input, bot_output):
     bot_output.say(random.choice(bot_output.responses["beers"]))
 
@@ -27,28 +27,28 @@ def dance(bot_input, bot_output):
     bot_output.say('>:o{-<')
 
 
-@hook.regex(r'(do it)?(now|right away|hurry up)[!]*?$')
+@hook.regex(r'(do it)?(now|right away|hurry up)[!]*?$', run_always=True)
 def doit_now(bot_input, bot_output):
     bot_output.say(random.choice(bot_output.responses["doit"]))
 
 
-@hook.regex(r'd(\')oh')
+@hook.regex(r'd(\')oh', run_always=True)
 def doh(bot_input, bot_output):
     bot_output.say(random.choice(bot_output.responses["doh"]))
 
 
-@hook.regex(r'fail')
+@hook.regex(r'fail', run_always=True)
 def fail(bot_input, bot_output):
     bot_output.say(random.choice(bot_output.responses["failure"]))
 
 
-@hook.regex(r'good morning*')
+@hook.regex(r'good morning*', run_always=True)
 def good_morning(bot_input, bot_output):
     message = random.choice(bot_output.responses["good_morning"]).format(bot_input.nick)
     bot_output.say(message)
 
 
-@hook.regex(r'(?i)good(bye|night| evening| night)[ \t]*$')
+@hook.regex(r'(?i)good(bye|night| evening| night)[ \t]*$', run_always=True)
 def good_night(bot_input, bot_output):
     bot_output.say(random.choice(bot_output.responses["good_night"]))
 
@@ -73,7 +73,7 @@ def not_me(bot_input, bot_output):
     bot_output.say(random.choice(bot_output.responses["not_me"]))
 
 
-@hook.regex(r'(what are )?the (three |3 )?(rules|laws)')
+@hook.regex(r'(what are )?the (three |3 )?(rules|laws)', run_always=True)
 def rules(bot_input, bot_output):
     rules = [
         "1. A robot may not injure a human being or, through inaction, allow a human being to come to harm.",
@@ -93,7 +93,7 @@ def slap(bot_input, bot_output):
     bot_output.say("/slap @%s" % bot_input.nick)
 
 
-@hook.regex(r'(sudo )?make me a sandwich')
+@hook.regex(r'(sudo )?make me a sandwich', run_always=True)
 def sandwich(bot_input, bot_output):
     if 'sudo' in bot_input.message:
         bot_output.say('Okay')

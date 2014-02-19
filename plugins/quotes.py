@@ -20,7 +20,7 @@ def quote(bot_input, bot_output):
     bot_output.say(quote_to_say)
 
 
-@hook.regex(r'quote (?P<name>[\w\d\s]*)')
+@hook.regex(r'quote (?P<name>[\w\d\s]*)', run_always=True)
 def quote_person(bot_input, bot_output):
     url = "http://www.iheartquotes.com/api/v1/random?source=%s"
     #second_url = "http://en.wikiquote.org/w/api.php"

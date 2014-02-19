@@ -1,7 +1,7 @@
 from util import hook, web
 import random
 
-@hook.regex(r'http')
+@hook.regex(r'http', run_always=True)
 def url_title(bot_input, bot_output):
     try:
         if bot_input.message.endswith("gif"):

@@ -184,7 +184,7 @@ class TeamCity:
     def get_all_users(self):
         return self.set_resource('users')
 
-@hook.regex(r'(show all projects)')
+@hook.regex(r'(show all projects)', run_always=True)
 def teamcity(bot_input, bot_output):
     tc = TeamCity(bot_input.credentials['login'], bot_input.credentials['password'], bot_input.credentials['server'])
     tc.get_all_projects()

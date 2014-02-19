@@ -1,7 +1,7 @@
 from util import hook
 import random
 
-@hook.regex(r'(?i).*( trap).*')
+@hook.regex(r'(?i).*( trap).*', run_always=True)
 def trap(bot_input, bot_output):
     ackbars = [
         "http://dayofthejedi.com/wp-content/uploads/2011/03/171.jpg",

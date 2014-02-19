@@ -1,6 +1,6 @@
 from util import hook, web
 
-@hook.regex(r'lunchbot add me to (?P<rest>.*)')
+@hook.regex(r'lunchbot add me to (?P<rest>.*)', run_always=True)
 def add_to_lunch(bot_input, bot_output):
     username = bot_input.nick
     email = bot_output.get_user_by_name(username)["email"]

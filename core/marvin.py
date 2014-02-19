@@ -65,15 +65,10 @@ def process(bot_input, bot_output):
         else:
             bot_output.say("What the hell am I supposed to do with that command?")
     else:
-        # if not direct_message:
-        #     markov.handle(bot_input, bot_output)
-
-        spoken = False
-        if (direct_message or bot_output.chattiness > random.random()):
-        # REGEXES
-            for func, args in bot_input.bot.plugs['regex']:
-                m = args['re'].search(bot_input["message"])
-                if m:
+        for func, args in bot_input.bot.plugs['regex']:
+            m = args['re'].search(bot_input["message"])
+            if m:
+                if args['run_always'] or bot_output.chattiness > random.random():
                     # todo: update groupdict with inp
                     bot_input.groupdict = m.groupdict
                     bot_input.inp = m.groupdict()
@@ -81,21 +76,22 @@ def process(bot_input, bot_output):
                     if func.func_name in bot_input.bot.credentials:
                         bot_input.credentials = bot_input.bot.credentials[func.func_name]
                     func(bot_input, bot_output)
-                    spoken = True
-                    break
+                    return
 
-            if direct_message and bot_output.master.lower() in bot_input.nick.lower():
-                if "take off" in input_command or "go home" in input_command or "go away" in input_command:
-                    try:
-                        bot_output.say(random.choice(bot_output.responses["death_messages"]))
-                        spoken = True
-                    except:
-                        logger.log("Too stupid to quit.")
-                    sys.exit("later")
-            if not spoken:
-                logger.log("no response for %s" % input_command)
-                bot_input.message = bot_input.message.replace(bot_output.nick.lower(), '')
-                chat.eliza(bot_input, bot_output)
+
+        if direct_message and bot_output.master.lower() in bot_input.nick.lower():
+            if "take off" in input_command or "go home" in input_command or "go away" in input_command:
+                try:
+                    bot_output.say(random.choice(bot_output.responses["death_messages"]))
+                except:
+                    logger.log("Too stupid to quit.")
+                sys.exit("later")
+        else:
+            markov.handle(bot_input, bot_output)
+
+        if bot_output.chattiness > random.random() and not bot_output.spoken:
+            bot_input.message = bot_input.message.replace(bot_output.nick.lower(), '')
+            chat.eliza(bot_input, bot_output)
 
     # except:
     #     logger.log("dying")

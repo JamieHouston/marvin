@@ -24,7 +24,7 @@ def github(bot_input, bot_output):
         bot_output.say('From PPM: ' + '\n'.join(ppm_pulls))
         found_requests = True
     if spa_pulls:
-        bot_output.say('From PPM: ' + '\n'.join(spa_pulls))
+        bot_output.say('From SPA: ' + '\n'.join(spa_pulls))
         found_requests = True
 
     if not found_requests:
