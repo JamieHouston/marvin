@@ -22,12 +22,20 @@ def process(bot_input, bot_output):
     # try:
     input_command = bot_input["message"].lower()
 
-    if input_command == "shut up":
-        bot_output.say("SHUTTING UP")
-        time.sleep(30)
-        return
+    direct_message = bot_output.nick.lower() in input_command
 
-    direct_message = bot_output.nick.lower() in input_command or "lunchbot" in input_command
+    if bot_output.master.lower() in bot_input.nick.lower():
+        if "take off" in input_command or "go home" in input_command or "go away" in input_command:
+            try:
+                bot_output.say(random.choice(bot_output.responses["death_messages"]))
+            except:
+                logger.log("Too stupid to quit.")
+            sys.exit("later")
+
+        if input_command == "shut up":
+            bot_output.say("SHUTTING UP")
+            time.sleep(30)
+            return
 
     if input_command.startswith("!"):
         if random.choice(range(3)) == 1:
@@ -78,19 +86,14 @@ def process(bot_input, bot_output):
                     func(bot_input, bot_output)
 
 
-        if direct_message and bot_output.master.lower() in bot_input.nick.lower():
-            if "take off" in input_command or "go home" in input_command or "go away" in input_command:
-                try:
-                    bot_output.say(random.choice(bot_output.responses["death_messages"]))
-                except:
-                    logger.log("Too stupid to quit.")
-                sys.exit("later")
+        if direct_message and not bot_output.spoken:
+            bot_output.say(random.choice(bot_output.responses("answer")) % bot_input.nick)
         # else:
         #     markov.handle(bot_input, bot_output)
 
-        if bot_output.chattiness > random.random() and not bot_output.spoken:
-            bot_input.message = bot_input.message.replace(bot_output.nick.lower(), '')
-            chat.eliza(bot_input, bot_output)
+        # if bot_output.chattiness > random.random() and not bot_output.spoken:
+        #     bot_input.message = bot_input.message.replace(bot_output.nick.lower(), '')
+        #     chat.eliza(bot_input, bot_output)
 
     # except:
     #     logger.log("dying")
