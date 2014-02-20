@@ -23,7 +23,7 @@ class Markov(object):
         self.load_data()
 
     def _should_update(self):
-        return self.activities > 5
+        return self.activities > 1
 
     def load_data(self):
         print "loading data"
@@ -33,7 +33,6 @@ class Markov(object):
             self.word_table = {}
 
     def _save_data(self):
-        #pdb.set_trace()
         print "saving data"
         fh = open(self.filename, 'w')
         fh.write(pickle.dumps(self.word_table))
@@ -74,13 +73,13 @@ class Markov(object):
         return ' '.join(message)
 
     def imitate(self, bot_input, bot_output):
-        person = bot_input.input_string
-        if person != bot_output.nick:
+        person = bot_input.input_string.lower()
+        if person != bot_output.nick.lower():
             return self.generate_message(person)
 
     def cite(self, bot_input, bot_output):
         if self.last:
-            return self.last
+            bot_output.say(self.last)
 
     def is_ping(self, message, bot_output):
         return re.match('^@?%s[:,\s]' % bot_output.nick, message) is not None
@@ -89,9 +88,7 @@ class Markov(object):
         return re.sub('^%s[:,\s]\s*' % bot_output.nick, '', message)
 
     def log(self, bot_input, bot_output):
-        #pdb.set_trace()
-        #print >> sys.stderr, "Logging from {0} message: {1}".format(input.nick, input.group(0))
-        sender = bot_input.nick[:10]
+        sender = bot_input.nick[:10].lower()
         message = bot_input.input_string
         self.word_table.setdefault(sender, {})
 
@@ -99,8 +96,7 @@ class Markov(object):
             return
 
         try:
-            say_something = (not self.is_ping(message, bot_output) and sender != bot_output.nick) and random.random() < bot_output.chattiness
-            #print >> sys.stderr, "Say something is: {0}".format(say_something)
+            say_something = (not self.is_ping(message, bot_output) and sender != bot_output.nick.lower()) and random.random() < bot_output.chattiness
         except AttributeError:
             say_something = False
         messages = []
