@@ -46,12 +46,15 @@ class Markov(object):
                 yield (words[i:i + self.chain_length + 1])
 
     def generate_message(self, person, size=15, seed_key=None):
+        print "trying to generate message for %s" % person
         person_words = len(self.word_table.get(person, {}))
         if person_words < size:
+            print "not enough words %d" % person_words
             return
 
         if not seed_key:
             seed_key = random.choice(self.word_table[person].keys())
+            print "using seed key %s" % seed_key
 
         message = []
         for i in xrange(self.messages_to_generate):
@@ -70,7 +73,10 @@ class Markov(object):
             if len(gen_words) > len(message):
                 message = list(gen_words)
 
-        return ' '.join(message)
+        result = ' '.join(message)
+        print "returning message %s" % result
+        return result
+
 
     def imitate(self, bot_input, bot_output):
         person = bot_input.input_string.lower()
