@@ -18,16 +18,26 @@ def github(bot_input, bot_output):
 
     gi = Github(bot_input.credentials["login"], bot_input.credentials["password"])
     org = gi.get_organization("daptiv")
-    ppm_pulls = get_pull_requests(org.get_repo("ppm"))
-    spa_pulls = get_pull_requests(org.get_repo("ppmspa"))
-    if ppm_pulls:
-        bot_output.say('From PPM: ' + '\n'.join(ppm_pulls))
-        found_requests = True
-    if spa_pulls:
-        bot_output.say('From SPA: ' + '\n'.join(spa_pulls))
-        found_requests = True
+    repos = org.get_repos()
+    found_pull_requests = False
 
-    if not found_requests:
+    for repo in repos:
+        pull_requests = get_pull_requests(repo, github_name)
+        if pull_requests:
+            bot_output.say('\n'.join(pull_requests))
+            found_pull_requests = True
+    #ppm_pulls = get_pull_requests(org.get_repo("ppm"), github_name)
+    #spa_pulls = get_pull_requests(org.get_repo("ppmspa"), github_name)
+    # if ppm_pulls:
+    #     bot_output.say('From PPM: ' + '\n'.join(ppm_pulls))
+    #     found_requests = True
+    # if spa_pulls:
+    #     bot_output.say('From SPA: ' + '\n'.join(spa_pulls))
+    #     found_requests = True
+
+    if found_pull_requests:
+        bot_output.say('Think I got them all. Good luck with that.')
+    else:
         bot_output.say(random.choice(bot_output.responses["nothing_for_you"]))
 
 
@@ -37,6 +47,6 @@ def get_pull_requests(repo, github_name):
     open_pull_requests = repo.get_pulls("open")
     if open_pull_requests:
         for pull in open_pull_requests:
-            if search_string in pull.body:
+            if pull.body and search_string in pull.body:
                 results.append("{0} - {1}/files?w=1".format(pull.title, pull.html_url))
     return results
