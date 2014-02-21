@@ -87,7 +87,7 @@ def process(bot_input, bot_output):
 
 
         if direct_message and not bot_output.spoken:
-            bot_output.say(random.choice(bot_output.responses("answer")).format(bot_input.nick))
+            bot_output.say(random.choice(bot_output.responses["answers"]).format(bot_input.nick))
         # else:
         #     markov.handle(bot_input, bot_output)
 
