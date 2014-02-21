@@ -33,9 +33,9 @@ class BotOutput():
 
 
     def filter_words(self, msg):
-        filtered = web.get_text('http://www.purgomalum.com/service/plain?text=%s'.format(msg))
-        return filtered
-
+        #filtered = web.get_text('http://www.purgomalum.com/service/plain?text={0}'.format(msg))
+        #return filtered
+        return msg
 
     def say(self, msg):
         if not msg or len(msg) < 1:
