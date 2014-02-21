@@ -33,8 +33,8 @@ class BotOutput():
 
 
     def filter_words(self, msg):
-        msg = msg.replace("ass","[expletive]")
-        return msg.replace("fuck","[expletive]")
+        filtered = web.get_text('http://www.purgomalum.com/service/plain?text=%s'.format(msg))
+        return filtered
 
 
     def say(self, msg):
