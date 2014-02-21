@@ -49,8 +49,7 @@ class Markov(object):
         print "trying to generate message for %s" % person
         person_words = len(self.word_table.get(person, {}))
         if person_words < size:
-            print "not enough words %d" % person_words
-            return
+            return "not enough words %d" % person_words
 
         if not seed_key:
             seed_key = random.choice(self.word_table[person].keys())
