@@ -1,12 +1,12 @@
 {
     "generic_responses": [
         "Keep talking... I'm listening...",
-        "Should I pretend to care or are you good?",
+        "Should I pretend to care?",
         "That's about as interesting as a dead hummingbird.",
         "You talkin to me?",
         "Why you gotta say that?",
         "Really? So what.",
-        "Yes?",
+        "Boring",
         "Take off, hoser.",
         "I'll pretend I care...",
         "Busy",
@@ -198,5 +198,10 @@
         "You can blame the Sirius Cybernetics Corporation for making androids with GPP... ",
         "I've been talking to the main computer and it hates me.",
         "Here I am, brain the size of a planet, and they ask me to take you to the bridge. Call that job satisfaction, 'cause I don't. "
+    ],
+    "stranger": [
+        "Who even are you!?",
+        "Stranger Danger!",
+        "There's a new sherrif in town"
     ]
 }

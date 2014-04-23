@@ -83,7 +83,7 @@ def rules(bot_input, bot_output):
     for rule in rules:
         bot_output.say(rule)
 
-@hook.regex(r'(,|:|-| )?(did|are|is|can|what|where|when|why|will).*$')
+@hook.regex(r'(did|are|is|can|what|where|when|why|will).*?$')
 def questions(bot_input, bot_output):
      bot_output.say(random.choice(bot_output.responses["answers"]))
 

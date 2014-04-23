@@ -23,7 +23,7 @@ class Markov(object):
         self.load_data()
 
     def _should_update(self):
-        return self.activities > 1
+        return self.activities > 3
 
     def load_data(self):
         print "loading data"
