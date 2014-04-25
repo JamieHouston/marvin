@@ -32,7 +32,7 @@ def get_text(url):
 def get_json(url, username=None, password=None):
     request = build_request(url, username, password)
     page = urllib2.urlopen(request)
-    data = page.read()
+    data = page.read().decode("utf-8-sig")
     if data:
         return json.loads(data)
     return None
