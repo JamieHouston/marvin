@@ -5,7 +5,6 @@ import random
 @hook.command
 def github(bot_input, bot_output):
     ".github [username] -- gives a list of pending pull requests for user. Ommitting username uses last one passed in"
-    found_requests = False
     if bot_input.input_string:
         github_name = bot_input.input_string
         storage.set_hash_value("github:users", bot_input.nick, github_name)
@@ -20,20 +19,13 @@ def github(bot_input, bot_output):
     org = gi.get_organization("daptiv")
     repos = org.get_repos()
     found_pull_requests = False
+    bot_output.say("looking now, {0}.  Be patient with me or don't.  It's your dime.".format(bot_input.nick))
 
     for repo in repos:
         pull_requests = get_pull_requests(repo, github_name)
         if pull_requests:
             bot_output.say('\n'.join(pull_requests))
             found_pull_requests = True
-    #ppm_pulls = get_pull_requests(org.get_repo("ppm"), github_name)
-    #spa_pulls = get_pull_requests(org.get_repo("ppmspa"), github_name)
-    # if ppm_pulls:
-    #     bot_output.say('From PPM: ' + '\n'.join(ppm_pulls))
-    #     found_requests = True
-    # if spa_pulls:
-    #     bot_output.say('From SPA: ' + '\n'.join(spa_pulls))
-    #     found_requests = True
 
     if found_pull_requests:
         bot_output.say('Think I got them all. Good luck with that.')
