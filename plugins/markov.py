@@ -94,7 +94,7 @@ class Markov(object):
 
     def log(self, bot_input, bot_output):
         sender = bot_input.nick[:10].lower()
-        message = bot_input.input_string
+        message = bot_input.input_string.replace(bot_output.nick.lower(), '')
         self.word_table.setdefault(sender, {})
 
         if message.startswith('/') or message.startswith('.'):
