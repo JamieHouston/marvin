@@ -43,7 +43,8 @@ science = {
     "What country is home to the original Highland Games": "scotland",
     "Which continent has never hosted the Olympics": "antartica",
     "What is the dot in the 'i' called": "tittle",
-    "Which US state is nicknamed the 'Old Dominion' state": "virginia"
+    "Which US state is nicknamed the 'Old Dominion' state": "virginia",
+    "What instrument does Meg White play in the band White Stripes": "drums"
 }
 
 current_trivia = {}
