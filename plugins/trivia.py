@@ -44,7 +44,11 @@ science = {
     "Which continent has never hosted the Olympics": "antartica",
     "What is the dot in the 'i' called": "tittle",
     "Which US state is nicknamed the 'Old Dominion' state": "virginia",
-    "What instrument does Meg White play in the band White Stripes": "drums"
+    "What instrument does Meg White play in the band White Stripes": "drums",
+    "What did the class entering Harvard in the fall of 1967 have for the first time": "women",
+    "Playwright Thomas Lanier 'Tennessee' Williams was born in what US state": "mississippi",
+    "What country proclaimed the birth of its billionth citizen in 2000": "india",
+    "What were ivories to an old west gambler": "dice"
 }
 
 current_trivia = {}
@@ -53,10 +57,14 @@ list_name = "trivia:points"
 
 @hook.command
 def trivia(bot_input, bot_output):
-    question = random.choice(science.keys())
-    current_trivia['question'] = question
-    current_trivia['answer'] = science[question]
-    bot_output.say('{0}?'.format(question))
+    if "reset" in bot_input.input_string:
+        storage.set_hash_value(list_name, bot_input.nick, 0)
+        user_points[bot_input.nick] = 0
+    else:
+        question = random.choice(science.keys())
+        current_trivia['question'] = question
+        current_trivia['answer'] = science[question]
+        bot_output.say('{0}?'.format(question))
 
 @hook.command
 def answer(bot_input, bot_output):
