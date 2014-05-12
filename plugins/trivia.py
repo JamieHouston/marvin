@@ -60,6 +60,8 @@ def trivia(bot_input, bot_output):
     if "reset" in bot_input.input_string:
         storage.set_hash_value(list_name, bot_input.nick, 0)
         user_points[bot_input.nick] = 0
+    elif "score" in bot_input.input_string:
+        get_points(bot_input, bot_output)
     else:
         question = random.choice(science.keys())
         current_trivia['question'] = question
@@ -86,7 +88,7 @@ def check_trivia(bot_input, bot_output):
             bot_output.say("WRONG!")
 
 def add_point(nick):
-    points = storage.get_hash_value(list_name, nick) or 0
+    points = int(storage.get_hash_value(list_name, nick) or 0)
     user_points[nick] = points + 1
     storage.set_hash_value(list_name, nick, user_points[nick])
 
