@@ -8,9 +8,15 @@ def ping(bot_input, bot_output):
 
 @hook.regex(r'awesome')
 def awesome(bot_input, bot_output):
-    if random.choice(range(3)) == 1:
-        bot_output.say(random.choice(bot_output.responses["awesome_sauce"]))
+    bot_output.say(random.choice(bot_output.responses["awesome_sauce"]).format(bot_input.nick))
 
+@hook.regex('how do you feel')
+def feelings(bot_input, bot_output):
+    bot_output.say(random.choice(bot_output.responses["feelings"]))
+
+@hook.regex('who are you')
+def who_am_i(bot_input, bot_output):
+    bot_output.say(random.choice(bot_output.responses["who_am_i"]).format(bot_input.nick))
 
 @hook.regex(r'beer me', run_always=True)
 def beer_me(bot_input, bot_output):
@@ -116,9 +122,3 @@ def yes_no(bot_input, bot_output):
 @hook.regex(r'welcome back')
 def welcome_back(bot_input, bot_output):
     bot_output.say(random.choice(bot_output.responses["welcome_back"]))
-
-
-
-@hook.regex('how do you feel')
-def feelings(bot_input, bot_output):
-    bot_output.say(random.choice(bot_output.responses["feelings"]))

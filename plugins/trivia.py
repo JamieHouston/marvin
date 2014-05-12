@@ -20,7 +20,7 @@ science = {
     "What constellation is represented by the whale": "cetus",
     "What color is a Great Egret": "white",
     "What method of food preservation was invented for the British Navy in 1813": "canning",
-    "What astrological chart takes its name from a Greek word meaning 'circle of little animals'": "zodiak"
+    "What astrological chart takes its name from a Greek word meaning 'circle of little animals'": "zodiac"
 }
 
 
@@ -28,11 +28,13 @@ current_trivia = {}
 
 @hook.command
 def trivia(bot_input, bot_output):
-    #if not current_question:
-    question = random.choice(science.keys())
-    current_trivia['question'] = question
-    current_trivia['answer'] = science[question]
-    bot_output.say('{0}?'.format(question))
+    if bot_input.input_string:
+        check_trivia(bot_input, bot_output)
+    else:
+        question = random.choice(science.keys())
+        current_trivia['question'] = question
+        current_trivia['answer'] = science[question]
+        bot_output.say('{0}?'.format(question))
 
 @hook.command
 def answer(bot_input, bot_output):
@@ -40,7 +42,6 @@ def answer(bot_input, bot_output):
     current_trivia['question'] = ''
 
 
-@hook.regex(r'.*', run_always=True)
 def check_trivia(bot_input, bot_output):
     if current_trivia['question']:
         guess = textutils.sanitize_message(bot_input.message)

@@ -73,7 +73,11 @@
     "awesome_sauce": [
         "Awesome sauce!",
         "King awesome, reporting for duty.",
-        "Awesome is as awesome does."],
+        "Awesome is as awesome does.",
+        "EVERTYHING IS AWESOME!",
+        "AWESOME AWESOME AWESOME!",
+        "No, you're awesome, {0}!"
+    ],
     "beers": [
         "One cold one, coming up",
         "A little early, no?",
@@ -203,5 +207,13 @@
         "Who even are you!?",
         "Stranger Danger!",
         "There's a new sherrif in town"
+    ],
+    "who_am_i": [
+        "I'm a failed hackday experiment.",
+        "I am the needle in your veins",
+        "For me to know you you to find out.",
+        "I'm actually your son, {0}",
+        "Who even are you???",
+        "I am the son of god.  No really.  She's my mom."
     ]
 }
