@@ -77,7 +77,8 @@ def check_trivia(bot_input, bot_output):
             bot_output.say("WRONG!")
 
 def add_point(nick):
-    user_points[nick] = storage.get_hash_value(list_name, nick) or 0
+    points = storage.get_hash_value(list_name, nick) or 0
+    user_points[nick] = points + 1
     storage.set_hash_value(list_name, nick, user_points[nick])
 
 @hook.regex(r'trivia score', run_always=True)
