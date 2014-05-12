@@ -1,4 +1,4 @@
-from util import hook, textutils
+from util import hook, textutils, storage
 import random
 
 first_time = True
@@ -20,11 +20,20 @@ science = {
     "What constellation is represented by the whale": "cetus",
     "What color is a Great Egret": "white",
     "What method of food preservation was invented for the British Navy in 1813": "canning",
-    "What astrological chart takes its name from a Greek word meaning 'circle of little animals'": "zodiac"
+    "What astrological chart takes its name from a Greek word meaning 'circle of little animals'": "zodiac",
+    "What is the acronym for Thomas A. Swift's Electric Rifle": "taser",
+    "Where in your body would you find your hippocampus": "brain",
+    "What is the only mammal with four knees": "elephant",
+    "What is added to bread to make it swell": "yeast",
+    "What fruit comes in Key and Kaffir variety": "lime",
+    "In what century did the Dodo bird become extinct": "17",
+    "Hg is the symbol for what element": "mercury",
+    "How many land miles are there in a league": "3",
+    "How many kilograms are there in a short ton": "907"
 }
 
-
 current_trivia = {}
+user_points = {}
 
 @hook.command
 def trivia(bot_input, bot_output):
@@ -44,7 +53,7 @@ def answer(bot_input, bot_output):
 
 def check_trivia(bot_input, bot_output):
     if current_trivia['question']:
-        guess = textutils.sanitize_message(bot_input.message)
+        guess = textutils.sanitize_message(bot_input.input_string)
         if guess in current_trivia['answer']:
             bot_output.say("That's correct, {0}.  The answer to {1} is {2}".format(bot_input.nick, current_trivia['question'], current_trivia['answer']))
             current_trivia['question'] = ''
