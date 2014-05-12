@@ -28,18 +28,18 @@ current_trivia = {}
 
 @hook.command
 def trivia(bot_input, bot_output):
-    if bot_input.input_string:
-        check_trivia(bot_input, bot_output)
-    else:
-        question = random.choice(science.keys())
-        current_trivia['question'] = question
-        current_trivia['answer'] = science[question]
-        bot_output.say('{0}?'.format(question))
+    question = random.choice(science.keys())
+    current_trivia['question'] = question
+    current_trivia['answer'] = science[question]
+    bot_output.say('{0}?'.format(question))
 
 @hook.command
 def answer(bot_input, bot_output):
-    bot_output.say("Okay, {0}.  The answer to {1} is {2}".format(bot_input.nick, current_trivia['question'], current_trivia['answer']))
-    current_trivia['question'] = ''
+    if bot_input.input_string:
+        check_trivia(bot_input, bot_output)
+    else:
+        bot_output.say("Okay, {0}.  The answer to {1} is {2}".format(bot_input.nick, current_trivia['question'], current_trivia['answer']))
+        current_trivia['question'] = ''
 
 
 def check_trivia(bot_input, bot_output):
@@ -48,3 +48,5 @@ def check_trivia(bot_input, bot_output):
         if guess in current_trivia['answer']:
             bot_output.say("That's correct, {0}.  The answer to {1} is {2}".format(bot_input.nick, current_trivia['question'], current_trivia['answer']))
             current_trivia['question'] = ''
+        else:
+            bot_output.say("WRONG!")
