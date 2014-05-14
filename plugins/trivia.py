@@ -1,59 +1,20 @@
 from util import hook, textutils, storage
 import random
-
-first_time = True
-
-science = {
-    "What is September's birthstone": "sapphire",
-    "What is the minimum number of bars on an abacus": "9",
-    "How many carats is pure gold": "24",
-    "What is January's birthstone": "garnet",
-    "Approximately how many miles are there in a nautical mile": "1.15",
-    "What is a group of lions called": "pride",
-    "How many canine teeth are there in a normal set of human teeth": "4",
-    "In what decade was the very first test-tube baby born": "1978",
-    "What period saw the first dinosaurs": "triassic",
-    "How many chromosomes does a cow have": "60",
-    "What percentage of air is composed of oxygen": "21",
-    "A male swan is called a what": "cob",
-    "What fiber-producing plant is attacked by the boll weevil": "cotton",
-    "What constellation is represented by the whale": "cetus",
-    "What color is a Great Egret": "white",
-    "What method of food preservation was invented for the British Navy in 1813": "canning",
-    "What astrological chart takes its name from a Greek word meaning 'circle of little animals'": "zodiac",
-    "What is the acronym for Thomas A. Swift's Electric Rifle": "taser",
-    "Where in your body would you find your hippocampus": "brain",
-    "What is the only mammal with four knees": "elephant",
-    "What is added to bread to make it swell": "yeast",
-    "What fruit comes in Key and Kaffir variety": "lime",
-    "In what century did the Dodo bird become extinct": "17",
-    "Hg is the symbol for what element": "mercury",
-    "How many land miles are there in a league": "3",
-    "How many kilograms are there in a short ton": "907",
-    "Which body joint includes the patella": "knee",
-    "What name is given to male rhinoceroses": "bull",
-    "What fruit comes in Hass and Florida variety": "avocado",
-    "In what country would you most likely encounter a Tasmanian devil": "australia",
-    "What does an archer keep his arrows in": "quiver",
-    "What does a phonophobe fear": "noise",
-    "In which ocean is the area known as Polynesia located": "pacific",
-    "Who was the Roman demigod best known for his strength": "hercules",
-    "How many points is the outer white ring of an Olympic archery target worth": "1",
-    "What number is indicated by the Roman numeral 'D'": "500",
-    "What country is home to the original Highland Games": "scotland",
-    "Which continent has never hosted the Olympics": "antartica",
-    "What is the dot in the 'i' called": "tittle",
-    "Which US state is nicknamed the 'Old Dominion' state": "virginia",
-    "What instrument does Meg White play in the band White Stripes": "drums",
-    "What did the class entering Harvard in the fall of 1967 have for the first time": "women",
-    "Playwright Thomas Lanier 'Tennessee' Williams was born in what US state": "mississippi",
-    "What country proclaimed the birth of its billionth citizen in 2000": "india",
-    "What were ivories to an old west gambler": "dice"
-}
+import os
+import json
 
 current_trivia = {}
 user_points = {}
 list_name = "trivia:points"
+question_list = {}
+
+def new_question():
+    category = random.choice(question_list.keys())
+    question = random.choice(question_list[category].keys())
+    current_trivia['question'] = question
+    current_trivia['category'] = category
+    current_trivia['answer'] = question_list[category][question]
+
 
 @hook.command
 def trivia(bot_input, bot_output):
@@ -63,10 +24,12 @@ def trivia(bot_input, bot_output):
     elif "score" in bot_input.input_string:
         get_points(bot_input, bot_output)
     else:
-        question = random.choice(science.keys())
-        current_trivia['question'] = question
-        current_trivia['answer'] = science[question]
-        bot_output.say('{0}?'.format(question))
+        if not current_trivia.has_key('question'):
+            new_question()
+        else:
+            bot_output.say("Use '.answer' to get the answer and a new question\nCurrent question:")
+        bot_output.say('Category: %(category)s\n%(question)s?' % current_trivia)
+
 
 @hook.command
 def answer(bot_input, bot_output):
@@ -74,8 +37,8 @@ def answer(bot_input, bot_output):
         check_trivia(bot_input, bot_output)
     else:
         bot_output.say("Okay, {0}.  The answer to {1} is {2}".format(bot_input.nick, current_trivia['question'], current_trivia['answer']))
-        current_trivia['question'] = ''
-
+        new_question()
+        bot_output.say('Category: %(category)s\n%(question)s?' % current_trivia)
 
 def check_trivia(bot_input, bot_output):
     if current_trivia['question']:
@@ -83,20 +46,29 @@ def check_trivia(bot_input, bot_output):
         if guess in current_trivia['answer']:
             add_point(bot_input.nick)
             bot_output.say("That's correct, {0}.  The answer to {1} is {2}".format(bot_input.nick, current_trivia['question'], current_trivia['answer']))
-            current_trivia['question'] = ''
+            new_question()
+            bot_output.say('Next question\nCategory: %(category)s\n%(question)s?' % current_trivia)
         else:
-            bot_output.say("WRONG!")
+            bot_output.say("WRONG {0}!".format(bot_input.nick).upper())
 
 def add_point(nick):
     points = int(storage.get_hash_value(list_name, nick) or 0)
     user_points[nick] = points + 1
     storage.set_hash_value(list_name, nick, user_points[nick])
 
-@hook.regex(r'trivia score', run_always=True)
 def get_points(bot_input, bot_output):
     messages = []
     for user, points in user_points.iteritems():
         messages.append("%s has %d" % (user,points))
     bot_output.say("Current Score: ")
-    bot_output.say(", ".join(messages))
+    bot_output.say("\n".join(messages))
 
+
+def load_questions(category, file):
+    questions = open(file, 'r')
+    question_list[category] = json.load(questions)
+
+
+files = os.listdir('trivia')
+for file_name in files:
+    load_questions(file_name, 'trivia/' + file_name)

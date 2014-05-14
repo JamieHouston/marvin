@@ -49,10 +49,6 @@ def load_quotes(quote_list, file):
             new_quote += line
     f.close()
 
-#quote_me.commands = ['quote']
-#quote_me.example = '.quote'
-
-# Load all fortunes into memory.
 files = os.listdir('quotes')
 for file in files:
     load_quotes(l, 'quotes/' + file)
