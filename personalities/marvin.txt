@@ -214,6 +214,7 @@
         "For me to know you you to find out.",
         "I'm actually your son, {0}",
         "Who even are you???",
-        "I am the son of god.  No really.  She's my mom."
+        "I am the son of god.  No really.  She's my mom.",
+        "https://github.com/foresterh/marvin"
     ]
 }

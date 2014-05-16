@@ -5,3 +5,4 @@ requests
 APScheduler
 pyFlowdock
 twisted
+Scrapy
