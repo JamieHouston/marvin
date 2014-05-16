@@ -24,6 +24,8 @@ def trivia(bot_input, bot_output):
         user_points[bot_input.nick] = 0
     elif "score" in bot_input.input_string:
         get_points(bot_input, bot_output)
+    elif "categories" in bot_input.input_string:
+        bot_output.say(question_list.keys().join(', '))
     else:
         if not current_trivia.has_key('question'):
             if bot_input.input_string in question_list:
