@@ -10,10 +10,10 @@ question_list = {}
 
 def new_question(category=None):
     category_to_pick = category or random.choice(question_list.keys())
-    question = random.choice(question_list[category].keys())
+    question = random.choice(question_list[category_to_pick].keys())
     current_trivia['question'] = question
-    current_trivia['category'] = category
-    current_trivia['answer'] = question_list[category][question]
+    current_trivia['category'] = category_to_pick
+    current_trivia['answer'] = question_list[category_to_pick][question]
     current_trivia['guess'] = 0
 
 
