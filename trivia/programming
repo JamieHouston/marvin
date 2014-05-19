@@ -1,5 +1,5 @@
 {
-    "Which of the following JavaScript libraries was originally built as an add-on library extension to the Yahoo! User Interface Libary (YUI)": "extjs",
+    "What Javascript libraries was originally built as an add-on library extension to the Yahoo! User Interface Libary (YUI)": "extjs",
     "Who is the creator of the Javascript programming language": ["brendan eich", "brendan", "eich"],
     "What is the running time of a binary search on a sorted array of n elements": ["o(lg n)", "o lg n", "o(log n)", "o log n"],
     "In what year was the specification for the COBOL language created": 1959,

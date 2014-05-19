@@ -122,3 +122,8 @@ def yes_no(bot_input, bot_output):
 @hook.regex(r'welcome back')
 def welcome_back(bot_input, bot_output):
     bot_output.say(random.choice(bot_output.responses["welcome_back"]))
+
+
+@hook.regex('i give up')
+def give_up(bot_input, bot_ouput):
+    bot_ouput.say('how French of you, {0}'.format(bot_input.nick))

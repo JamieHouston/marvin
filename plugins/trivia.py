@@ -62,6 +62,7 @@ def check_trivia(bot_input, bot_output):
             new_question()
             bot_output.say('Next question\nCategory: %(category)s\n%(question)s?' % current_trivia)
         else:
+            current_trivia['guess'] += 1
             bot_output.say("WRONG {0}! Minus 1 point!".format(bot_input.nick).upper())
             add_point(bot_input.nick, -1)
 
