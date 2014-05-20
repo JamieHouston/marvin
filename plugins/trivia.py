@@ -67,8 +67,8 @@ def check_trivia(bot_input, bot_output):
             add_point(bot_input.nick, -1)
 
 def add_point(nick, points):
-    points = int(storage.get_hash_value(list_name, nick) or 0)
-    user_points[nick] = points + points
+    current_score = int(storage.get_hash_value(list_name, nick) or 0)
+    user_points[nick] = current_score + points
     storage.set_hash_value(list_name, nick, user_points[nick])
 
 def get_points(bot_input, bot_output):
