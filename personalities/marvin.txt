@@ -187,8 +187,7 @@
     "pinging": [
         "I'm gonna ping my foot in your face.",
         "I got your ping right here.",
-        "BONG. I mean PONG.",
-        "YEEESS???? WHAT??? WHAT??? REALLY!!???"
+        "YEEESS???? WHAT??? WHAT??? REALLY!!"
     ],
     "nothing_for_you": [
         "How weak... nothing for you",
@@ -207,6 +206,11 @@
         "Who even are you!?",
         "Stranger Danger!",
         "There's a new sherrif in town"
+    ],
+    "github": [
+        "looking now, {0}.  Be patient with me or don't.  It's your dime",
+        "Let me check the trailer, {0}.",
+        "As if you're actually going to do anything with the results, {0}.  But I'll humor you."
     ],
     "who_am_i": [
         "I'm a failed hackday experiment.",

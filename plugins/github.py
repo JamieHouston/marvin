@@ -19,7 +19,7 @@ def github(bot_input, bot_output):
     org = gi.get_organization("daptiv")
     repos = org.get_repos()
     found_pull_requests = False
-    bot_output.say("looking now, {0}.  Be patient with me or don't.  It's your dime.".format(bot_input.nick))
+    bot_output.say(random.choice(bot_output.responses["github"]).format(bot_input.nick))
 
     for repo in repos:
         pull_requests = get_pull_requests(repo, github_name)
