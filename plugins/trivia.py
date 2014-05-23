@@ -15,13 +15,22 @@ def new_question(category=None):
     current_trivia['category'] = category_to_pick
     current_trivia['answer'] = question_list[category_to_pick][question]
     current_trivia['guess'] = 0
+    current_trivia['multiplier'] = 1
 
+def compare_values(guess, answer):
+    if textutils.is_int(answer) and textutils.is_int(guess):
+        return int(answer) == int(guess)
+    elif type(answer) is list:
+        return guess in answer
+    else:
+        return textutils.equal_letters(guess, answer)
 
 @hook.command
 def trivia(bot_input, bot_output):
     if "reset" in bot_input.input_string:
         storage.set_hash_value(list_name, bot_input.nick, 0)
         user_points[bot_input.nick] = 0
+        bot_output.say("{0}'s score is now 0".format(bot_input.nick))
     elif "score" in bot_input.input_string:
         get_points(bot_input, bot_output)
     elif "categories" in bot_input.input_string:
@@ -33,7 +42,7 @@ def trivia(bot_input, bot_output):
             else:
                 new_question()
         else:
-            bot_output.say("Use '.answer' to get the answer and a new question\nCurrent question:")
+            bot_output.say("Use '.answer' to get the answer and a new question\nUse .trivia categories to see all categories\nUse .trivia <category name> to get questions from a certain category\nUse .trivia points to see current score\nUse birth control to prevent more wrong answers\n\nCurrent question:")
         bot_output.say('Category: %(category)s\n%(question)s?' % current_trivia)
 
 
@@ -44,13 +53,16 @@ def answer(bot_input, bot_output):
     else:
         bot_output.say("Okay, {0}.  The answer to {1} is {2}".format(bot_input.nick, current_trivia['question'], current_trivia['answer']))
         new_question()
+        if random.choice(range(20)) == 1:
+            bot_output.say("NOISE NOISE NOISE\nDaily Double!\nThe next correct answer is worth 10 times the normal amount!\nThat's binary double, in case you're wondering.\nNOISE NOISE NOISE")
+            current_trivia['multiplier'] = 10
         bot_output.say('Category: %(category)s\n%(question)s?' % current_trivia)
 
 def check_trivia(bot_input, bot_output):
     if current_trivia['question']:
         guess = textutils.sanitize_message(bot_input.input_string)
         current_answer = current_trivia['answer']
-        if (current_answer is int and guess == current_answer) or (guess in current_answer):
+        if compare_values(guess, current_answer):
             bot_output.say("That's correct, {0}.  The answer to {1} is {2}".format(bot_input.nick, current_trivia['question'], current_trivia['answer']))
             if current_trivia['guess'] == 0:
                 bot_output.say('2 points for guessing on the first try.')
@@ -68,6 +80,8 @@ def check_trivia(bot_input, bot_output):
 
 def add_point(nick, points):
     current_score = int(storage.get_hash_value(list_name, nick) or 0)
+    if points > 0:
+        points = points * current_trivia['multiplier']
     user_points[nick] = current_score + points
     storage.set_hash_value(list_name, nick, user_points[nick])
 
