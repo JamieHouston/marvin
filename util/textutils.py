@@ -17,4 +17,4 @@ def strip(text):
 
 
 def equal_letters(first, second):
-    return strip(first) == strip(second)
+    return strip(first).lower() == strip(second).lower()

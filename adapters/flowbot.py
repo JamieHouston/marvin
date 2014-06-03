@@ -40,7 +40,7 @@ class BotOutput():
     def say(self, msg):
         if not msg or len(msg) < 1:
             return
-        msg = self.filter_words(msg)
+        msg = self.filter_words(msg).format(self.user_nick)
         logger.log("sending message %s" % msg[:20])
         channel_pieces = self.channel.split("/")
         url = "https://api.flowdock.com/flows/%s/%s/messages" % (channel_pieces[0], channel_pieces[1])
@@ -109,7 +109,7 @@ class BotOutput():
                     try:
                         bot_input.nick = self.get_user_by_id(data["user"])["nick"]
                         self.user_id = data["user"]
-                        if random.random() < (self.chattiness / 10):
+                        if random.random() < (self.chattiness / 100):
                             logger.log("Randomly sending message to %s" % bot_input.nick)
                             self.private_message(data["user"], random.choice(self.responses["private_messages"]))
                     except Exception as e:
@@ -120,6 +120,7 @@ class BotOutput():
                 else:
                     bot_input.nick = "anonymous"
                 bot_input.bot = bot
+                self.user_nick = bot_input.nick
 
                 marvin.process(bot_input, self)
 
