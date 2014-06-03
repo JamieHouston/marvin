@@ -40,7 +40,8 @@ class BotOutput():
     def say(self, msg):
         if not msg or len(msg) < 1:
             return
-        msg = self.filter_words(msg).format(self.user_nick)
+        if hasattr(self, 'user_nick'):
+            msg = self.filter_words(msg).format(self.user_nick)
         logger.log("sending message %s" % msg[:20])
         channel_pieces = self.channel.split("/")
         url = "https://api.flowdock.com/flows/%s/%s/messages" % (channel_pieces[0], channel_pieces[1])
