@@ -10,5 +10,8 @@
     "How many sides does a rhombus have": 4,
     "What is the common name for a 'circumorbital hematoma'": "black eye",
     "What part of the body does a Rhinologist specialize in": "science",
-    "How many ounces are there in a pound": 16
+    "How many ounces are there in a pound": 16,
+    "At 8:00 p.m. in Miami, what time is it in Boston": [8, "8:00", "8:00PM", "8PM"],
+    "What is 'Capis lupus familiaris'": ["dog", "pet dog"],
+    "Which planet's satellites are mostly named after Shakespeare characters": "Uranus"
 }

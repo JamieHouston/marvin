@@ -17,7 +17,7 @@ def add_to_list(bot_input, bot_output):
 def search_list(bot_input, bot_output):
     if bot_input.groupdict():
         list_name = bot_input.groupdict()["request"]
-        if storage.has_key(list_name):
+        if list_name in storage:
             bot_output.say(", ".join(storage.get_list(list_name)))
         else:
             bot_output.say("There's as many items on that list as there are friends in your phone.")
@@ -26,7 +26,7 @@ def search_list(bot_input, bot_output):
 def show_random_list_item(bot_input, bot_output):
     if bot_input.groupdict():
         list_name = bot_input.groupdict()["request"]
-        if storage.has_key(list_name):
+        if list_name in storage:
             result = storage.get_random_value(list_name)
             bot_output.say("I pick %s" % result)
         else:

@@ -37,7 +37,7 @@ def crazy_phrases(bot_input, bot_output):
 
 @hook.regex(r'crazy phrases users', run_always=True)
 def crazy_phrases_users(bot_input, bot_output):
-    users = user_phrases.keys()
+    users = list(user_phrases.keys())
     bot_output.say("Current Users Playing: ")
     bot_output.say(", ".join(users))
 
@@ -45,7 +45,7 @@ def crazy_phrases_users(bot_input, bot_output):
 @hook.regex(r'crazy phrases score', run_always=True)
 def crazy_phrases_score(bot_input, bot_output):
     messages = []
-    for user, points in user_points.iteritems():
+    for user, points in user_points.items():
         messages.append("%s has %d" % (user,points))
     bot_output.say("Current Score: ")
     bot_output.say(", ".join(messages))
@@ -53,7 +53,7 @@ def crazy_phrases_score(bot_input, bot_output):
 
 @hook.regex(r'.*', run_always=True)
 def check_phrases(bot_input, bot_output):
-    for user, phrase in user_phrases.iteritems():
+    for user, phrase in user_phrases.items():
         if phrase == textutils.sanitize_message(bot_input.message):
             if user == bot_input.nick:
                 user_points[user] = user_points[user] + 1

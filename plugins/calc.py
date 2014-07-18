@@ -28,7 +28,7 @@ def calculate(bot_input, bot_output):
         answer = answer.decode('unicode-escape')
         answer = ''.join(chr(ord(c)) for c in answer)
         answer = answer.decode('utf-8')
-        answer = answer.replace(u'\xc2\xa0', ',')
+        answer = answer.replace('\xc2\xa0', ',')
         answer = answer.replace('<sup>', '^(')
         answer = answer.replace('</sup>', ')')
         answer = web.decode(answer)

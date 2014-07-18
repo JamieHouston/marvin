@@ -1,5 +1,5 @@
 from util import hook, storage
-from github import Github
+from .github import Github
 import random
 
 @hook.command

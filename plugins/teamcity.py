@@ -1,16 +1,14 @@
 import json
-import urllib2
-import base64
 from datetime import datetime, timedelta
-from util import hook
-from xml.dom.minidom import parse, parseString
+from util import hook, web
 
 
 class TeamCity:
 
     def __init__(self, username, password, server):
         self.TC_REST_URL = "http://%s/app/rest/" % server
-        self.userpass = '%s:%s' % (username, password)
+        self.username = username
+        self.password = password
         self.locators = {}
 
     # count:<number> - serve only the specified number of builds
@@ -104,22 +102,21 @@ class TeamCity:
         full_resource_url = self.resource
         if len(self.locators) > 0:
             # print self.locators
-            locators ='?locator=' + ','.join(["%s:%s" % (k, v) for k, v in self.locators.iteritems()])
+            locators ='?locator=' + ','.join(["%s:%s" % (k, v) for k, v in self.locators.items()])
             full_resource_url = full_resource_url + locators
         return full_resource_url
 
     def get_from_server(self):
         full_resource_url = self.compose_resource_path()
-        print full_resource_url
-        req = urllib2.Request(full_resource_url)
-        base64string = base64.encodestring(self.userpass).replace('\n', '')
-        req.add_header("Authorization", "Basic %s" % base64string)
-        req.add_header('Accept', 'application/json')
-        response = urllib2.urlopen(req)
-        res = response.read()
-        data = json.loads(res)
-        response.close()
-        return data
+        # print(full_resource_url)
+        # req = urllib.request.Request(full_resource_url)
+        # base64string = base64.encodestring(self.userpass).replace('\n', '')
+        # req.add_header("Authorization", "Basic %s" % base64string)
+        # req.add_header('Accept', 'application/json')
+        # response = urllib.request.urlopen(req)
+        # res = response.read()
+        response = web.get_json(full_resource_url, self.username, self.password)
+        return response
 
     def get_server_info(self):
         return self.set_resource('server')

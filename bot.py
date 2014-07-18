@@ -36,7 +36,7 @@ class Bot(object):
 
 bot = Bot()
 
-print 'Loading plugins'
+print('Loading plugins')
 
 # bootstrap the reloader
 eval(compile(open(os.path.join('core', 'reload.py'), 'U').read(),
@@ -54,12 +54,12 @@ logger.log("Connecting to IRC")
 bot.conns = {}
 bot.credentials = {}
 try:
-    for name, conf in bot.config['connections'].iteritems():
+    for name, conf in list(bot.config['connections'].items()):
         conf["responses"] = personality.load_personality(conf["nick"].lower())
         bot.conns[name] = adapter_class.BotOutput(conf)
-    for name, conf in bot.config['credentials'].iteritems():
+    for name, conf in list(bot.config['credentials'].items()):
         bot.credentials[name] = conf
-except Exception, e:
+except Exception as e:
     logger.log("malformed config file %s" % e, logging.ERROR)
     sys.exit()
 
@@ -76,15 +76,17 @@ while (last_error - last_run).seconds > 10:
     reload()  # these functions only do things
     config()  # if changes have occured
 
-    for conn in bot.conns.itervalues():
+    for conn in list(bot.conns.values()):
         try:
             last_run = datetime.now()
             conn.run(bot)
             #out = conn.out.get_nowait()
             #main(conn, out)
         except SystemExit as ex:
+            logger.log(ex)
             last_error = last_run
         except Exception as e:
+            logger.log(e)
             for info in sys.exc_info():
                 logger.log("error info: " + str(info))
             #logger.log("Unexpected error: %s" % sys.exc_info())

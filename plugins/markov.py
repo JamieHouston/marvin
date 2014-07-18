@@ -26,14 +26,14 @@ class Markov(object):
         return self.activities > 3
 
     def load_data(self):
-        print "loading data"
+        print("loading data")
         if os.path.exists(self.filename):
             self.word_table = pickle.load(open(self.filename, 'r'))
         else:
             self.word_table = {}
 
     def _save_data(self):
-        print "saving data"
+        print("saving data")
         fh = open(self.filename, 'w')
         fh.write(pickle.dumps(self.word_table))
         fh.close()
@@ -46,20 +46,20 @@ class Markov(object):
                 yield (words[i:i + self.chain_length + 1])
 
     def generate_message(self, person, size=15, seed_key=None):
-        print "trying to generate message for %s" % person
+        print("trying to generate message for %s" % person)
         person_words = len(self.word_table.get(person, {}))
         if person_words < size:
             return "not enough words %d" % person_words
 
         if not seed_key:
-            seed_key = random.choice(self.word_table[person].keys())
-            print "using seed key %s" % ','.join(seed_key)
+            seed_key = random.choice(list(self.word_table[person].keys()))
+            print("using seed key %s" % ','.join(seed_key))
 
         message = []
-        for i in xrange(self.messages_to_generate):
+        for i in range(self.messages_to_generate):
             words = seed_key
             gen_words = []
-            for i in xrange(size):
+            for i in range(size):
                 if words[0] == self.stop_word:
                     break
 
@@ -73,7 +73,7 @@ class Markov(object):
                 message = list(gen_words)
 
         result = ' '.join(message)
-        print "returning message %s" % result
+        print("returning message %s" % result)
         return result
 
 

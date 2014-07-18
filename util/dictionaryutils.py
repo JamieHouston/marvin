@@ -7,7 +7,7 @@ def tree():
 
 def unflatten_dict(dictionary):
     resultDict = dict()
-    for key, value in dictionary.iteritems():
+    for key, value in dictionary.items():
         parts = key.split(".")
         d = resultDict
         for part in parts[:-1]:
@@ -21,7 +21,7 @@ def unflatten_dict(dictionary):
 def unflatten_dictx(flat_dict):
     #result = tree()
     result = {}
-    for key, val in flat_dict.iteritems():
+    for key, val in flat_dict.items():
         chunks = key.split('.')
         if len(chunks) == 1:
             result[key] = val

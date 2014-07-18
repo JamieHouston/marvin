@@ -4,7 +4,7 @@ from opcode import *
 import sys
 import threading
 import traceback
-import StringIO
+import io
 
 last_error = threading.local()
 
@@ -40,7 +40,7 @@ class ExceptionWithContext(Exception):
         try:
             base_string = Exception.__str__(self)
             if self.__context__ is None: return base_string
-            file = StringIO.StringIO()
+            file = io.StringIO()
             traceback.print_exception(type(self.__context__), self.__context__, \
                                       self.__traceback__, file = file)
             return base_string + '\n\n' + \
@@ -51,8 +51,8 @@ class ExceptionWithContext(Exception):
 
 def calling_frame():
     # TODO: change this to allow more modules to take part
-    import sys, thread
-    id = thread.get_ident()
+    import sys, _thread
+    id = _thread.get_ident()
     frame = sys._current_frames()[id]
     while frame.f_globals is globals():
         if not frame.f_back:
@@ -87,8 +87,8 @@ def f():
     except:pass
     finally:pass
 
-opcodes = [opcode for index, opcode in get_opcodes(f.func_code)]
-_opcodes = zip([None] + opcodes, opcodes + [None])
+opcodes = [opcode for index, opcode in get_opcodes(f.__code__)]
+_opcodes = list(zip([None] + opcodes, opcodes + [None]))
 assert ('SETUP_FINALLY', 'SETUP_EXCEPT') in _opcodes, """this is important for an assumption in is_in_error_handling. When try:except:finally: occur there must be two opening blocks right after each other. {}""".format(opcodes)
 
 del f, _opcodes, opcodes
@@ -134,17 +134,17 @@ def exception_context():
         i -= 1
     counted_except_ends = 0
     while i < len(opcodes):
-        print op_name(i).ljust(20), i,
-        if op_name(i) in ('SETUP_EXCEPT', 'SETUP_FINALLY'): print '+1',
-        if op_name(i) in ('END_FINALLY',): print '-1',
-        if i == tb_index: print 'tb',
-        if i == lasti: print 'frame',
+        print(op_name(i).ljust(20), i, end=' ')
+        if op_name(i) in ('SETUP_EXCEPT', 'SETUP_FINALLY'): print('+1', end=' ')
+        if op_name(i) in ('END_FINALLY',): print('-1', end=' ')
+        if i == tb_index: print('tb', end=' ')
+        if i == lasti: print('frame', end=' ')
         if i == lasti:
-            print "last!", counted_except_ends
+            print("last!", counted_except_ends)
             if counted_except_ends > 0 :
                 return ty, err, tb
             return None, None, None
-        print
+        print()
         if 'END_FINALLY' == op_name(i):
             counted_except_ends -= 1
         if op_name(i) in ('SETUP_EXCEPT', 'SETUP_FINALLY'):

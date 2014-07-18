@@ -1,6 +1,4 @@
-from util import hook
-import base64
-import urllib2
+from util import hook, web
 import json
 import textwrap
 import datetime
@@ -13,15 +11,16 @@ class Target_Process():
 
     def __init__(self, tp_name, username, password):
         self.data = []
-        self.user = username
+        self.username = username
         self.password = password
         self.tp_uri = tp_name
 
     def get_object(self, api_suffix):
-        auth = base64.encodestring("%s:%s" % (self.user, self.password)).strip()
-        request = urllib2.Request(self.tp_uri + api_suffix + "&format=json")
-        request.add_header("Authorization", "Basic %s" % auth)
-        response = urllib2.urlopen(request)
+        # auth = base64.encodestring("%s:%s" % (self.user, self.password)).strip()
+        # request = urllib.request.Request(self.tp_uri + api_suffix + "&format=json")
+        # request.add_header("Authorization", "Basic %s" % auth)
+        # response = urllib.request.urlopen(request)
+        response = web.get_json(self.tp_uri + api_suffix, auth=(self.username, self.password))
         return response.read()
 
 def json_date_as_datetime(jd):

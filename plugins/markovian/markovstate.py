@@ -1,8 +1,8 @@
 import time
 import itertools
 
-import tokenise
-import main
+from . import tokenise
+from . import main
 
 
 class MarkovStateError(Exception):
@@ -43,7 +43,7 @@ class MarkovState:
 
         if seed is None:
             seed = int(time.time())
-            print("Warning: using seed {}".format(seed))
+            print(("Warning: using seed {}".format(seed)))
 
         if len(prefix) > self.markov.n:
             print("Warning: truncating prefix")

@@ -115,7 +115,7 @@ def thanks(bot_input, bot_output):
 @hook.regex(r'(yes|no)')
 def yes_no(bot_input, bot_output):
     yesno = ("Of course not.", "Wrong answer!", "Why?", "Are you sure?")
-    if random.choice(range(3)) == 1:
+    if random.choice(list(range(3))) == 1:
         bot_output.say(random.choice(yesno))
 
 
