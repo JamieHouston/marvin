@@ -8,5 +8,6 @@ def config(bot):
         try:
             bot.config = json.load(open('config'))
             bot._config_mtime = config_mtime
-        except ValueError, e:
-            print 'ERROR: malformed config!', e
+        except ValueError as e:
+            print('ERROR: malformed config!')
+            print(e)
