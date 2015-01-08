@@ -1,4 +1,4 @@
-from flowdock import JSONStream
+from core. streaming_api import JSONStream
 from core import marvin
 from util import logger, web, dictionaryutils
 import random
@@ -10,25 +10,24 @@ class BotInput(object):
     def __setitem__(self, key, value):
         self[key] = value
 
-
 class BotOutput():
-
     def __init__(self, config):
         self.setup(config)
 
     def setup(self, config):
         # TODO: Get these settings from config
-        self.token = "78919f0677a07708fc78286b14b7c8b161b238f0"
+        self.token = "bedbdf23d59f0cfdb7bc9513be09ae5aa6c0d753"
         # chattiness on a scale of 0 to 1 (most is every time)
-        self.chattiness = 0.5
-        self.room = "foresterh/random"
-        self.nick = "Marvin"
+        self.chattiness = 1
+        self.room = "foresterh/marvin"
+        self.nick = "Marvin0"
         self.master = "foresterh"
         self.users = []
-        self.responses = []
+        self.responses = config["responses"]
+        self.personality = config["nick"]
         self.personality = self.nick
-        self.room_id = "546b9c52db8155e6700d5e23"
-
+        self.room_id = "54ade1fbdb8155e6700e750b"
+        self.api_root = "https://api.gitter.im/v1/"
 
     def filter_words(self, msg):
         #filtered = web.get_text('http://www.purgomalum.com/service/plain?text={0}'.format(msg))
@@ -41,27 +40,24 @@ class BotOutput():
         if hasattr(self, 'user_nick'):
             msg = self.filter_words(msg).format(self.user_nick)
         logger.log("sending message %s" % msg[:20])
-        url = "https://api.gitter.im/v1/rooms/%s/chatMessages" % self.room_id
+        url = "%srooms/%s/chatMessages" % (self.api_root, self.room_id)
         data = {"text": msg}
-        response = web.post_json(url, self.token, data)
+        response = web.post_json_secure(url, self.token, data)
         self.spoken = True
 
     def private_message(self, user, msg):
         logger.log("sending private message %s" % msg[:20])
-        url = "https://api.flowdock.com/private/{0}/messages".format(user)
+        # TODO: Private message (listen and send)
+        #url = "https://api.flowdock.com/private/{0}/messages".format(user)
+        url = "%srooms/%s/chatMessages" % (self.api_root, self.room_id)
         data = {"event": "message", "content": msg}
         response = web.post_json(url, self.username, self.password, **data)
 
-
     def get_users(self):
-        endpoint = "users"
-        url = "https://api.flowdock.com/v1/%s"
-
-        user_endpoint = url % endpoint
+        user_endpoint = "%srooms/%s/users" % (self.api_root, self.room_id)
         logger.log("hitting endpoint: %s" % user_endpoint)
-        self.users = web.get_json(user_endpoint, self.username, self.password)
+        self.users = web.get_json_secure(user_endpoint, self.token)
         return self.users
-
 
     def get_user_by_id(self, user_id):
         if not self.users:
@@ -75,11 +71,14 @@ class BotOutput():
     def get_user_by_name(self, user_name):
         if not self.users:
             self.get_users()
-        user = [u for u in self.users if u["nick"].lower() == user_name.lower()]
+        user = [u for u in self.users if u["username"].lower() == user_name.lower()]
         if user and len(user):
             return user[0]
         return {"nick": "anonymous", "id": 0}
 
+    def get_rooms(self):
+        rooms_endpoint = "%srooms" % (self.api_root)
+        return web.get_json_secure(rooms_endpoint, self.token)
 
     def get_user_by_email(self, user_email):
         if not self.users:
@@ -90,33 +89,25 @@ class BotOutput():
         return {"nick": user_email}
 
     def _parse_stream(self, bot):
-        stream = JSONStream(self.flow_user_api_key)
-        gen = stream.fetch([self.channel], active=True)
+        stream = JSONStream(self.token)
+        gen = stream.fetch()
         for data in gen:
-            process_message = type(data) == dict and (data['event'] == "message" or data['event'] == "comment")
-            if process_message and ("user" in data and self.user != data["user"]):
+            process_message = type(data) == dict and ("text" in data)
+            if process_message and ("fromUser" in data and self.user != data["fromUser"]["username"]):
+                from_user = data["fromUser"]["username"]
                 self.spoken = False
                 bot_input = BotInput()
-                if type(data['content']) is dict:
-                    bot_input.message = data["content"]['text']
-                elif "content" in data:
-                    bot_input.message = data["content"]
-                else:
-                    break
-                if ("user" in data and int(data["user"]) > 0):
-                    try:
-                        bot_input.nick = self.get_user_by_id(data["user"])["nick"]
-                        self.user_id = data["user"]
-                        if random.random() < (self.chattiness / 100):
-                            logger.log("Randomly sending message to %s" % bot_input.nick)
-                            self.private_message(data["user"], random.choice(self.responses["private_messages"]))
-                    except Exception as e:
-                        logger.error(e)
-                        self.say(bot.responses["stranger"])
-                elif ("external_name" in data):
-                    bot_input.nick = data["external_name"]
-                else:
-                    bot_input.nick = "anonymous"
+                bot_input.message = data["text"]
+                try:
+                    bot_input.nick = from_user
+                    bot_input.displayName = data["fromUser"]["displayName"]
+                    self.user_id = data["fromUser"]["id"]
+                    if random.random() < (self.chattiness / 100):
+                        logger.log("Randomly sending message to %s" % bot_input.nick)
+                        #self.private_message(data["user"], random.choice(self.responses["private_messages"]))
+                except Exception as e:
+                    logger.error(e)
+                    self.say(bot.responses["stranger"])
                 bot_input.bot = bot
                 self.user_nick = bot_input.nick
 

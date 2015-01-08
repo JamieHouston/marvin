@@ -5,7 +5,7 @@ import sys
 import adapters
 import time
 from datetime import datetime,timedelta
-from adapters import console,flowbot
+from adapters import console,flowbot,gitter
 from util import logger
 import logging
 import argparse
