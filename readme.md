@@ -1,6 +1,8 @@
 Marvin
 ---------
 
+[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/foresterh/marvin?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 Python bot for fun and usefulness.
 Got it's attitude from the Hitchhiker's Guide to the Galaxy
 
