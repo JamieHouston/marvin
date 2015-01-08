@@ -1,5 +1,6 @@
 from util import hook
 import base64
+import urllib
 import urllib2
 import json
 import textwrap
@@ -8,19 +9,22 @@ import datetime
 
 class Target_Process():
     user = ''
-    password = ''
     tp_uri = ''
+    token = ''
 
-    def __init__(self, tp_name, username, password):
+    def __init__(self, tp_uri, token):
         self.data = []
-        self.user = username
-        self.password = password
-        self.tp_uri = tp_name
+        self.tp_uri = tp_uri
+        self.token = token
 
     def get_object(self, api_suffix):
-        auth = base64.encodestring("%s:%s" % (self.user, self.password)).strip()
-        request = urllib2.Request(self.tp_uri + api_suffix + "&format=json")
-        request.add_header("Authorization", "Basic %s" % auth)
+        auth_token = "&token=%s" % (self.token)
+        request_string = self.tp_uri + api_suffix + "&format=json" + auth_token
+
+        # TODO: remove debugging
+        print request_string
+
+        request = urllib2.Request(request_string)
         response = urllib2.urlopen(request)
         return response.read()
 
@@ -37,13 +41,42 @@ def json_date_as_datetime(jd):
     return datetime.datetime(1970, 1, 1) \
         + datetime.timedelta(microseconds=ms * 1000)
 
-@hook.regex(r'\bt(?:arget)?\ {0,2}p(?:rocess)?\ {1,2}recent\ {1,2}(?:(?P<days>\d{1,2})\ {0,2}da?y?s?|(?P<hours>\d{1,2})\ {0,2}ho?u?r?s?)\s*$', run_always=True)
+#@hook.regex(r'tp', run_always=True)
+def get_stories_by_user(tp, login):
+    output_string = ""
+    query = "UserStories?include=[Name,EntityState,ModifyDate,Effort]&where=" + urllib.quote_plus("(AssignedUser.Login eq '" + login + "') and (EntityState.Name eq 'In Progress')")
+    print query
+    for user_story in json.loads(
+            tp.get_object(query))["Items"]:
+
+        story_id = str(user_story["Id"])
+        padding = " " * len(story_id + " - ")
+
+        output_string += "\n\t" + ("\n\t" + padding).join(textwrap.wrap(story_id  + " - " + user_story["Name"] + " [" + str(user_story["Effort"]) + "pt, " + user_story["EntityState"]["Name"] + "]", 80)) + "\n"
+
+    return output_string
+
+@hook.command
 def target_process(bot_input, bot_output):
-    tp = Target_Process(bot_input.credentials["url"], bot_input.credentials["login"], bot_input.credentials["password"])
+    tp = Target_Process(bot_input.credentials["url"], bot_input.credentials["token"])
+    print("Target Process Object:", tp)
+    print dir(tp)
 
-    days = bot_input.groupdict()["days"]
-    hours = bot_input.groupdict()["hours"]
+    output_string = get_stories_by_user(tp, bot_input.credentials["login"])
+    bot_output.say(output_string.encode('UTF-8'))
 
+#@hook.regex(r'\bt(?:arget)?\ {0,2}p(?:rocess)?\ {1,2}recent\ {1,2}(?:(?P<days>\d{1,2})\ {0,2}da?y?s?|(?P<hours>\d{1,2})\ {0,2}ho?u?r?s?)\s*$', run_always=True)
+@hook.command
+def get_stories_advanced(bot_input, bot_output):
+    print repr(bot_input)
+
+    tp = Target_Process(bot_input.credentials["url"], bot_input.credentials["token"])
+
+    #days = bot_input.groupdict()["days"]
+    #hours = bot_input.groupdict()["hours"]
+
+    days = "4"
+    hours = "1"
     if days is not None:
         comparison_date =  datetime.datetime.now() + datetime.timedelta(-1*int(days))
         output_string = "Stories modified in the last " + days + " days: \n"
