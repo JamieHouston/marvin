@@ -48,9 +48,10 @@ def run_bot():
     bot.conns = {}
     bot.credentials = {}
     try:
-        for name, conf in bot.config['connections'].iteritems():
-            conf["responses"] = personality.load_personality(conf["nick"].lower())
-            bot.conns[name] = adapter_class.BotOutput(conf)
+        if adapter_name in bot.config['adapters']:
+            for room, conf in bot.config['adapters'][adapter_name]["rooms"].iteritems():
+                conf["responses"] = personality.load_personality(conf["personality"].lower())
+                bot.conns[room] = adapter_class.BotOutput(conf)
         for name, conf in bot.config['credentials'].iteritems():
             bot.credentials[name] = conf
     except Exception as e:
