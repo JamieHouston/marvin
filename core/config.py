@@ -1,7 +1,7 @@
 import json
 import os
 
-def config():
+def config(bot):
     # reload config from file if file has changed
     config_mtime = os.stat('config').st_mtime
     if bot._config_mtime != config_mtime:
@@ -10,6 +10,3 @@ def config():
             bot._config_mtime = config_mtime
         except ValueError, e:
             print 'ERROR: malformed config!', e
-
-
-bot._config_mtime = 0

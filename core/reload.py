@@ -31,7 +31,7 @@ def format_plug(plug, kind='', lpad=0, width=40):
     return out
 
 
-def reload(init=False):
+def reload(bot, init=False):
     changed = False
 
     if init:
@@ -57,7 +57,7 @@ def reload(init=False):
                 continue
 
             if filename == os.path.join('core', 'reload.py'):
-                reload(init=init)
+                reload(bot, init=init)
                 return
 
     fileset = set(glob.glob(os.path.join('plugins', '*.py')))
