@@ -47,7 +47,28 @@ def teampr(bot_input, bot_output):
             team_members = t.get_members()
             for repo in team_repos:
                 for member in team_members:
+                    pull_requests = display_pull_requests_for_team_member(repo, member)
+                    if pull_requests:
+                        bot_output.say("Open Pull Requests for " + member.login)
+                        bot_output.say('\n'.join(pull_requests))
+
+
+@hook.command
+def teamneedsreview(bot_input, bot_output):
+    ".teamneedsreview -- gives a list of pending pull requests for user. Ommitting teamnames uses last one passed in"
+
+    gi = Github(bot_input.credentials["login"], bot_input.credentials["password"])
+    org = gi.get_organization("daptiv")
+    team = org.get_teams()
+
+    for t in team:
+        if t.name == "HackDayMarvin":
+            team_repos = t.get_repos()
+            team_members = t.get_members()
+            for repo in team_repos:
+                for member in team_members:
                     pull_requests = get_pull_requests_for_team_member(repo, member)
+                    pull_requests = get_unreviewed_pull_requests(pull_requests)
                     if pull_requests:
                         bot_output.say("Open Pull Requests for " + member.login)
                         bot_output.say('\n'.join(pull_requests))
@@ -74,11 +95,30 @@ def get_pull_requests(repo, github_name):
     return results
 
 
-def get_pull_requests_for_team_member(repo, team_member):
+def display_pull_requests_for_team_member(repo, team_member):
     results = []
     open_pull_requests = repo.get_pulls("open")
     if open_pull_requests:
         for pull in open_pull_requests:
             if pull.body and pull.user == team_member:
                 results.append(" - {0} - {1}/files?w=1".format(pull.title, pull.html_url))
+    return results
+
+def get_pull_requests_for_team_member(repo, team_member):
+    results = []
+    open_pull_requests = repo.get_pulls("open")
+    if open_pull_requests:
+        for pull in open_pull_requests:
+            if pull.body and pull.user == team_member:
+                results.append(pull)
+    return results
+
+
+def get_unreviewed_pull_requests(pull_requests):
+    results = []
+    search_string = "[ ] @"
+    if pull_requests:
+        for pull in pull_requests:
+            if pull.body and search_string in pull.body:
+                results.append("{0} - {1}/files?w=1".format(pull.title, pull.html_url))
     return results
