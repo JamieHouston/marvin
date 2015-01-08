@@ -5,7 +5,7 @@ import sys
 import adapters
 import time
 from datetime import datetime,timedelta
-from adapters import console,flowbot
+from adapters import *
 from util import logger
 import logging
 import argparse
@@ -45,6 +45,7 @@ eval(compile(open(os.path.join('core', 'reload.py'), 'U').read(),
 reload(init=True)
 
 config()
+
 if not hasattr(bot, 'config'):
     logger.log("no config found for bot", logging.ERROR)
     exit()
