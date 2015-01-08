@@ -5,3 +5,10 @@ config
 .idea
 .idea/*
 node_modules
+
+# vagrant adds these
+.vagrant/*
+bin/*
+lib/*
+local/*
+include/*
