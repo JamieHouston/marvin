@@ -6,6 +6,6 @@ def command(bot_input, bot_output):
         result = ["For creating:",
                   "DbDeployConsole.exe /eps /eds /els /create /ppmServers=%COMPUTERNAME% /PPM=PPM6_Development",
                   "For updating:",
-                  "DbDeployConsole.exe /eps /eds /els /ppmServers=%COMPUTERNAME% /ppm=PPM6_Development",
+                  "DbDeployConsole.exe /eps /eds /els /ppmServers=%COMPUTERNAME%",
                   "Remove the /ppm switch to apply to all databases"]
         bot_output.say('\n'.join(result))

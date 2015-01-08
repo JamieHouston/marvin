@@ -2,6 +2,7 @@ import redis
 
 try:
     server = redis.StrictRedis(host='pub-redis-14854.us-east-1-2.2.ec2.garantiadata.com', port=14854, db=0, password="marvin")
+    server.ping()
 except:
     server = None
 

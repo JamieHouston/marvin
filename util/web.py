@@ -1,4 +1,5 @@
 import urllib2, base64, urllib
+import requests
 from bs4 import BeautifulSoup
 import json
 import random
@@ -36,6 +37,13 @@ def get_json(url, username=None, password=None):
     if data:
         return json.loads(data)
     return None
+
+def post_json(url, token, body):
+    headers = {
+        'Authorization': 'Bearer {}'.format(token),
+        'Accept-Encoding': 'gzip'
+    }
+    requests.post(url, data=json.dumps(body), headers=headers)
 
 
 def post_json(url, username, password, **kwargs):
