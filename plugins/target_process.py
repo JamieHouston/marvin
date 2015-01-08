@@ -56,13 +56,26 @@ def get_stories_by_user(tp, login):
 
     return output_string
 
+def get_story_by_id(tp, id):
+    output_string = ""
+    query = "UserStories?include=[Name,EntityState,ModifyDate,Effort]&where=" + urllib.quote_plus("(Id eq '" + id + "')")
+    print query
+    for user_story in json.loads(
+            tp.get_object(query))["Items"]:
+
+        story_id = str(user_story["Id"])
+        padding = " " * len(story_id + " - ")
+
+        output_string += "\n\t" + ("\n\t" + padding).join(textwrap.wrap(story_id  + " - " + user_story["Name"] + " [" + str(user_story["Effort"]) + "pt, " + user_story["EntityState"]["Name"] + "]", 80)) + "\n"
+
+    return output_string
 @hook.command
 def target_process(bot_input, bot_output):
     tp = Target_Process(bot_input.credentials["url"], bot_input.credentials["token"])
     print("Target Process Object:", tp)
     print dir(tp)
 
-    output_string = get_stories_by_user(tp, bot_input.credentials["login"])
+    output_string =  get_story_by_id(tp, bot_input.input_string.encode("utf-8"))
     bot_output.say(output_string.encode('UTF-8'))
 
 #@hook.regex(r'\bt(?:arget)?\ {0,2}p(?:rocess)?\ {1,2}recent\ {1,2}(?:(?P<days>\d{1,2})\ {0,2}da?y?s?|(?P<hours>\d{1,2})\ {0,2}ho?u?r?s?)\s*$', run_always=True)
