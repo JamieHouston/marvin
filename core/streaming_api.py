@@ -1,6 +1,9 @@
 # coding: utf-8
 import json
 import requests
+from util import logger
+import traceback
+import sys
 
 STREAMING_API_URL = "https://stream.gitter.im/v1/rooms/{room_id}/chatMessages"
 DEFAULT_CONTENT_TYPE = 'application/json'
@@ -35,10 +38,16 @@ class StreamingAPI(object):
 
     def fetch(self):
         for line in self.stream.iter_lines(self.STREAM_CHUNK_SIZE):
-            if line and line != ':':
-                if self.accept == DEFAULT_CONTENT_TYPE:
-                    yield json.loads(line)
-                yield line
+            if line and len(line.strip()) and line != ':':
+                try:
+                    result = json.loads(line)
+                    yield result
+                except Exception as e:
+                    print "error parsing line"
+                    print line
+                    print traceback.format_exc()
+                    for info in sys.exc_info():
+                        logger.log("error info: " + str(info))
 
 
 def JSONStream(personal_api_token, room_id):
