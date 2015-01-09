@@ -15,18 +15,10 @@ class BotOutput():
         self.setup(config)
 
     def setup(self, config):
-        # TODO: Get these settings from config
-        self.token = "bedbdf23d59f0cfdb7bc9513be09ae5aa6c0d753"
-        # chattiness on a scale of 0 to 1 (most is every time)
-        self.chattiness = 1
-        self.room = "foresterh/marvin"
-        self.nick = "Marvin0"
-        self.master = "foresterh"
+        for k,v in config.iteritems():
+            setattr(self, k, v)
+
         self.users = []
-        self.responses = config["responses"]
-        self.personality = config["nick"]
-        self.personality = self.nick
-        self.room_id = "54ade1fbdb8155e6700e750b"
         self.api_root = "https://api.gitter.im/v1/"
 
     def filter_words(self, msg):
@@ -89,7 +81,7 @@ class BotOutput():
         return {"nick": user_email}
 
     def _parse_stream(self, bot):
-        stream = JSONStream(self.token)
+        stream = JSONStream(self.token, self.room_id)
         gen = stream.fetch()
         for data in gen:
             process_message = type(data) == dict and ("text" in data)
