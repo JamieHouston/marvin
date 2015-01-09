@@ -186,7 +186,7 @@ class TeamCity:
 
 @hook.regex(r'(show all projects)', run_always=True)
 def teamcity(bot_input, bot_output):
-    tc = TeamCity(bot_input.credentials['login'], bot_input.credentials['password'], bot_input.credentials['server'])
+    tc = TeamCity(bot_input.bot.credentials["team_city"]["login"], bot_input.bot.credentials["team_city"]["password"], bot_input..bot.credentials["team_city"]["server"])
     tc.get_all_projects()
     data = tc.get_from_server()
 
