@@ -10,7 +10,9 @@ class BotInput(object):
 
 class BotOutput():
     def __init__(self, config):
-        print "Hello"
+        for k,v in config.iteritems():
+            setattr(self, k, v)
+
         self.spoken = False
         self.responses = config["responses"]
         self.chattiness = 0.01
@@ -31,7 +33,8 @@ class BotOutput():
 
 
     def run(self, bot):
-        nick = raw_input("What shall I call you? ")
+        nick = self.master
+        #nick = raw_input("What shall I call you? ")
         print("Well hello there {}.  What can I do for you?".format(nick))
         while True:
             self.spoken = False

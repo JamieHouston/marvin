@@ -1,5 +1,16 @@
 {
   "adapters": {
+    "console": {
+      "rooms": {
+        "main": {
+          "master": "me",
+          "chattiness": 1,
+          "nick": "marvin",
+          "personality": "marvin",
+          "debug": "False"
+        }
+      }
+    },
     "gitter": {
       "rooms": {
         "marvin": {

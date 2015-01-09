@@ -52,6 +52,11 @@ def run_bot():
             for room, conf in bot.config['adapters'][adapter_name]["rooms"].iteritems():
                 conf["responses"] = personality.load_personality(conf["personality"].lower())
                 bot.conns[room] = adapter_class.BotOutput(conf)
+        else:
+            error_message = "Adapter not found in config: {0}".format(adapter_name)
+            print(error_message)
+            logger.error(error_message, logging.ERROR)
+            sys.exit()
         for name, conf in bot.config['credentials'].iteritems():
             bot.credentials[name] = conf
     except Exception as e:
