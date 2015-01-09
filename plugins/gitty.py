@@ -163,7 +163,7 @@ class Github_Helper(object):
                     for homie in match:
                         results.append(" - [ ] @{0}".format(homie))
         return results
-
+    
     def get_stand_up_by_user(self, user):
         # Hardcode repos for now
         gi = Github(self.bot_input.bot.credentials["github"]["login"], self.bot_input.bot.credentials["github"]["password"])
