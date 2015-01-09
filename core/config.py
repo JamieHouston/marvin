@@ -17,7 +17,7 @@ if not os.path.exists('config'):
               "flow_user_api_key": "API_KEY",
               "flow_token": "FLOW_TOKEN",
               "nick": "Marvin",
-              "channel": "daptiv/bot",
+              "channel": "daptiv/marvinfeaturebranchtest",
               "debug": "False",
               "username": "USERNAME",
               "password": "PASSWORD",
