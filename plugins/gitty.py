@@ -53,6 +53,16 @@ class Github_Helper(object):
             self.bot_output.say(random.choice(self.bot_output.responses["nothing_for_you"]))
 
 
+    def get_team_members(self):
+        gi = Github(self.bot_input.bot.credentials["github"]["login"], self.bot_input.bot.credentials["github"]["password"])
+        org = gi.get_organization("daptiv")
+        team = org.get_teams()
+
+        for t in team:
+            if t.name == "HackDayMarvin":
+                return t.get_members()
+
+
     def teampr(self):
         ".teampr [teamname] -- gives a list of pending pull requests for user. Ommitting teamnames uses last one passed in"
 
