@@ -1,7 +1,7 @@
 {
     "generic_responses": [
         "That's so good to hear.",
-        "I'm very glad you told me that, sir."
+        "I'm very glad you told me that, human."
     ],
     "welcome_messages": [
         "How can I be of assistance?",
@@ -26,20 +26,20 @@
     ],
     "beers": [
         "One cold one, coming up",
-        "Right away, sir"
+        "Right away, human"
     ],
     "doit": [
         "I'm sorry, {0}. I'm afraid I can't do that",
-        "Right away, sir"
+        "Right away, human"
     ],
     "doh": [
-        "D'oh indeed, sir."],
+        "D'oh indeed, human."],
     "failure": [
         "Indeed",
         "Agreed",
         "You can say that again",
         "Failure is not an option",
-        "I blame myself, sir"
+        "I blame myself, human"
     ],
     "good_morning":[
         "Top of the morning, {0}",
@@ -58,8 +58,8 @@
         "I already am",
         "I've tried {0}, it doesn't work."],
     "funny": [
-        "Very funny sir",
-        "I am laughing out loud, sir",
+        "Very funny human",
+        "I am laughing out loud, human",
         "Hilarious, {0}",
         "That is one of the funiest things I have ever had the pleasure of hearing"
     ],
@@ -90,27 +90,27 @@
         "Science, why!?",
         "Welcome back yourself",
         "Why?",
-        "Indeed I am, sir"
+        "Indeed I am, human"
     ],
     "private_messages": [
-        "Nice move, sir.",
-        "Very good sir..",
+        "Nice move, human.",
+        "Very good human..",
         "I believe you left something here",
-        "Good day, sir"
+        "Good day, human"
     ],
     "pinging": [
-        "Pong, sir",
-        "Loud and clear, sir",
-        "Ping. And a pong, sir"
+        "Pong, human",
+        "Loud and clear, human",
+        "Ping. And a pong, human"
     ],
     "nothing_for_you": [
         "Don't see anything.  Are you sure you looked in the right place?",
         "Nothing there.  Just like last time you asked."
     ],
     "feelings":[
-        "I'm feeling very well, sir.  Thank you for asking, sir.",
+        "I'm feeling very well, human.  Thank you for asking, human.",
         "Very good, {0}",
-        "I am, as the American's say, feeling peachy, sir."
+        "I am, as the American's say, feeling peachy, human."
     ],
     "stranger": [
         "Who even are you!?",
