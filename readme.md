@@ -1,7 +1,7 @@
 Marvin
 ---------
 
-[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/foresterh/marvin?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/foresterh/marvin?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)  (opens in same tab)
 
 Python bot for fun and usefulness.
 Got it's attitude from the Hitchhiker's Guide to the Galaxy
@@ -11,13 +11,23 @@ Got it's roots from pyFlowbot and Phenny and a few other distant cousins.
 Now it's own bot.
 
 -To use
+(optionally) install and run redis (in separate tab)
+
+``` $ brew install redis ```
+
+``` $ redis-server ```
+
+install pip
+
+``` sudo easy_install pip ```
+
 install requirements
 
-    $ pip install -r requirements.txt
+``` $ sudo pip install -r requirements.txt ```
 
-copy ./core/config.copy to ./config and update logins and passwords (to use flowdock and any authenticated apis like github)
+copy core/config.copy to ./config and update logins and passwords (to use flowdock and any authenticated apis like github)
 
-    $ cp ./config.copy config
+    $ cp core/config.copy config
 
 mark bot.py as executable or just run with python:
 
@@ -29,8 +39,7 @@ add argument to determine adapter (where input and output come from).  Currently
 
 when all else fails
      
-$
-$ python bot.py -h
+``` $ python bot.py -h ```
 
 --Storage
 Storage module uses redis, so unless you change that, you should have redis running on the default settings.

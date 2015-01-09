@@ -1,38 +1,72 @@
 {
-          "connections":
-          {
-            "hr":
-            {
-              "flow_user_api_key": "FLOWDOCK_API_KEY",
-              "flow_token": "FLOWDOCK_TOKEN",
-              "nick": "Marvin",
-              "channel": "daptiv/bot",
-              "debug": "False",
-              "username": "FLOWDOCK_EMAIL",
-              "password": "FLOWDOCK_PASSWORD",
-              "master": "jamie",
-              "chattiness": 0.01
-            }
-          },
-          "enabled_plugins": [],
-          "disabled_plugins": ["interactive"],
-          "disabled_commands": [],
-          "acls": {},
-          "api_keys": {},
-          "credentials":{
-            "gitter": {
-                "token": "GITTER_API_KEY",
-                "oauth_key": "GITTER_OAUTH_KEY",
-                "oauth_secret": "GITTER_OAUTH_SECRET"
-            },
-            "github":{
-                "login": "GITHUB_LOGIN",
-                "password": "GITHUB_PASSWORD"
-            },
-            "target_process":{
-                "login": "TP_LOGIN",
-                "password": "TP_PASSWORD",
-                "url": "http://daptiv.tpondemand.com/api/v1/",
-                "team_name": "FSM"}
-          }
+  "adapters": {
+    "console": {
+      "rooms": {
+        "main": {
+          "master": "me",
+          "chattiness": 1,
+          "nick": "marvin",
+          "personality": "marvin",
+          "debug": "False"
         }
+      }
+    },
+    "gitter": {
+      "rooms": {
+        "marvin": {
+          "token": "TOKEN",
+          "room_name": "USER\/REPO",
+          "room_id": "ROOM_ID",
+          "master": "USERNAME",
+          "chattiness": 1,
+          "nick": "USERNAME",
+          "personality": "marvin",
+          "debug": "True"
+        }
+      }
+    },
+    "flowbot": {
+      "rooms": {
+        "bot": {
+          "flow_user_api_key": "FLOW_API_KEY",
+          "flow_token": "FLOW_TOKEN",
+          "nick": "Marvin",
+          "channel": "ORG\/CHANNEL",
+          "debug": "False",
+          "username": "EMAIL",
+          "password": "PASSWORD",
+          "master": "USERNAME",
+          "chattiness": 0.01,
+          "personality": "marvin"
+        }
+      }
+    }
+  },
+  "enabled_plugins": [
+    
+  ],
+  "disabled_plugins": [
+    
+  ],
+  "disabled_commands": [
+    
+  ],
+  "acls": {
+    
+  },
+  "api_keys": {
+    
+  },
+  "credentials": {
+    "github": {
+      "login": "LOGIN",
+      "password": "PASSWORD"
+    },
+    "target_process": {
+      "login": "LOGIN",
+      "password": "PASSWORD",
+      "url": "http:\/\/daptiv.tpondemand.com\/api\/v1\/",
+      "team_name": "TEAM"
+    }
+  }
+}

@@ -5,7 +5,7 @@ import sys
 import adapters
 import time
 from datetime import datetime,timedelta
-from adapters import console,flowbot
+from adapters import console,flowbot,gitter
 from util import logger
 import logging
 import argparse
@@ -48,9 +48,15 @@ def run_bot():
     bot.conns = {}
     bot.credentials = {}
     try:
-        for name, conf in bot.config['connections'].iteritems():
-            conf["responses"] = personality.load_personality(conf["nick"].lower())
-            bot.conns[name] = adapter_class.BotOutput(conf)
+        if adapter_name in bot.config['adapters']:
+            for room, conf in bot.config['adapters'][adapter_name]["rooms"].iteritems():
+                conf["responses"] = personality.load_personality(conf["personality"].lower())
+                bot.conns[room] = adapter_class.BotOutput(conf)
+        else:
+            error_message = "Adapter not found in config: {0}".format(adapter_name)
+            print(error_message)
+            logger.error(error_message, logging.ERROR)
+            sys.exit()
         for name, conf in bot.config['credentials'].iteritems():
             bot.credentials[name] = conf
     except Exception as e:

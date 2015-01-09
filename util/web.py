@@ -38,13 +38,22 @@ def get_json(url, username=None, password=None):
         return json.loads(data)
     return None
 
-def post_json(url, token, body):
+def post_json_secure(url, token, body):
     headers = {
         'Authorization': 'Bearer {}'.format(token),
         'Accept-Encoding': 'gzip'
     }
-    requests.post(url, data=json.dumps(body), headers=headers)
+    return requests.post(url, data=body, headers=headers)
 
+def get_json_secure(url, token):
+    headers = {
+        'Authorization': 'Bearer {}'.format(token),
+        'Accept-Encoding': 'gzip'
+    }
+    data = requests.get(url, headers=headers)
+    if data:
+        return json.loads(data.text)
+    return None
 
 def post_json(url, username, password, **kwargs):
     request = build_request(url, username, password)
