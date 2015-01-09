@@ -11,6 +11,7 @@ import logging
 import argparse
 from plugins import personality
 from core import reload, config
+import traceback
 
 def run_bot():
 
@@ -85,6 +86,7 @@ def run_bot():
             except SystemExit as ex:
                 last_error = last_run
             except Exception as e:
+                print logger.error(traceback.format_exc())
                 for info in sys.exc_info():
                     logger.log("error info: " + str(info))
                 #logger.log("Unexpected error: %s" % sys.exc_info())

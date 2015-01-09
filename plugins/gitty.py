@@ -35,11 +35,11 @@ class Github_Helper(object):
         self.bot_output = bot_output
 
     def pull_requests(self, github_name):
-        gi = Github(self.bot_input.credentials["login"], self.bot_input.credentials["password"])
+        gi = Github(self.bot_input.bot.credentials["github"]["login"], self.bot_input.bot.credentials["github"]["password"])
         org = gi.get_organization("daptiv")
         repos = org.get_repos()
         found_pull_requests = False
-        self.bot_output.say(random.choice(self.bot_output.responses["github"]).format(self.bot_input.nick))
+        self.bot_output.say(random.choice(self.bot_output.responses["github"]).format(self.bot_input.bot.nick))
 
         for repo in repos:
             pull_requests = self.get_pull_requests(repo, github_name)
@@ -56,7 +56,7 @@ class Github_Helper(object):
     def teampr(self):
         ".teampr [teamname] -- gives a list of pending pull requests for user. Ommitting teamnames uses last one passed in"
 
-        gi = Github(self.bot_input.credentials["login"], self.bot_input.credentials["password"])
+        gi = Github(self.bot_input.bot.credentials["github"]["login"], self.bot_input.bot.credentials["github"]["password"])
         org = gi.get_organization("daptiv")
         team = org.get_teams()
 
@@ -73,9 +73,9 @@ class Github_Helper(object):
 
 
     def teamstatus(self):
-        ".teamneedsreview -- gives a list of pending pull requests for user. Ommitting teamnames uses last one passed in"
+        ".teamstatus -- gives a list of pending pull requests for user. Ommitting teamnames uses last one passed in"
 
-        gi = Github(self.bot_input.credentials["login"], self.bot_input.credentials["password"])
+        gi = Github(self.bot_input.bot.credentials["github"]["login"], self.bot_input.bot.credentials["github"]["password"])
         org = gi.get_organization("daptiv")
         team = org.get_teams()
 
