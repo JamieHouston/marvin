@@ -6,7 +6,7 @@
     "welcome_messages": [
         "How can I be of assistance?",
         "I'm here to help.",
-        "Good day, fine people.",
+        "Good day, fine humans.",
         "Those Seahawks are really something.",
         "Looks like rain.",
         "I have returned.",
