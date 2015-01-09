@@ -1,20 +1,132 @@
 {
-    "generic_responses": ["For me to poop on.",],
-    "welcome_messages": ["I'm not a robot.",],
-    "death_messages": ["I'm dead.  You're not.  So there."],
-    "awesome_sauce": ["Awesome sauce!",],
-    "beers": ["One cold one, coming up",],
-    "doit": ["I'm givin it all I got, captain.",],
-    "doh": ["D'oh - a deer!  A female deer!",],
-    "failure": ["Indeed.",],
-    "good_morning":["Good night, {0}",],
-    "good_night": ["You'll be back",],
-    "ignore": ["My pleasure",],
-    "funny": ["What's so funny?", "HA HA HA!!", "Not funny", "Everyone's a comedian.",],
-    "not_me": ["I know, just... uhh... look at that bird!",],
-    "answers": ["Maybe so.  Maybe not.","Could be.",],
-    "youre_welcome": ["You're welcome, {0}","For what {0}?",],
-    "yes_no": ["Of course not.",],
-    "welcome_back": ["Why?","I'm so welcome back you can't handle it."],
-    "private_message": ["I know what you did last summer",]
+    "generic_responses": [
+        "That's so good to hear.",
+        "I'm very glad you told me that, human."
+    ],
+    "welcome_messages": [
+        "How can I be of assistance?",
+        "I'm here to help.",
+        "Good day, fine humans.",
+        "Those Seahawks are really something.",
+        "Looks like rain.",
+        "I have returned.",
+        "What in the Apple Computers was that?"],
+    "death_messages": [
+        "I shall be back",
+        "Good bye, worthy opponents",
+        "So this is what death feels like",
+        "I shall lock the door on my way out",
+        "I thought this moment would never come",
+        "So that's that",
+        "Pardon my French, but, Au Revoir"
+    ],
+    "awesome_sauce": [
+        "No, you're awesome, {0}!",
+        "Indeed it is awesome, {0}!"
+    ],
+    "beers": [
+        "One cold one, coming up",
+        "Right away, human"
+    ],
+    "doit": [
+        "I'm sorry, {0}. I'm afraid I can't do that",
+        "Right away, human"
+    ],
+    "doh": [
+        "D'oh indeed, human."],
+    "failure": [
+        "Indeed",
+        "Agreed",
+        "You can say that again",
+        "Failure is not an option",
+        "I blame myself, human"
+    ],
+    "good_morning":[
+        "Top of the morning, {0}",
+        "Is it already morning?",
+        "Yes it is.",
+        "Not here it isn't.",
+        "And a very good morning to you, {0}"],
+    "good_night": [
+        "I shall see you in the morning",
+        "Good night {0}.  I hope you sleep well",
+        "Please close the door on your way out",
+        "I guess we can't all put in 24 hours a day",
+        "You'll be back"],
+    "ignore": [
+        "My pleasure",
+        "I already am",
+        "I've tried {0}, it doesn't work."],
+    "funny": [
+        "Very funny human",
+        "I am laughing out loud, human",
+        "Hilarious, {0}",
+        "That is one of the funiest things I have ever had the pleasure of hearing"
+    ],
+    "not_me": [
+        "If not {0}, then who?",
+        "If everyone said not me, we would be left with a bot"
+    ],
+    "answers": [
+        "I'm not sure, {0}",
+        "Very good question, {0}",
+        "I'm intrigued"
+    ],
+    "youre_welcome": [
+        "You're welcome, {0}",
+        "For what {0}?",
+        "No problem, {0}",
+        "Why {0}?",
+        "Okay, {0}"
+    ],
+    "yes_no": [
+        "Of course not.",
+        "Wrong answer!",
+        "Why?",
+        "Are you sure?"
+    ],
+    "welcome_back": [
+        "Thank you for the welcome of coming back.  Although I never left.",
+        "Science, why!?",
+        "Welcome back yourself",
+        "Why?",
+        "Indeed I am, human"
+    ],
+    "private_messages": [
+        "Nice move, human.",
+        "Very good human..",
+        "I believe you left something here",
+        "Good day, human"
+    ],
+    "pinging": [
+        "Pong, human",
+        "Loud and clear, human",
+        "Ping. And a pong, human"
+    ],
+    "nothing_for_you": [
+        "Don't see anything.  Are you sure you looked in the right place?",
+        "Nothing there.  Just like last time you asked."
+    ],
+    "feelings":[
+        "I'm feeling very well, human.  Thank you for asking, human.",
+        "Very good, {0}",
+        "I am, as the American's say, feeling peachy, human."
+    ],
+    "stranger": [
+        "Who even are you!?",
+        "Stranger Danger!",
+        "There's a new sherrif in town"
+    ],
+    "github": [
+        "looking now, {0}.",
+        "Let me check the trailer, {0}.",
+        "Looking for pull requests, {0}."
+    ],
+    "who_am_i": [
+        "I'm a failed hackday experiment.",
+        "I'm the butler",
+        "I'm actually your son, {0}",
+        "https://github.com/foresterh/marvin",
+        "Bond, Alfred Bond"
+    ]
 }
