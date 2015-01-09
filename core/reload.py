@@ -68,7 +68,6 @@ def reload(bot, init=False):
         fileset = [f for f in fileset for e in enabled_plugins if e in f]
     if disabled_plugins:
         fileset = [f for f in fileset for d in disabled_plugins if d not in f]
-    print fileset
 
     # remove deleted/moved plugins
     for name, data in bot.plugs.iteritems():
