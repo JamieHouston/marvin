@@ -55,7 +55,7 @@ def teampr(bot_input, bot_output):
 
 
 @hook.command
-def teamneedsreview(bot_input, bot_output):
+def teamstatus(bot_input, bot_output):
     ".teamneedsreview -- gives a list of pending pull requests for user. Ommitting teamnames uses last one passed in"
 
     gi = Github(bot_input.credentials["login"], bot_input.credentials["password"])
@@ -117,11 +117,11 @@ def get_pull_requests_for_team_member(repo, team_member):
 
 def get_unreviewed_pull_requests(pull_requests):
     results = []
-    search_string = "[ ] @"
     if pull_requests:
         for pull in pull_requests:
-            if pull.body and search_string in pull.body:
-                match = re.search('(?<=\[ \] @)(\w+)', pull.body) #TODO: loop through the groups and add ALL of teh things
-                group = match.group(1)
-                results.append(" - [ ] @{2} :: {0} - {1}/files?w=1".format(pull.title, pull.html_url, group))
+            if pull.body:
+                match = re.findall('(?<=\[ \] @)(\w+)', pull.body)
+                results.append("{0} - {1}/files?w=1".format(pull.title, pull.html_url))
+                for homie in match:
+                    results.append(" - [ ] @{0}".format(homie))
     return results
