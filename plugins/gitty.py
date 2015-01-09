@@ -142,3 +142,21 @@ class Github_Helper(object):
                     for homie in match:
                         results.append(" - [ ] @{0}".format(homie))
         return results
+
+    def get_stand_up_by_user(self, user):
+        # Hardcode repos for now
+        gi = Github(self.bot_input.bot.credentials["github"]["login"], self.bot_input.bot.credentials["github"]["password"])
+        org = gi.get_organization("daptiv")
+        teams = org.get_teams()
+        pull_requests = []
+
+        for t in teams:
+            if t.name == "HackDayMarvin":
+                team_repos = t.get_repos()
+                team_members = t.get_members()
+                for repo in team_repos:
+                    for member in team_members:
+                        if member.login == user:
+                            pull_requests.append(self.get_pull_requests_for_team_member(repo, member))
+
+        return pull_requests
