@@ -67,6 +67,11 @@
       "password": "PASSWORD",
       "url": "http:\/\/daptiv.tpondemand.com\/api\/v1\/",
       "team_name": "TEAM"
+    },
+    "team_city": {
+        "login": "LOGIN",
+        "password": "PASSWORD",
+        "server": "teamcity.hq.daptiv.com"
     }
   }
 }

@@ -7,7 +7,7 @@ import inspect
 
 @hook.command
 def github(bot_input, bot_output):
-    ".github [username] -- gives a list of pending pull requests for user. Ommitting username uses last one passed in"
+    ".github [username] -- gives a list of pending pull requests for user. Ommitting username uses last one passed in\n.github teamstatus -- gives a list of pending pull requests for user. Ommitting teamnames uses last one passed in"
     input_argument = bot_input.input_string
 
     gh = Github_Helper(bot_input, bot_output)
@@ -56,6 +56,8 @@ class Github_Helper(object):
     def teampr(self):
         ".teampr [teamname] -- gives a list of pending pull requests for user. Ommitting teamnames uses last one passed in"
 
+        self.bot_output.say(random.choice(self.bot_output.responses["github"]).format(self.bot_input.bot.nick))
+
         gi = Github(self.bot_input.bot.credentials["github"]["login"], self.bot_input.bot.credentials["github"]["password"])
         org = gi.get_organization("daptiv")
         team = org.get_teams()
@@ -73,7 +75,6 @@ class Github_Helper(object):
 
 
     def teamstatus(self):
-        ".teamstatus -- gives a list of pending pull requests for user. Ommitting teamnames uses last one passed in"
 
         gi = Github(self.bot_input.bot.credentials["github"]["login"], self.bot_input.bot.credentials["github"]["password"])
         org = gi.get_organization("daptiv")
