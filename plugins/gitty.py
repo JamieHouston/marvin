@@ -29,14 +29,28 @@ def github(bot_input, bot_output):
     gh.pull_requests(github_name)
 
 
+@hook.regex(r'create pull request (?P<branch>.*)', run_always=True)
+def create_pull_request(bot_input, bot_output):
+    branch = bot_input.groupdict()["branch"]
+    helper = Github_Helper(bot_input, bot_input)
+    github = Github(bot_input.bot.credentials["github"]["login"], bot_input.bot.credentials["github"]["password"])
+    org = github.get_organization("daptiv")
+    repo = org.get_repo("Ppm")
+    master_branch = "master"
+
+    new_pull_request = repo.create_pull(title=branch, body='\n'.join(helper.get_team_members()), base=master_branch, head=branch)
+
+    bot_output.say(new_pull_request.url)
+
+
 class Github_Helper(object):
     def __init__(self, bot_input, bot_output):
         self.bot_input = bot_input
         self.bot_output = bot_output
 
     def pull_requests(self, github_name):
-        gi = Github(self.bot_input.bot.credentials["github"]["login"], self.bot_input.bot.credentials["github"]["password"])
-        org = gi.get_organization("daptiv")
+        github = Github(self.bot_input.bot.credentials["github"]["login"], self.bot_input.bot.credentials["github"]["password"])
+        org = github.get_organization("daptiv")
         repos = org.get_repos()
         found_pull_requests = False
         self.bot_output.say(random.choice(self.bot_output.responses["github"]).format(self.bot_input.bot.nick))
@@ -52,22 +66,23 @@ class Github_Helper(object):
         else:
             self.bot_output.say(random.choice(self.bot_output.responses["nothing_for_you"]))
 
-
     def get_team_members(self):
-        gi = Github(self.bot_input.bot.credentials["github"]["login"], self.bot_input.bot.credentials["github"]["password"])
-        org = gi.get_organization("daptiv")
+        github = Github(self.bot_input.bot.credentials["github"]["login"], self.bot_input.bot.credentials["github"]["password"])
+        org = github.get_organization("daptiv")
         team = org.get_teams()
+        results = []
 
         for t in team:
             if t.name == "HackDayMarvin":
-                return t.get_members()
-
+                for homie in t.get_members():
+                        results.append(" - [ ] @{0}".format(homie.login))
+        return results
 
     def teampr(self):
         ".teampr [teamname] -- gives a list of pending pull requests for user. Ommitting teamnames uses last one passed in"
 
-        gi = Github(self.bot_input.bot.credentials["github"]["login"], self.bot_input.bot.credentials["github"]["password"])
-        org = gi.get_organization("daptiv")
+        github = Github(self.bot_input.bot.credentials["github"]["login"], self.bot_input.bot.credentials["github"]["password"])
+        org = github.get_organization("daptiv")
         team = org.get_teams()
 
         for t in team:
@@ -81,12 +96,11 @@ class Github_Helper(object):
                             self.bot_output.say("Open Pull Requests for " + member.login)
                             self.bot_output.say('\n'.join(pull_requests))
 
-
     def teamstatus(self):
         ".teamstatus -- gives a list of pending pull requests for user. Ommitting teamnames uses last one passed in"
 
-        gi = Github(self.bot_input.bot.credentials["github"]["login"], self.bot_input.bot.credentials["github"]["password"])
-        org = gi.get_organization("daptiv")
+        github = Github(self.bot_input.bot.credentials["github"]["login"], self.bot_input.bot.credentials["github"]["password"])
+        org = github.get_organization("daptiv")
         team = org.get_teams()
 
         for t in team:
@@ -101,7 +115,6 @@ class Github_Helper(object):
                             self.bot_output.say("Open Pull Requests for " + member.login)
                             self.bot_output.say('\n'.join(pull_requests))
 
-
     def get_pull_requests_by_team(self, repo):
         results = []
         open_pull_requests = repo.get_pulls("open")
@@ -110,7 +123,6 @@ class Github_Helper(object):
                 if pull.body in pull.body:
                     results.append("{0} - {1}/files?w=1".format(pull.title, pull.html_url))
         return results
-
 
     def get_pull_requests(self, repo, github_name):
         results = []
@@ -121,7 +133,6 @@ class Github_Helper(object):
                 if pull.body and search_string in pull.body:
                     results.append("{0} - {1}/files?w=1".format(pull.title, pull.html_url))
         return results
-
 
     def display_pull_requests_for_team_member(self, repo, team_member):
         results = []
@@ -141,7 +152,6 @@ class Github_Helper(object):
                     results.append(pull)
         return results
 
-
     def get_unreviewed_pull_requests(self, pull_requests):
         results = []
         if pull_requests:
@@ -152,3 +162,6 @@ class Github_Helper(object):
                     for homie in match:
                         results.append(" - [ ] @{0}".format(homie))
         return results
+
+
+
