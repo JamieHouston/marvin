@@ -39,7 +39,7 @@
         "Who farted?",
         "It smells like a locker room in here.",
         "Who's ready for some beer pong?",
-        "T'm sexy and you know it",
+        "I'm sexy and you know it",
         "Can I borrow your lighter?",
         "And the bear says 'not on my lawn, please.'",
         "Heeeeeerrreeee's Marvin", "I just flew in and boy are my jokes bad.",
@@ -109,7 +109,7 @@
         "Morning, {0}",
         "Is it already morning?",
         "Yes it is.",
-        "Wha? Oh... athanks for waking me, {0}",
+        "Wha? Oh... thanks for waking me, {0}",
         "Not here it isn't.",
         "Right back atcha, {0}"],
     "good_night": [
@@ -225,6 +225,7 @@
         "I'm actually your son, {0}",
         "Who even are you???",
         "I am the son of god.  No really.  She's my mom.",
-        "https://github.com/foresterh/marvin"
+        "https://github.com/foresterh/marvin",
+        "Bond, Marvin Bond"
     ]
 }
