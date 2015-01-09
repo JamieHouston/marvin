@@ -33,6 +33,7 @@ def format_plug(plug, kind='', lpad=0, width=40):
 
 def reload(bot, init=False):
     changed = False
+
     if init:
         bot.plugs = collections.defaultdict(list)
         bot.threads = {}
@@ -59,16 +60,7 @@ def reload(bot, init=False):
                 reload(bot, init=init)
                 return
 
-    # filter fileset based on enabled/disable plugin configurations
     fileset = set(glob.glob(os.path.join('plugins', '*.py')))
-    disabled_plugins = bot.config["disabled_plugins"]
-    enabled_plugins = bot.config["enabled_plugins"]
-
-    if enabled_plugins:
-        fileset = [f for f in fileset for e in enabled_plugins if e in f]
-    if disabled_plugins:
-        fileset = [f for f in fileset for d in disabled_plugins if d not in f]
-    print fileset
 
     # remove deleted/moved plugins
     for name, data in bot.plugs.iteritems():

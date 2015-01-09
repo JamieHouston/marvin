@@ -34,8 +34,10 @@ def run_bot():
     os.chdir(sys.path[0] or '.')  # do stuff relative to the install directory
 
     print('Loading plugins')
-    config.config(bot)
+
     reload.reload(bot, init=True)
+
+    config.config(bot)
 
     if not hasattr(bot, 'config'):
         logger.log("no config found for bot", logging.ERROR)
