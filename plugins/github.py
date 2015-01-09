@@ -1,6 +1,7 @@
 from util import hook, storage
 from github import Github
 import random
+import re
 
 @hook.command
 def github(bot_input, bot_output):
@@ -120,5 +121,7 @@ def get_unreviewed_pull_requests(pull_requests):
     if pull_requests:
         for pull in pull_requests:
             if pull.body and search_string in pull.body:
-                results.append("{0} - {1}/files?w=1".format(pull.title, pull.html_url))
+                match = re.search('(?<=\[ \] @)(\w+)', pull.body) #TODO: loop through the groups and add ALL of teh things
+                group = match.group(1)
+                results.append(" - [ ] @{2} :: {0} - {1}/files?w=1".format(pull.title, pull.html_url, group))
     return results
