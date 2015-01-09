@@ -1,11 +1,9 @@
 from util import hook
-import base64
 import urllib
 import urllib2
 import json
 import textwrap
 import datetime
-
 
 class Target_Process():
     user = ''
@@ -28,56 +26,60 @@ class Target_Process():
         response = urllib2.urlopen(request)
         return response.read()
 
-def json_date_as_datetime(jd):
-    sign = jd[-7]
-    if sign not in '-+' or len(jd) == 13:
-        ms = int(jd[6:-2])
-    else:
-        ms = int(jd[6:-7])
-        hh = int(jd[-7:-4])
-        mm = int(jd[-4:-2])
-        if sign == '-': mm = -mm
-        ms += (hh * 60 + mm) * 60000
-    return datetime.datetime(1970, 1, 1) \
-        + datetime.timedelta(microseconds=ms * 1000)
+"""
+Main command
+Loads config named "target_process"
+"""
+@hook.command
+def target_process(bot_input, bot_output):
+    tp = Target_Process(bot_input.credentials["url"], bot_input.credentials["token"])
+    user_input = bot_input.input_string.encode("utf-8")
+    #output_string =  get_story_by_id(tp, bot_input.input_string.encode("utf-8"))
+    output_string = get_stand_up_by_user(tp, user_input)
+    bot_output.say(output_string.encode('UTF-8'))
 
-#@hook.regex(r'tp', run_always=True)
-def get_user_stories(tp, login):
-    output_string = ""
-    query = "UserStories?include=[Name,EntityState,ModifyDate,Effort]&where=" + urllib.quote_plus("(AssignedUser.Login eq '" + login + "') and (EntityState.Name eq 'In Progress')")
-    print query
+"""
+Internal Utilities
+"""
+
+# Functions that fetch objects
+def get_user_stories(tp, login, entity_state):
+    where = urllib.quote_plus("(AssignedUser.Login eq '" + login + "') and (EntityState.Name in (" + ', '.join(entity_state) + "))")
+    query = "UserStories?include=[Name,EntityState,ModifyDate,Effort,Tasks]&where=" + where
     return json.loads(tp.get_object(query))["Items"]
 
+def get_task_history_updated_yesterday(tp, taskId):
+    today = datetime.date.today()
+    yesterday = today - datetime.timedelta(days = 1)
+    where = urllib.quote_plus("(Date eq " + yesterday.strftime("'%Y-%m-%d'") + ")")
+    return json.loads(tp.get_object("TaskHistories?include=[Date,EntityState,Modifier]&where=" + where))["Items"]
+
+# Shared formatting for story string
+def get_story_string(user_story):
+    story_id = str(user_story["Id"])
+    padding = " " * len(story_id + " - ")
+    return "\n\t" + ("\n\t" + padding).join(textwrap.wrap(story_id + " - " + user_story["Name"]
+                    + " [" + str(user_story["Effort"]) + "pt, " + user_story["EntityState"]["Name"] + "]", 80)) + "\n"
+
+"""
+Functions that return strings (bot output)
+"""
 def get_stories_by_user(tp, login):
     output_string = ""
-    stories = get_user_stories(tp,login)
+    stories = get_user_stories(tp, login, 'In Progress')
     for user_story in stories:
-
-        story_id = str(user_story["Id"])
-        padding = " " * len(story_id + " - ")
-
-        output_string += "\n\t" + ("\n\t" + padding).join(textwrap.wrap(story_id  + " - " + user_story["Name"] + " [" + str(user_story["Effort"]) + "pt, " + user_story["EntityState"]["Name"] + "]", 80)) + "\n"
+        output_string += get_story_string(user_story)
 
     return output_string
 
 def get_story_by_id(tp, id):
     output_string = ""
-    query = "UserStories?include=[Name,EntityState,ModifyDate,Effort]&where=" + urllib.quote_plus("(Id eq '" + id + "')")
-    print query
-    for user_story in json.loads(
-            tp.get_object(query))["Items"]:
-
-        story_id = str(user_story["Id"])
-        padding = " " * len(story_id + " - ")
-
-        output_string += "\n\t" + ("\n\t" + padding).join(textwrap.wrap(story_id  + " - " + user_story["Name"] + " [" + str(user_story["Effort"]) + "pt, " + user_story["EntityState"]["Name"] + "]", 80)) + "\n"
+    where = urllib.quote_plus("(Id eq '" + id + "')")
+    query = "UserStories?include=[Name,EntityState,ModifyDate,Effort]&where=" + where
+    for user_story in json.loads(tp.get_object(query))["Items"]:
+        output_string += get_story_string(user_story)
 
     return output_string
-
-def get_tasks_by_story(tp, storyId):
-    today = datetime.date.today()
-    yesterday = today - datetime.timedelta(days = 1)
-    return json.loads(tp.get_object("Tasks?include=[Name,UserStory,EntityState,ModifyDate,History]&where=(ModifyDate eq " + yesterday.strftime("'%Y-%m-%d'") + ")"))["Items"]
 
 def get_stand_up_by_user(tp, login):
 
@@ -87,28 +89,17 @@ def get_stand_up_by_user(tp, login):
     # Display any changes done to tasks yesterday
     # Determine what in progress means based on role of assigned user
     output_string = ""
-    stories = get_user_stories(tp,login)
+    stories = get_user_stories(tp, login, ('In Progress', 'Accepted'))
     for user_story in stories:
-        get_tasks_by_story(tp, user_story["Id"])
         story_id = str(user_story["Id"])
-        padding = " " * len(story_id + " - ")
-
-        output_string += "\n\t" + ("\n\t" + padding).join(textwrap.wrap(story_id  + " - " + user_story["Name"] + " [" + str(user_story["Effort"]) + "pt, " + user_story["EntityState"]["Name"] + "]", 80)) + "\n"
+        tasks = get_tasks_updated_yesterday_by_story(tp, story_id)
+        output_string += get_story_string(user_story)
+        print tasks
 
     return output_string
 
-
-@hook.command
-def target_process(bot_input, bot_output):
-    tp = Target_Process(bot_input.credentials["url"], bot_input.credentials["token"])
-    print("Target Process Object:", tp)
-    print dir(tp)
-
-    output_string =  get_story_by_id(tp, bot_input.input_string.encode("utf-8"))
-    bot_output.say(output_string.encode('UTF-8'))
-
-#@hook.regex(r'\bt(?:arget)?\ {0,2}p(?:rocess)?\ {1,2}recent\ {1,2}(?:(?P<days>\d{1,2})\ {0,2}da?y?s?|(?P<hours>\d{1,2})\ {0,2}ho?u?r?s?)\s*$', run_always=True)
-@hook.command
+# Old functionality
+@hook.regex(r'\bt(?:arget)?\ {0,2}p(?:rocess)?\ {1,2}recent\ {1,2}(?:(?P<days>\d{1,2})\ {0,2}da?y?s?|(?P<hours>\d{1,2})\ {0,2}ho?u?r?s?)\s*$', run_always=True)
 def get_stories_advanced(bot_input, bot_output):
     print repr(bot_input)
 
@@ -205,3 +196,17 @@ def get_stories_advanced(bot_input, bot_output):
             lastState = state
 
     bot_output.say(output_string.encode('UTF-8'))
+
+# Utilities
+def json_date_as_datetime(jd):
+    sign = jd[-7]
+    if sign not in '-+' or len(jd) == 13:
+        ms = int(jd[6:-2])
+    else:
+        ms = int(jd[6:-7])
+        hh = int(jd[-7:-4])
+        mm = int(jd[-4:-2])
+        if sign == '-': mm = -mm
+        ms += (hh * 60 + mm) * 60000
+    return datetime.datetime(1970, 1, 1) \
+        + datetime.timedelta(microseconds=ms * 1000)
