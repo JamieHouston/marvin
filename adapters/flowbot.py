@@ -17,20 +17,9 @@ class BotOutput():
         self.setup(config)
 
     def setup(self, config):
-        self.flow_user_api_key = config["flow_user_api_key"]
-        # chattiness on a scale of 0 to 1 (most is every time)
-        self.chattiness = config["chattiness"]
-        self.flow_token = config["flow_token"]
-        self.channel = config["channel"]
-        self.debug = bool(config["debug"])
-        self.nick = config["nick"]
-        self.username = config["username"]
-        self.password = config["password"]
-        self.master = config["master"]
         self.users = []
-        self.responses = config["responses"]
-        self.personality = config["nick"]
-
+        for k,v in config.iteritems():
+            setattr(self, k, v)
 
     def filter_words(self, msg):
         #filtered = web.get_text('http://www.purgomalum.com/service/plain?text={0}'.format(msg))
