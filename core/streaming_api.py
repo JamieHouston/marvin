@@ -11,7 +11,7 @@ DEFAULT_CONTENT_TYPE = 'application/json'
 
 class StreamingAPI(object):
     ALLOWED_STATUSES = (True, 'idle', None)
-    STREAM_CHUNK_SIZE = 128
+    STREAM_CHUNK_SIZE = 1
 
     def __init__(self, personal_api_token, room_id, accept=DEFAULT_CONTENT_TYPE):
         self.api_url = STREAMING_API_URL.format(room_id=room_id)
