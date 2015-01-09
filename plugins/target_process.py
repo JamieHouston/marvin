@@ -42,12 +42,16 @@ def json_date_as_datetime(jd):
         + datetime.timedelta(microseconds=ms * 1000)
 
 #@hook.regex(r'tp', run_always=True)
-def get_stories_by_user(tp, login):
+def get_user_stories(tp, login):
     output_string = ""
     query = "UserStories?include=[Name,EntityState,ModifyDate,Effort]&where=" + urllib.quote_plus("(AssignedUser.Login eq '" + login + "') and (EntityState.Name eq 'In Progress')")
     print query
-    for user_story in json.loads(
-            tp.get_object(query))["Items"]:
+    return json.loads(tp.get_object(query))["Items"]
+
+def get_stories_by_user(tp, login):
+    output_string = ""
+    stories = get_user_stories(tp,login)
+    for user_story in stories:
 
         story_id = str(user_story["Id"])
         padding = " " * len(story_id + " - ")
@@ -69,6 +73,31 @@ def get_story_by_id(tp, id):
         output_string += "\n\t" + ("\n\t" + padding).join(textwrap.wrap(story_id  + " - " + user_story["Name"] + " [" + str(user_story["Effort"]) + "pt, " + user_story["EntityState"]["Name"] + "]", 80)) + "\n"
 
     return output_string
+
+def get_tasks_by_story(tp, storyId):
+    today = datetime.date.today()
+    yesterday = today - datetime.timedelta(days = 1)
+    return json.loads(tp.get_object("Tasks?include=[Name,UserStory,EntityState,ModifyDate,History]&where=(ModifyDate eq " + yesterday.strftime("'%Y-%m-%d'") + ")"))["Items"]
+
+def get_stand_up_by_user(tp, login):
+
+    # Get all stories for user
+    # Get all tasks
+    # Get history of tasks
+    # Display any changes done to tasks yesterday
+    # Determine what in progress means based on role of assigned user
+    output_string = ""
+    stories = get_user_stories(tp,login)
+    for user_story in stories:
+        get_tasks_by_story(tp, user_story["Id"])
+        story_id = str(user_story["Id"])
+        padding = " " * len(story_id + " - ")
+
+        output_string += "\n\t" + ("\n\t" + padding).join(textwrap.wrap(story_id  + " - " + user_story["Name"] + " [" + str(user_story["Effort"]) + "pt, " + user_story["EntityState"]["Name"] + "]", 80)) + "\n"
+
+    return output_string
+
+
 @hook.command
 def target_process(bot_input, bot_output):
     tp = Target_Process(bot_input.credentials["url"], bot_input.credentials["token"])
