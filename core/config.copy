@@ -64,7 +64,7 @@
     },
     "target_process": {
       "login": "LOGIN",
-      "password": "PASSWORD",
+      "token": "fetch from https://daptiv.tpondemand.com/api/v1/Authentication?format=json",
       "url": "http:\/\/daptiv.tpondemand.com\/api\/v1\/",
       "team_name": "TEAM"
     }

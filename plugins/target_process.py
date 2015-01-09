@@ -4,7 +4,11 @@ import urllib2
 import json
 import textwrap
 import datetime
+import shlex
 
+"""
+https://md5.tpondemand.com/api/v1/index/meta
+"""
 class Target_Process():
     user = ''
     tp_uri = ''
@@ -34,8 +38,14 @@ Loads config named "target_process"
 def target_process(bot_input, bot_output):
     tp = Target_Process(bot_input.credentials["url"], bot_input.credentials["token"])
     user_input = bot_input.input_string.encode("utf-8")
-    #output_string =  get_story_by_id(tp, bot_input.input_string.encode("utf-8"))
-    output_string = get_stand_up_by_user(tp, user_input)
+    user_input = shlex.split(user_input)
+    cmd = user_input[0]
+
+    if (cmd == "id"):
+        output_string = get_story_by_id(tp, user_input[1])
+    if (cmd == "su"):
+        output_string = get_stand_up_by_user(tp, user_input[1])
+
     bot_output.say(output_string.encode('UTF-8'))
 
 """
@@ -43,15 +53,21 @@ Internal Utilities
 """
 
 # Functions that fetch objects
-def get_user_stories(tp, login, entity_state):
-    where = urllib.quote_plus("(AssignedUser.Login eq '" + login + "') and (EntityState.Name in (" + ', '.join(entity_state) + "))")
-    query = "UserStories?include=[Name,EntityState,ModifyDate,Effort,Tasks]&where=" + where
+def get_user_stories(tp, login, entity_state, date_modified=''):
+    where = "(AssignedUser.Login eq '" + login + "')"
+    where += "and (EntityState.Name in ('" + '\', \''.join(entity_state) + "'))"
+    if (date_modified):
+        where += "and (ModifyDate eq " + date_modified.strftime("'%Y-%m-%d'") + ")"
+    query = "UserStories?include=[Name,EntityState,ModifyDate,Effort,Tasks]&where=" + urllib.quote_plus(where)
     return json.loads(tp.get_object(query))["Items"]
 
-def get_task_history_updated_yesterday(tp, taskId):
+# https://md5.tpondemand.com/api/v1/TaskHistories/meta
+def get_task_history(tp, taskId, days_edited_ago):
     today = datetime.date.today()
-    yesterday = today - datetime.timedelta(days = 1)
-    where = urllib.quote_plus("(Date eq " + yesterday.strftime("'%Y-%m-%d'") + ")")
+    yesterday = today - datetime.timedelta(days = days_edited_ago)
+    where = "(Date eq %s)" % yesterday.strftime("'%Y-%m-%d'")
+    where += "and (Id eq %s)" % taskId
+    where = urllib.quote_plus(where)
     return json.loads(tp.get_object("TaskHistories?include=[Date,EntityState,Modifier]&where=" + where))["Items"]
 
 # Shared formatting for story string
@@ -89,12 +105,17 @@ def get_stand_up_by_user(tp, login):
     # Display any changes done to tasks yesterday
     # Determine what in progress means based on role of assigned user
     output_string = ""
-    stories = get_user_stories(tp, login, ('In Progress', 'Accepted'))
+    # TODO: change based on the user type
+    stories = get_user_stories(tp, login, ('In Progress', 'In Review', 'Accepted'), datetime.date.today())
     for user_story in stories:
-        story_id = str(user_story["Id"])
-        tasks = get_tasks_updated_yesterday_by_story(tp, story_id)
         output_string += get_story_string(user_story)
-        print tasks
+
+        for task in user_story['Tasks']['Items']:
+            print task
+            task_history = get_task_history(tp, task["Id"], 1)
+            for history in task_history:
+                print history
+                print str(user_story["Id"]) + ", " + history["EntityState"]["Name"] + ", " + history['Modifier']['FirstName'] + "\n"
 
     return output_string
 
