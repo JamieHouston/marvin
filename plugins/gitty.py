@@ -13,10 +13,11 @@ def github(bot_input, bot_output):
     gh = Github_Helper(bot_input, bot_output)
 
     if input_argument:
-        method = getattr(gh, input_argument)
-        if method:
-            method()
-            return
+        if hasattr(gh, input_argument):
+            method = getattr(gh, input_argument)
+            if method:
+                method()
+                return
         github_name = input_argument.lower()
         storage.set_hash_value("github:users", bot_input.nick, github_name)
     else:
@@ -53,7 +54,7 @@ class Github_Helper(object):
         org = github.get_organization("daptiv")
         repos = org.get_repos()
         found_pull_requests = False
-        self.bot_output.say(random.choice(self.bot_output.responses["github"]).format(self.bot_input.bot.nick))
+        self.bot_output.say(random.choice(self.bot_output.responses["github"]).format(self.bot_input.nick))
 
         for repo in repos:
             pull_requests = self.get_pull_requests(repo, github_name)
