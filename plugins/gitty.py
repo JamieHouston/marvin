@@ -74,7 +74,7 @@ class Github_Helper(object):
         results = []
 
         for t in team:
-            if t.name == "HackDayMarvin":
+            if t.name.lower() == self.bot_output.team_name.lower():
                 for homie in t.get_members():
                         results.append(" - [ ] @{0}".format(homie.login))
         return results
@@ -82,14 +82,14 @@ class Github_Helper(object):
     def teampr(self):
         ".teampr [teamname] -- gives a list of pending pull requests for user. Ommitting teamnames uses last one passed in"
 
-        self.bot_output.say(random.choice(self.bot_output.responses["github"]).format(self.bot_input.bot.nick))
+        self.bot_output.say(random.choice(self.bot_output.responses["github"]).format(self.bot_input.nick))
 
         github = Github(self.bot_input.bot.credentials["github"]["login"], self.bot_input.bot.credentials["github"]["password"])
         org = github.get_organization("daptiv")
         team = org.get_teams()
 
         for t in team:
-            if t.name == "HackDayMarvin":
+            if t.name.lower() == self.bot_output.team_name.lower():
                 team_repos = t.get_repos()
                 team_members = t.get_members()
                 for repo in team_repos:
@@ -106,7 +106,7 @@ class Github_Helper(object):
         team = org.get_teams()
 
         for t in team:
-            if t.name == "HackDayMarvin":
+            if t.name.lower() == self.bot_output.team_name.lower():
                 team_repos = t.get_repos()
                 team_members = t.get_members()
                 for repo in team_repos:
@@ -123,7 +123,7 @@ class Github_Helper(object):
         if open_pull_requests:
             for pull in open_pull_requests:
                 if pull.body in pull.body:
-                    results.append("{0} - {1}/files?w=1".format(pull.title, pull.html_url))
+                    results.append("{0} - {1}".format(pull.title, pull.html_url))
         return results
 
     def get_pull_requests(self, repo, github_name):
@@ -133,7 +133,7 @@ class Github_Helper(object):
         if open_pull_requests:
             for pull in open_pull_requests:
                 if pull.body and search_string in pull.body:
-                    results.append("{0} - {1}/files?w=1".format(pull.title, pull.html_url))
+                    results.append("{0} - {1}".format(pull.title, pull.html_url))
         return results
 
     def display_pull_requests_for_team_member(self, repo, team_member):
@@ -142,7 +142,7 @@ class Github_Helper(object):
         if open_pull_requests:
             for pull in open_pull_requests:
                 if pull.body and pull.user == team_member:
-                    results.append(" - {0} - {1}/files?w=1".format(pull.title, pull.html_url))
+                    results.append(" - {0} - {1}".format(pull.title, pull.html_url))
         return results
 
     def get_pull_requests_for_team_member(self, repo, team_member):
@@ -160,7 +160,7 @@ class Github_Helper(object):
             for pull in pull_requests:
                 if pull.body:
                     match = re.findall('(?<=\[ \] @)(\w+)', pull.body)
-                    results.append("{0} - {1}/files?w=1".format(pull.title, pull.html_url))
+                    results.append("{0} - {1}".format(pull.title, pull.html_url))
                     for homie in match:
                         results.append(" - [ ] @{0}".format(homie))
         return results
@@ -173,7 +173,7 @@ class Github_Helper(object):
         pull_requests = []
 
         for t in teams:
-            if t.name == "HackDayMarvin":
+            if t.name.lower() == self.bot_output.team_name.lower():
                 team_repos = t.get_repos()
                 team_members = t.get_members()
                 for repo in team_repos:

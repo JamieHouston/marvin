@@ -7,7 +7,8 @@
           "chattiness": 1,
           "nick": "marvin",
           "personality": "marvin",
-          "debug": "False"
+          "debug": "False",
+          "team_name": "FSM"
         }
       }
     },
@@ -21,7 +22,8 @@
           "chattiness": 1,
           "nick": "USERNAME",
           "personality": "marvin",
-          "debug": "True"
+          "debug": "True",
+          "team_name": "FSM"
         }
       }
     },
@@ -37,7 +39,8 @@
           "password": "PASSWORD",
           "master": "USERNAME",
           "chattiness": 0.01,
-          "personality": "marvin"
+          "personality": "marvin",
+          "team_name": "Marvin"
         }
       }
     }
