@@ -51,15 +51,6 @@
   "disabled_plugins": [
     
   ],
-  "disabled_commands": [
-    
-  ],
-  "acls": {
-    
-  },
-  "api_keys": {
-    
-  },
   "credentials": {
     "github": {
       "login": "LOGIN",

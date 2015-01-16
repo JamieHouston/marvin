@@ -3,7 +3,6 @@ import urllib2
 import base64
 from datetime import datetime, timedelta
 from util import hook
-from xml.dom.minidom import parse, parseString
 
 
 class TeamCity:
@@ -186,7 +185,7 @@ class TeamCity:
 
 @hook.regex(r'(show all projects)', run_always=True)
 def teamcity(bot_input, bot_output):
-    tc = TeamCity(bot_input.bot.credentials["team_city"]["login"], bot_input.bot.credentials["team_city"]["password"], bot_input..bot.credentials["team_city"]["server"])
+    tc = TeamCity(bot_input.bot.credentials["team_city"]["login"], bot_input.bot.credentials["team_city"]["password"], bot_input.bot.credentials["team_city"]["server"])
     tc.get_all_projects()
     data = tc.get_from_server()
 
