@@ -96,7 +96,7 @@ def questions(bot_input, bot_output):
 
 @hook.command
 def slap(bot_input, bot_output):
-    bot_output.say("/slap @%s" % bot_input.nick)
+    bot_output.say("/me slaps @%s with a large trout" % bot_input.nick)
 
 
 @hook.regex(r'(sudo )?make me a sandwich', run_always=True)

@@ -43,7 +43,7 @@
         "Can I borrow your lighter?",
         "And the bear says 'not on my lawn, please.'",
         "Heeeeeerrreeee's Marvin", "I just flew in and boy are my jokes bad.",
-        "This is your bot on flowdock.",
+        "This is your bot on bugs.",
         "What's up y'all!",
         "Anyone see the game last night?",
         "Me again.", "Howdy folks", "I just flew in and boy are my circuits tired.",

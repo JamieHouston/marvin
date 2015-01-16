@@ -1,7 +1,8 @@
-from util import hook, textutils, storage
+from util import hook, textutils, storage, web
 import random
 import os
 import json
+import re
 
 current_trivia = {}
 user_points = {}
@@ -9,11 +10,11 @@ list_name = "trivia:points"
 question_list = {}
 
 def new_question(category=None):
-    category_to_pick = category or random.choice(question_list.keys())
-    question = random.choice(question_list[category_to_pick].keys())
-    current_trivia['question'] = question
-    current_trivia['category'] = category_to_pick
-    current_trivia['answer'] = question_list[category_to_pick][question]
+    questionPage = web.get_raw('http://www.quinterest.org/php/studyresults.php?amount=1&categ=All&difficulty=MS&tournamentyear=All')
+
+    current_trivia['question'] = re.search("<p><em>Question:</em>(.*)</p>").groups()[0]
+    current_trivia['category'] = re.search("(<b>.*</b>){4}<b>(.*)</b><p>").groups()[1]
+    current_trivia['answer'] = re.search("<em><strong>Answer:</strong></em>(.*)</div>").groups()[0]
     current_trivia['guess'] = 0
     current_trivia['multiplier'] = 1
 
