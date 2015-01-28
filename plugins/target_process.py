@@ -37,16 +37,23 @@ Loads config named "target_process"
 """
 @hook.command
 def target_process(bot_input, bot_output):
+    ".target_process id [story id] -- gives details on the story\n.target_process su [tp name] - gives updates on the user\n.target_process team [team name] - show stories for the team that haven't changed in a day"
     tp = Target_Process(bot_input.bot.credentials["target_process"]["url"], bot_input.bot.credentials["target_process"]["token"])
     user_input = bot_input.input_string.encode("utf-8")
     user_input = shlex.split(user_input)
-    cmd = user_input[0]
+    if len(user_input) < 1:
+        output_string = "I don't recognize that command, {0}.\nTry .help target_process"
+    else:
+        cmd = user_input[0]
+        cmd_parameter = user_input[1]
 
-    if (cmd == "id"):
-        output_string = get_story_by_id(tp, user_input[1])
-    if (cmd == "su"):
-        gh = Github_Helper(bot_input, bot_output)
-        output_string = get_stand_up_by_user(tp, gh, user_input[1])
+        if cmd == "id":
+            output_string = get_story_by_id(tp, cmd_parameter)
+        elif cmd == "su":
+            gh = Github_Helper(bot_input, bot_output)
+            output_string = get_stand_up_by_user(tp, gh, cmd_parameter)
+        elif cmd == "team":
+            output_string = get_stories_by_team(tp, cmd_parameter)
 
     bot_output.say(output_string.encode('UTF-8'))
 
@@ -101,6 +108,25 @@ def get_story_by_id(tp, id):
         output_string = "Story not found: " + id
 
     return output_string
+
+def get_stories_by_team(tp, team_name):
+    stories = []
+    active_states = ('In Progress', 'In Review', 'Testing', 'Blocked', 'Done')
+
+    today = datetime.datetime.today()
+
+    where = "(Team.Name eq '" + team_name + "')" \
+            + "and (EntityState.Name in ('" + '\', \''.join(active_states) + "'))"
+
+    query = "UserStories?include=[Name,EntityState,LastStateChangeDate,Effort]&where=" + urllib.quote_plus(where)
+    result = json.loads(tp.get_object(query))
+    for user_story in result["Items"]:
+        last_changed = json_date_as_datetime(user_story["LastStateChangeDate"])
+        if (today - last_changed).days > 1:
+            stories.append("Last Changed: " + last_changed.strftime("'%m-%d-%Y %H:%M'"))
+            stories.append(get_story_string(user_story))
+    return '\n'.join(stories)
+
 
 def get_stand_up_by_user(tp, gh, login):
 
