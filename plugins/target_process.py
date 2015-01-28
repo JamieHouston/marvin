@@ -25,7 +25,7 @@ class Target_Process():
         request_string = self.tp_uri + api_suffix + "&format=json" + auth_token
 
         # TODO: remove debugging
-        #print request_string
+        print request_string
 
         request = urllib2.Request(request_string)
         response = urllib2.urlopen(request)
@@ -94,8 +94,11 @@ def get_story_by_id(tp, id):
     output_string = ""
     where = urllib.quote_plus("(Id eq '" + id + "')")
     query = "UserStories?include=[Name,EntityState,ModifyDate,Effort]&where=" + where
-    for user_story in json.loads(tp.get_object(query))["Items"]:
+    result = json.loads(tp.get_object(query))
+    for user_story in result["Items"]:
         output_string += get_story_string(user_story)
+    if not output_string:
+        output_string = "Story not found: " + id
 
     return output_string
 

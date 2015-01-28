@@ -31,18 +31,25 @@ class BotOutput():
             return
         if hasattr(self, 'user_nick'):
             msg = self.filter_words(msg).format(self.user_nick)
-        logger.log("sending message %s" % msg[:20])
-        channel_pieces = self.channel.split("/")
-        url = "https://api.flowdock.com/flows/%s/%s/messages" % (channel_pieces[0], channel_pieces[1])
-        data = {"event": "message", "content": msg}
-        response = web.post_json(url, self.username, self.password, **data)
-        self.spoken = True
+
+        if self.pm_by_default:
+            self.private_message(self.user_id, msg)
+        else:
+
+            logger.log("sending message %s" % msg[:20])
+            channel_pieces = self.channel.split("/")
+            url = "https://api.flowdock.com/flows/%s/%s/messages" % (channel_pieces[0], channel_pieces[1])
+            data = {"event": "message", "content": msg}
+            response = web.post_json(url, self.username, self.password, **data)
+            self.spoken = True
+
 
     def private_message(self, user, msg):
         logger.log("sending private message %s" % msg[:20])
         url = "https://api.flowdock.com/private/{0}/messages".format(user)
         data = {"event": "message", "content": msg}
         response = web.post_json(url, self.username, self.password, **data)
+        self.spoken = True
 
 
     def get_users(self):
