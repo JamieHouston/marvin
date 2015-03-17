@@ -1,3 +1,8 @@
+<<<<<<< HEAD
+=======
+import urllib2, base64, urllib
+import requests
+>>>>>>> master
 from bs4 import BeautifulSoup
 import random
 import requests
@@ -20,12 +25,46 @@ def get_text(url):
         return random.choice(error_messages)
 
 
-def get_json(url, username=None, password=None):
-    response = requests.get(url, auth=(username, password), params={'format': 'json'})
-    if response and response.text:
-        return response.json()
+def get_json_with_querystring(url, params):
+    r = requests.get(url, params=params)
+    if r.text:
+        return r.text
     return None
 
+
+def get_json(url, username=None, password=None):
+    data = get_raw(url, username, password)
+    if data:
+        return json.loads(data)
+    return None
+
+
+def get_raw(url, username=None, password=None):
+    request = build_request(url, username, password)
+    page = urllib2.urlopen(request)
+    data = page.read().decode("utf-8-sig")
+    if data:
+        return data
+    return None
+
+
+def post_json_secure(url, token, body):
+    headers = {
+        'Authorization': 'Bearer {}'.format(token),
+        'Accept-Encoding': 'gzip'
+    }
+    return requests.post(url, data=body, headers=headers)
+
+
+def get_json_secure(url, token):
+    headers = {
+        'Authorization': 'Bearer {}'.format(token),
+        'Accept-Encoding': 'gzip'
+    }
+    data = requests.get(url, headers=headers)
+    if data:
+        return json.loads(data.text)
+    return None
 
 def post_json(url, username, password, **kwargs):
     response = requests.post(url, auth=(username, password), data=kwargs)

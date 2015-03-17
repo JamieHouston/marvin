@@ -4,4 +4,4 @@ redis
 requests
 APScheduler
 pyFlowdock
-twisted
+Scrapy

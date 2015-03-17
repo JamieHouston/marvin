@@ -69,14 +69,14 @@ def process(bot_input, bot_output):
                 func(bot_input, bot_output)
             except Exception as e:
                 logger.log("Almost died from command: %s" % e)
-                bot_output.say("Wow... that almost killed me... I should fix that.")
+                bot_output.say("Almost died from command: %s" % e)
         else:
-            bot_output.say("What the hell am I supposed to do with that command?")
+            bot_output.say("I don't recognize the command: %s" % input_command)
     else:
         for func, args in bot_input.bot.plugs['regex']:
             m = args['re'].search(bot_input["message"])
             if m:
-                if args['run_always'] or bot_output.chattiness > random.random():
+                if args['run_always'] or direct_message or bot_output.chattiness > random.random():
                     # todo: update groupdict with inp
                     bot_input.groupdict = m.groupdict
                     bot_input.inp = m.groupdict()

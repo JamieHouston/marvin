@@ -2,47 +2,196 @@ from util import hook, web
 import json
 import textwrap
 import datetime
+import shlex
+from gitty import Github_Helper
 
-
+"""
+https://md5.tpondemand.com/api/v1/index/meta
+"""
 class Target_Process():
     user = ''
-    password = ''
     tp_uri = ''
+    token = ''
 
-    def __init__(self, tp_name, username, password):
+    def __init__(self, tp_uri, token):
         self.data = []
-        self.username = username
-        self.password = password
-        self.tp_uri = tp_name
+        self.tp_uri = tp_uri
+        self.token = token
 
     def get_object(self, api_suffix):
-        # auth = base64.encodestring("%s:%s" % (self.user, self.password)).strip()
-        # request = urllib.request.Request(self.tp_uri + api_suffix + "&format=json")
-        # request.add_header("Authorization", "Basic %s" % auth)
-        # response = urllib.request.urlopen(request)
-        response = web.get_json(self.tp_uri + api_suffix, auth=(self.username, self.password))
+        auth_token = "&token=%s" % (self.token)
+        request_string = self.tp_uri + api_suffix + "&format=json" + auth_token
+
+        # TODO: remove debugging
+        print request_string
+
+        request = urllib2.Request(request_string)
+        response = urllib2.urlopen(request)
         return response.read()
 
-def json_date_as_datetime(jd):
-    sign = jd[-7]
-    if sign not in '-+' or len(jd) == 13:
-        ms = int(jd[6:-2])
-    else:
-        ms = int(jd[6:-7])
-        hh = int(jd[-7:-4])
-        mm = int(jd[-4:-2])
-        if sign == '-': mm = -mm
-        ms += (hh * 60 + mm) * 60000
-    return datetime.datetime(1970, 1, 1) \
-        + datetime.timedelta(microseconds=ms * 1000)
-
-@hook.regex(r'\bt(?:arget)?\ {0,2}p(?:rocess)?\ {1,2}recent\ {1,2}(?:(?P<days>\d{1,2})\ {0,2}da?y?s?|(?P<hours>\d{1,2})\ {0,2}ho?u?r?s?)\s*$', run_always=True)
+"""
+Main command
+Loads config named "target_process"
+"""
+@hook.command
 def target_process(bot_input, bot_output):
-    tp = Target_Process(bot_input.credentials["url"], bot_input.credentials["login"], bot_input.credentials["password"])
+    ".target_process id [story id] -- gives details on the story\n.target_process su [tp name] - gives updates on the user\n.target_process team [team name] - show stories for the team that haven't changed in a day"
+    tp = Target_Process(bot_input.bot.credentials["target_process"]["url"], bot_input.bot.credentials["target_process"]["token"])
+    user_input = bot_input.input_string.encode("utf-8")
+    user_input = shlex.split(user_input)
+    if len(user_input) < 1:
+        output_string = "I don't recognize that command, {0}.\nTry .help target_process"
+    else:
+        cmd = user_input[0]
+        cmd_parameter = user_input[1]
 
-    days = bot_input.groupdict()["days"]
-    hours = bot_input.groupdict()["hours"]
+        if cmd == "id":
+            output_string = get_story_by_id(tp, cmd_parameter)
+        elif cmd == "su":
+            gh = Github_Helper(bot_input, bot_output)
+            output_string = get_stand_up_by_user(tp, gh, cmd_parameter)
+        elif cmd == "team":
+            output_string = get_stories_by_team(tp, cmd_parameter)
 
+    bot_output.say(output_string.encode('UTF-8'))
+
+"""
+Internal Utilities
+"""
+
+# Functions that fetch objects
+def get_user_stories(tp, login, entity_state, date_modified=''):
+    where = "(AssignedUser.Login eq '" + login + "')"
+    where += "and (EntityState.Name in ('" + '\', \''.join(entity_state) + "'))"
+    if (date_modified):
+        where += "and (ModifyDate gte " + date_modified.strftime("'%Y-%m-%d'") + ")"
+    query = "UserStories?include=[Name,EntityState,ModifyDate,Effort,Tasks]&where=" + urllib.quote_plus(where)
+    return json.loads(tp.get_object(query))["Items"]
+
+# https://md5.tpondemand.com/api/v1/TaskHistories/meta
+def get_task_history(tp, task_ids, days_edited_ago):
+    today = datetime.date.today()
+    yesterday = today - datetime.timedelta(days = days_edited_ago)
+    where = "(Date gte %s)" % yesterday.strftime("'%Y-%m-%d'")
+    where += "and (Task.Id in (%s))" % ", ".join(str(id) for id in task_ids)
+    where = urllib.quote_plus(where)
+    return json.loads(tp.get_object("TaskHistories?include=[Date,EntityState,Modifier,Task]&where=" + where))["Items"]
+
+# Shared formatting for story string
+def get_story_string(user_story):
+    story_id = str(user_story["Id"])
+    padding = " " * len(story_id + " - ")
+    return "\n\t" + ("\n\t" + padding).join(textwrap.wrap(story_id + " - " + user_story["Name"]
+                    + " [" + str(user_story["Effort"]) + "pt, " + user_story["EntityState"]["Name"] + "]", 80)) + "\n"
+
+"""
+Functions that return strings (bot output)
+"""
+def get_stories_by_user(tp, login):
+    output_string = ""
+    stories = get_user_stories(tp, login, 'In Progress')
+    for user_story in stories:
+        output_string += get_story_string(user_story)
+
+    return output_string
+
+def get_story_by_id(tp, id):
+    output_string = ""
+    where = urllib.quote_plus("(Id eq '" + id + "')")
+    query = "UserStories?include=[Name,EntityState,ModifyDate,Effort]&where=" + where
+    result = json.loads(tp.get_object(query))
+    for user_story in result["Items"]:
+        output_string += get_story_string(user_story)
+    if not output_string:
+        output_string = "Story not found: " + id
+
+    return output_string
+
+def get_stories_by_team(tp, team_name):
+    stories = []
+    active_states = ('In Progress', 'In Review', 'Testing', 'Blocked', 'Done')
+
+    today = datetime.datetime.today()
+
+    where = "(Team.Name eq '" + team_name + "')" \
+            + "and (EntityState.Name in ('" + '\', \''.join(active_states) + "'))"
+
+    query = "UserStories?include=[Name,EntityState,LastStateChangeDate,Effort]&where=" + urllib.quote_plus(where)
+    result = json.loads(tp.get_object(query))
+    for user_story in result["Items"]:
+        last_changed = json_date_as_datetime(user_story["LastStateChangeDate"])
+        if (today - last_changed).days > 1:
+            stories.append("Last Changed: " + last_changed.strftime("'%m-%d-%Y %H:%M'"))
+            stories.append(get_story_string(user_story))
+    return '\n'.join(stories)
+
+
+def get_stand_up_by_user(tp, gh, login):
+
+    # Get all stories for user
+    # Get all tasks
+    # Get history of tasks
+    # Display any changes done to tasks yesterday
+    # Determine what in progress means based on role of assigned user
+    output_string = ""
+
+    # how many days into the past to check
+    days_previous = 2
+
+    # TODO: change based on the user type
+    stories = get_user_stories(
+        tp, login,
+        ('In Progress', 'In Review', 'Accepted'),
+        datetime.date.today() - datetime.timedelta(days=days_previous))
+
+    """
+    # github integration - current pull requests
+    gh_name = gh.bot_input.bot.credentials["github"]["login"]
+    pull_requests = gh.get_stand_up_by_user(gh_name)
+
+    print
+    print dir(pull_requests)
+
+    for pull in pull_requests:
+        print dir(pull)
+
+    """
+    
+    # print all stories and tasks edited in the last n days
+    for user_story in stories:
+        output_string += get_story_string(user_story)
+
+        task_ids = []
+        for task in user_story['Tasks']['Items']:
+            task_ids.append(task["Id"])
+
+        task_history = get_task_history(tp, task_ids, days_previous)
+        #history_list = []
+        for history in task_history:
+            #history_list.append(['Task']['Id'])
+            #history_list[history['Task']['Id']][history["Modifier"]["Id"]]['EntityState'].append(history["EntityState"]["Name"])
+
+            output_string += "\t\t" \
+                + json_date_as_datetime(history["Date"]).strftime("%d-%b-%Y") \
+                + "\t " + history['Modifier']['FirstName'] \
+                + "\t " + history["EntityState"]["Name"] \
+                + "\t\t " + history["Task"]["Name"] \
+                + "\n"
+
+    return output_string
+
+# Old functionality
+@hook.regex(r'\bt(?:arget)?\ {0,2}p(?:rocess)?\ {1,2}recent\ {1,2}(?:(?P<days>\d{1,2})\ {0,2}da?y?s?|(?P<hours>\d{1,2})\ {0,2}ho?u?r?s?)\s*$', run_always=True)
+def get_stories_advanced(bot_input, bot_output):
+    print repr(bot_input)
+
+    tp = Target_Process(bot_input.credentials["url"], bot_input.credentials["token"])
+
+    #days = bot_input.groupdict()["days"]
+    #hours = bot_input.groupdict()["hours"]
+
+    days = "4"
+    hours = "1"
     if days is not None:
         comparison_date =  datetime.datetime.now() + datetime.timedelta(-1*int(days))
         output_string = "Stories modified in the last " + days + " days: \n"
@@ -129,3 +278,18 @@ def target_process(bot_input, bot_output):
             lastState = state
 
     bot_output.say(output_string.encode('UTF-8'))
+
+# Utilities
+# http://stackoverflow.com/questions/5786448/date-conversion-net-json-to-iso
+def json_date_as_datetime(jd):
+    sign = jd[-7]
+    if sign not in '-+' or len(jd) == 13:
+        ms = int(jd[6:-2])
+    else:
+        ms = int(jd[6:-7])
+        hh = int(jd[-7:-4])
+        mm = int(jd[-4:-2])
+        if sign == '-': mm = -mm
+        ms += (hh * 60 + mm) * 60000
+    return datetime.datetime(1970, 1, 1) \
+        + datetime.timedelta(microseconds=ms * 1000)

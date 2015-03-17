@@ -2,10 +2,6 @@ from util import hook
 import random
 
 
-@hook.command
-def ping(bot_input, bot_output):
-    bot_output.say(random.choice(bot_output.responses["pinging"]))
-
 @hook.regex(r'awesome')
 def awesome(bot_input, bot_output):
     bot_output.say(random.choice(bot_output.responses["awesome_sauce"]).format(bot_input.nick))
@@ -96,7 +92,7 @@ def questions(bot_input, bot_output):
 
 @hook.command
 def slap(bot_input, bot_output):
-    bot_output.say("/slap @%s" % bot_input.nick)
+    bot_output.say("/me slaps @%s with a large trout" % bot_input.nick)
 
 
 @hook.regex(r'(sudo )?make me a sandwich', run_always=True)
