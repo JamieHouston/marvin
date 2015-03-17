@@ -134,7 +134,7 @@ class TeamCityRESTApiClient:
         if self.locators:
             locators = 'locator=' + ','.join([
                 "%s:%s" % (k, v)
-                for k, v in self.locators.iteritems()
+                for k, v in iter(self.locators)
             ])
         else:
             locators = ''

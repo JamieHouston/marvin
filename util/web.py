@@ -1,8 +1,5 @@
-<<<<<<< HEAD
-=======
-import urllib2, base64, urllib
+import base64, urllib
 import requests
->>>>>>> master
 from bs4 import BeautifulSoup
 import random
 import requests

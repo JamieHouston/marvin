@@ -42,13 +42,13 @@ def run_bot():
         logger.log("no config found for bot", logging.ERROR)
         exit()
 
-    logger.log("Connecting to IRC")
+    logger.log("Connecting")
 
     bot.conns = {}
     bot.credentials = {}
     try:
         if adapter_name in bot.config['adapters']:
-            for room, conf in bot.config['adapters'][adapter_name]["rooms"].iteritems():
+            for room, conf in iter(bot.config['adapters'][adapter_name]["rooms"]):
                 conf["responses"] = personality.load_personality(conf["personality"].lower())
                 bot.conns[room] = adapter_class.BotOutput(conf)
         else:

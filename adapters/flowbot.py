@@ -18,7 +18,7 @@ class BotOutput():
 
     def setup(self, config):
         self.users = []
-        for k,v in config.iteritems():
+        for k,v in iter(config):
             setattr(self, k, v)
 
     def filter_words(self, msg):

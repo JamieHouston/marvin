@@ -9,7 +9,7 @@ class BotInput(object):
 
 class BotOutput():
     def __init__(self, config):
-        for k,v in config.iteritems():
+        for k,v in iter(config):
             setattr(self, k, v)
         self.spoken = False
         self.responses = config["responses"]

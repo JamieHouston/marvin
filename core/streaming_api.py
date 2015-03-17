@@ -43,9 +43,9 @@ class StreamingAPI(object):
                     result = json.loads(line)
                     yield result
                 except Exception as e:
-                    print "error parsing line"
-                    print line
-                    print traceback.format_exc()
+                    print("error parsing line")
+                    print(line)
+                    print(traceback.format_exc())
                     for info in sys.exc_info():
                         logger.log("error info: " + str(info))
 
