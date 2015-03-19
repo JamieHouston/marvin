@@ -11,4 +11,4 @@ def config(bot):
         except ValueError as e:
             print('ERROR: malformed config!', e)
 
-    _config_mtime = 0
+_config_mtime = 0

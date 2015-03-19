@@ -14,8 +14,8 @@ l = list()
 
 @hook.command
 def quote(bot_input, bot_output):
-    ".q/.quote -- gets random quote from stored ones"\
-    "<bot_name> quote <quote_source> - grabs a random quote from <quote_source> if I can"
+    """.q/.quote -- gets random quote from stored ones"\
+    "<bot_name> quote <quote_source> - grabs a random quote from <quote_source> if I can"""
     quote_to_say =random.sample(l, 1)[0]
     bot_output.say(quote_to_say)
 
@@ -35,9 +35,9 @@ def quote_person(bot_input, bot_output):
                 bot_output.say("Never heard of him.")
 
 
-def load_quotes(quote_list, file):
+def load_quotes(quote_list, quote_file):
     new_quote = ''
-    f = open(file, 'r')
+    f = open(quote_file, 'r')
     for line in f:
         line = line.strip()
         if line == '%':

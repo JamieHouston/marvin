@@ -22,7 +22,6 @@ phrases = (
 )
 user_phrases = {}
 user_points = {}
-list_name = "crazyphrases:points"
 
 @hook.regex(r'play crazy phrases', run_always=True)
 def crazy_phrases(bot_input, bot_output):
@@ -56,7 +55,7 @@ def check_phrases(bot_input, bot_output):
     for user, phrase in user_phrases.items():
         if phrase == textutils.sanitize_message(bot_input.message):
             if user == bot_input.nick:
-                user_points[user] = user_points[user] + 1
+                user_points[user] += 1
                 storage.set_hash_value(list_name, bot_input.nick, user_points[user])
                 user_info = bot_output.get_user_by_name(user)
                 bot_output.private_message(str(user_info["id"]), "You got a point.  Current score for you is: %s" % user_points[user])

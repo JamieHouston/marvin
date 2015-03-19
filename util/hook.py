@@ -92,18 +92,18 @@ def api_key(key):
     return annotate
 
 
-def regex(regex, flags=0, run_always=False, **kwargs):
+def regex(hook_regex, flags=0, run_always=False, **kwargs):
     args = kwargs
 
     def regex_wrapper(func):
         args['name'] = func.__name__
-        args['regex'] = regex
+        args['regex'] = hook_regex
         args['run_always'] = run_always
-        args['re'] = re.compile(regex, flags)
+        args['re'] = re.compile(hook_regex, flags)
         _hook_add(func, ['regex', (func, args)], 'regex')
         return func
 
-    if inspect.isfunction(regex):
+    if inspect.isfunction(hook_regex):
         raise ValueError("regex decorators require a regex to match against")
     else:
         return regex_wrapper

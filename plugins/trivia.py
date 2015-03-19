@@ -18,13 +18,13 @@ def new_question(category=None):
     current_trivia['guess'] = 0
     current_trivia['multiplier'] = 1
 
-def compare_values(guess, answer):
-    if textutils.is_int(answer) and textutils.is_int(guess):
-        return int(answer) == int(guess)
-    elif type(answer) is list:
-        return guess in answer
+def compare_values(guess, answer_given):
+    if textutils.is_int(answer_given) and textutils.is_int(guess):
+        return int(answer_given) == int(guess)
+    elif type(answer_given) is list:
+        return guess in answer_given
     else:
-        return textutils.equal_letters(guess, answer)
+        return textutils.equal_letters(guess, answer_given)
 
 @hook.command
 def trivia(bot_input, bot_output):

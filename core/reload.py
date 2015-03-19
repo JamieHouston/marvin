@@ -114,12 +114,12 @@ def reload(bot, init=False):
                     if obj._thread:
                         bot.threads[obj] = Handler(obj)
 
-                    for type, data in obj._hook:
-                        bot.plugs[type] += [data]
+                    for plugin_type, data in obj._hook:
+                        bot.plugs[plugin_type] += [data]
 
                         if not init:
                             print('### new plugin (type: %s) loaded:' % \
-                                    type, format_plug(data))
+                                    plugin_type, format_plug(data))
 
     if changed:
         bot.commands = {}

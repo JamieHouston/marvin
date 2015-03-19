@@ -52,7 +52,7 @@ def process(bot_input, bot_output):
             storage.add_to_list("wheatley", input_command)
 
 
-    if (input_command.startswith(".")):
+    if input_command.startswith("."):
         input_command = input_command[1:]
         pieces = input_command.split(' ')
         command = match_command(list(bot_input.bot.commands), pieces[0])

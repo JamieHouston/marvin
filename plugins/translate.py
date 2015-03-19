@@ -80,34 +80,10 @@ def do_you_speak(bot_input, bot_output):
 
 def translate(origin='en', target='es', term='translate this'):
     url = "https://translate.google.com/translate_a/single"
-          #"dt=bd&dt=ex&dt=ld&dt=md&dt=qc&dt=rw&dt=rm&dt=ss&dt=t&dt=at&ie=UTF-8&oe=UTF-8&otf=2&tk=517129|678405&q=do%20you%20speak%20spanish%3F
-    #url = "https://translate.google.com/translate_a/t"
-    params = {
-        'client': 't',
-        'sl': origin,
-        'tl': target,
-        'hl': 'en',
-        'ssel': 0,
-        'tsel': 0,
-        'dt': 'bd',
-        'dt':'ex',
-        'dt': 'ld',
-        'dt': 'md',
-        'dt': 'qc',
-        'dt': 'rw',
-        'dt': 'rm',
-        'dt': 'ss',
-        'dt': 't',
-        'dt': 'at',
-        'ie': 'UTF-8',
-        'oe': 'UTF-8',
-        'otf': '2',
-        'tk': '517129|678405',
-        #'multires': '1',
-        #'sc': 1,
-        #'uptl': "en",
-        'q': term
-    }
+
+    params = dict(client='t', sl=origin, tl=target, hl='en', ssel=0, tsel=0, dt='bd', dt='ex', dt='ld', dt='md',
+                  dt='qc', dt='rw', dt='rm', dt='ss', dt='t', dt='at', ie='UTF-8', oe='UTF-8', otf='2',
+                  tk='517129|678405', q=term)
     response = web.get_json_with_querystring(url, params)
     return response
 

@@ -1,9 +1,8 @@
-import base64, urllib
-import requests
 from bs4 import BeautifulSoup
+from urllib import request
 import random
 import requests
-
+import json
 
 def get_title(url):
     try:
@@ -37,8 +36,8 @@ def get_json(url, username=None, password=None):
 
 
 def get_raw(url, username=None, password=None):
-    request = build_request(url, username, password)
-    page = urllib2.urlopen(request)
+    raw_request = request.build_request(url, username, password)
+    page = request.urlopen(raw_request)
     data = page.read().decode("utf-8-sig")
     if data:
         return data

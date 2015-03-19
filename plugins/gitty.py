@@ -2,15 +2,16 @@ from util import hook, storage
 from github import Github
 import random
 import re
-import inspect
 
 
 @hook.command
 def github(bot_input, bot_output):
-    ".github [username] -- gives a list of pending pull requests for user. Ommitting username uses last one passed in\n.github teamstatus -- gives a list of pending pull requests for user. Ommitting teamnames uses last one passed in"
+    """.github [username] -- gives a list of pending pull requests for user. Omitting username uses last one passed in
+    .github teamstatus -- gives a list of pending pull requests for user. Omitting teamnames uses last one passed in"""
+
     input_argument = bot_input.input_string
 
-    gh = Github_Helper(bot_input, bot_output)
+    gh = GithubHelper(bot_input, bot_output)
 
     if input_argument:
         if hasattr(gh, input_argument):
@@ -24,7 +25,8 @@ def github(bot_input, bot_output):
         github_name = storage.get_hash_value("github:users", bot_input.nick)
 
     if not github_name:
-        bot_output.say("Who the hell are you?  Try .github <username>.  And if you pass in angle brackets I will return you to sender, postage unpaid.")
+        bot_output.say("Who the hell are you?  Try .github <username>.\
+          And if you pass in angle brackets I will return you to sender, postage unpaid.")
         return
 
     gh.pull_requests(github_name)
@@ -33,25 +35,29 @@ def github(bot_input, bot_output):
 @hook.regex(r'create pull request (?P<branch>.*)', run_always=True)
 def create_pull_request(bot_input, bot_output):
     branch = bot_input.groupdict()["branch"]
-    helper = Github_Helper(bot_input, bot_input)
-    github = Github(bot_input.bot.credentials["github"]["login"], bot_input.bot.credentials["github"]["password"])
-    org = github.get_organization("daptiv")
+    helper = GithubHelper(bot_input, bot_input)
+    github_api = Github(bot_input.bot.credentials["github"]["login"], bot_input.bot.credentials["github"]["password"])
+    org = github_api.get_organization("daptiv")
     repo = org.get_repo("Ppm")
     master_branch = "master"
 
-    new_pull_request = repo.create_pull(title=branch, body='\n'.join(helper.get_team_members()), base=master_branch, head=branch)
+    new_pull_request = repo.create_pull(title=branch, body='\n'.join(helper.get_team_members()), base=master_branch,
+                                        head=branch)
 
     bot_output.say(new_pull_request.url)
 
 
-class Github_Helper(object):
+class GithubHelper(object):
     def __init__(self, bot_input, bot_output):
         self.bot_input = bot_input
         self.bot_output = bot_output
 
     def pull_requests(self, github_name):
-        github = Github(self.bot_input.bot.credentials["github"]["login"], self.bot_input.bot.credentials["github"]["password"])
-        org = github.get_organization("daptiv")
+        github_api = Github(
+            self.bot_input.bot.credentials["github"]["login"],
+            self.bot_input.bot.credentials["github"]["password"])
+
+        org = github_api.get_organization("daptiv")
         repos = org.get_repos()
         found_pull_requests = False
         self.bot_output.say(random.choice(self.bot_output.responses["github"]).format(self.bot_input.nick))
@@ -68,24 +74,27 @@ class Github_Helper(object):
             self.bot_output.say(random.choice(self.bot_output.responses["nothing_for_you"]))
 
     def get_team_members(self):
-        github = Github(self.bot_input.bot.credentials["github"]["login"], self.bot_input.bot.credentials["github"]["password"])
-        org = github.get_organization("daptiv")
+        github_api = Github(self.bot_input.bot.credentials["github"]["login"],
+                            self.bot_input.bot.credentials["github"]["password"])
+        org = github_api.get_organization("daptiv")
         team = org.get_teams()
         results = []
 
         for t in team:
             if t.name.lower() == self.bot_output.team_name.lower():
                 for homie in t.get_members():
-                        results.append(" - [ ] @{0}".format(homie.login))
+                    results.append(" - [ ] @{0}".format(homie.login))
         return results
 
     def teampr(self):
-        ".teampr [teamname] -- gives a list of pending pull requests for user. Ommitting teamnames uses last one passed in"
+        """.teampr [teamname] -- gives a list of pending pull requests for user.
+        Omitting teamnames uses last one passed in"""
 
         self.bot_output.say(random.choice(self.bot_output.responses["github"]).format(self.bot_input.nick))
 
-        github = Github(self.bot_input.bot.credentials["github"]["login"], self.bot_input.bot.credentials["github"]["password"])
-        org = github.get_organization("daptiv")
+        github_api = Github(self.bot_input.bot.credentials["github"]["login"],
+                            self.bot_input.bot.credentials["github"]["password"])
+        org = github_api.get_organization("daptiv")
         team = org.get_teams()
 
         for t in team:
@@ -101,8 +110,9 @@ class Github_Helper(object):
 
     def teamstatus(self):
 
-        github = Github(self.bot_input.bot.credentials["github"]["login"], self.bot_input.bot.credentials["github"]["password"])
-        org = github.get_organization("daptiv")
+        github_api = Github(self.bot_input.bot.credentials["github"]["login"],
+                            self.bot_input.bot.credentials["github"]["password"])
+        org = github_api.get_organization("daptiv")
         team = org.get_teams()
 
         for t in team:
@@ -164,11 +174,11 @@ class Github_Helper(object):
                     for homie in match:
                         results.append(" - [ ] @{0}".format(homie))
         return results
-    
+
     def get_stand_up_by_user(self, user):
-        # Hardcode repos for now
-        gi = Github(self.bot_input.bot.credentials["github"]["login"], self.bot_input.bot.credentials["github"]["password"])
-        org = gi.get_organization("daptiv")
+        github_api = Github(self.bot_input.bot.credentials["github"]["login"],
+                    self.bot_input.bot.credentials["github"]["password"])
+        org = github_api.get_organization("daptiv")
         teams = org.get_teams()
         pull_requests = []
 

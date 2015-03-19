@@ -61,7 +61,7 @@ class MarkovState:
                 out.append(tok)
                 if endchunkf(tok):
                     n -= 1
-            return(' '.join(out if not kill else out[:-kill]))
+            return ' '.join(out if not kill else out[:-kill])
 
         self.generator = gen
         return self.generator(chunks)

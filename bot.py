@@ -4,7 +4,7 @@ import os
 import sys
 import adapters
 import time
-from datetime import datetime,timedelta
+from datetime import datetime
 from adapters import console,flowbot,gitter
 from util import logger
 import logging
@@ -12,6 +12,7 @@ import argparse
 from plugins import personality
 from core import reload, config
 import traceback
+
 
 def run_bot():
 
@@ -54,7 +55,7 @@ def run_bot():
         else:
             error_message = "Adapter not found in config: {0}".format(adapter_name)
             print(error_message)
-            logger.error(error_message, logging.ERROR)
+            logger.error(error_message)
             sys.exit()
         for name, conf in bot.config['credentials'].items():
             bot.credentials[name] = conf
@@ -73,14 +74,12 @@ def run_bot():
 
     while (last_error - last_run).seconds > 10:
         reload.reload(bot)  # these functions only do things
-        config.config(bot)  # if changes have occured
+        config.config(bot)  # if changes have occurred
 
         for conn, adapter in bot.conns.items():
             try:
                 last_run = datetime.now()
                 adapter.run(bot)
-                #out = conn.out.get_nowait()
-                #main(conn, out)
             except SystemExit as ex:
                 last_error = last_run
             except Exception as e:

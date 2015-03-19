@@ -3,7 +3,7 @@ from util import hook
 
 @hook.command(autohelp=False)
 def help(bot_input, bot_output):
-    ".help [command] -- gives a list of commands or help for a command if it's included"
+    """.help [command] -- gives a list of commands or help for a command if it's included"""
 
     bot = bot_input.bot
     funcs = {}
