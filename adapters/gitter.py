@@ -15,7 +15,7 @@ class BotOutput():
         self.setup(config)
 
     def setup(self, config):
-        for k,v in iter(config):
+        for k,v in config.items():
             setattr(self, k, v)
 
         self.users = []

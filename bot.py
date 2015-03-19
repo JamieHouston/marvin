@@ -48,7 +48,7 @@ def run_bot():
     bot.credentials = {}
     try:
         if adapter_name in bot.config['adapters']:
-            for room, conf in iter(bot.config['adapters'][adapter_name]["rooms"]):
+            for room, conf in bot.config['adapters'][adapter_name]["rooms"].items():
                 conf["responses"] = personality.load_personality(conf["personality"].lower())
                 bot.conns[room] = adapter_class.BotOutput(conf)
         else:
@@ -56,7 +56,7 @@ def run_bot():
             print(error_message)
             logger.error(error_message, logging.ERROR)
             sys.exit()
-        for name, conf in bot.config['credentials'].iteritems():
+        for name, conf in bot.config['credentials'].items():
             bot.credentials[name] = conf
     except Exception as e:
         logger.log("malformed config file %s" % e, logging.ERROR)
@@ -75,10 +75,10 @@ def run_bot():
         reload.reload(bot)  # these functions only do things
         config.config(bot)  # if changes have occured
 
-        for conn in bot.conns.itervalues():
+        for conn, adapter in bot.conns.items():
             try:
                 last_run = datetime.now()
-                conn.run(bot)
+                adapter.run(bot)
                 #out = conn.out.get_nowait()
                 #main(conn, out)
             except SystemExit as ex:
