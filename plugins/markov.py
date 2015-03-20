@@ -29,13 +29,13 @@ class Markov(object):
     def load_data(self):
         print("loading data")
         if os.path.exists(self.filename):
-            self.word_table = pickle.load(open(self.filename, 'r'))
+            with open(self.filename, 'rb') as file_data:
+                self.word_table = pickle.load(file_data)
 
     def _save_data(self):
         print("saving data")
-        fh = open(self.filename, 'wb')
-        fh.write(pickle.dumps(self.word_table))
-        fh.close()
+        with open(self.filename, 'wb') as fh:
+            fh.write(pickle.dumps(self.word_table))
 
     def split_message(self, message):
         words = message.split()

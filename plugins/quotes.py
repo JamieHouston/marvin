@@ -37,17 +37,16 @@ def quote_person(bot_input, bot_output):
 
 def load_quotes(quote_list, quote_file):
     new_quote = ''
-    f = open(quote_file, 'r')
-    for line in f:
-        line = line.strip()
-        if line == '%':
-            quote_list.append(new_quote)
-            new_quote = ''
-        else:
-            if new_quote != '':
-                new_quote += ' '
-            new_quote += line
-    f.close()
+    with open(quote_file, 'r', encoding="utf-8") as f:
+        for line in f:
+            line = line.strip()
+            if line == '%':
+                quote_list.append(new_quote)
+                new_quote = ''
+            else:
+                if new_quote != '':
+                    new_quote += ' '
+                new_quote += line
 
 files = os.listdir('quotes')
 for file in files:

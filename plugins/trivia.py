@@ -97,8 +97,8 @@ def get_points(bot_input, bot_output):
 def load_questions():
     files = os.listdir('trivia')
     for file_name in files:
-        questions = open('trivia/' + file_name, 'r')
-        question_list[file_name] = json.load(questions)
+        with open('trivia/' + file_name, 'r', encoding="utf-8") as questions:
+            question_list[file_name] = json.load(questions)
 
 
 load_questions()
