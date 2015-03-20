@@ -37,10 +37,10 @@ class StreamingAPI(object):
         return self.connection
 
     def fetch(self):
-        for line in self.stream.iter_lines(self.STREAM_CHUNK_SIZE):
+        for line in self.stream.iter_lines(self.STREAM_CHUNK_SIZE, decode_unicode=True):
             if line and len(line.strip()) and line != ':':
                 try:
-                    result = json.loads(line)
+                    result = json.loads(line.decode('utf-8'))
                     yield result
                 except Exception as e:
                     print("error parsing line")

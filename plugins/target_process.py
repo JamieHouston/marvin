@@ -3,7 +3,7 @@ import json
 import textwrap
 import datetime
 import shlex
-from urllib import request, parse
+from urllib import parse
 from gitty import GithubHelper
 
 """
@@ -59,7 +59,7 @@ def target_process(bot_input, bot_output):
         elif cmd == "team":
             output_string = get_stories_by_team(tp, cmd_parameter)
 
-    bot_output.say(output_string.encode('UTF-8'))
+    bot_output.say(output_string)
 
 
 """
@@ -82,7 +82,7 @@ def get_task_history(tp, task_ids, days_edited_ago):
     today = datetime.date.today()
     yesterday = today - datetime.timedelta(days=days_edited_ago)
     where = "(Date gte %s)" % yesterday.strftime("'%Y-%m-%d'")
-    where += "and (Task.Id in (%s))" % ", ".join(str(id) for id in task_ids)
+    where += "and (Task.Id in (%s))" % ", ".join(str(tid) for tid in task_ids)
     where = parse.quote_plus(where)
     result = tp.get_object("TaskHistories?include=[Date,EntityState,Modifier,Task]&where=" + where)
     return json.loads(result)["Items"]
@@ -115,7 +115,9 @@ def get_story_by_id(tp, id):
     output_string = ""
     where = parse.quote_plus("(Id eq '" + id + "')")
     query = "UserStories?include=[Name,EntityState,ModifyDate,Effort]&where=" + where
-    result = json.loads(tp.get_object(query))
+    story_data = tp.get_object(query)
+    result = json.loads(story_data)
+
     for user_story in result["Items"]:
         output_string += get_story_string(user_story)
     if not output_string:
