@@ -19,6 +19,9 @@ class BotOutput():
 
 
     def say(self, msg):
+        if hasattr(self, 'nick'):
+            msg = msg.format(self.nick)
+
         print(msg)
         self.spoken = True
 

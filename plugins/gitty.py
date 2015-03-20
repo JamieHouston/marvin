@@ -72,8 +72,12 @@ class GithubHelper(object):
         return self.github_api.get_organization(self.organization)
 
     def pull_requests(self, github_name):
-        org = self.get_organization()
-        repos = org.get_repos()
+        team = self.get_team()
+        if team:
+            repos = team.get_repos()
+        else:
+            org = self.get_organization()
+            repos = org.get_repos()
 
         for repo in repos:
             yield from self.get_unchecked_pull_requests_for_user(repo, github_name)
@@ -82,7 +86,9 @@ class GithubHelper(object):
         org = self.get_organization()
         teams = org.get_teams()
 
-        return [team for team in teams if team.name.lower() == self.team_name]
+        team = [team for team in teams if team.name.lower() == self.team_name]
+        if len(team):
+            return team[0]
 
     def teampr(self):
         """.teampr [teamname] -- gives a list of pending pull requests for user."""
