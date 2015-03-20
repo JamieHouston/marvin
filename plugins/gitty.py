@@ -103,27 +103,22 @@ class GithubHelper(object):
             for member in team_members:
                 pull_requests = self.display_pull_requests_for_team_member(repo, member)
                 if pull_requests:
-                    self.bot_output.say("Open Pull Requests for " + member.login)
+                    self.bot_output.say("##Open Pull Requests for @" + member.login)
                     self.bot_output.say('\n'.join(pull_requests))
 
     def teamstatus(self):
 
-        github_api = Github(self.bot_input.bot.credentials["github"]["login"],
-                            self.bot_input.bot.credentials["github"]["password"])
-        org = github_api.get_organization("daptiv")
-        team = org.get_teams()
+        team = self.get_team()
 
-        for t in team:
-            if t.name.lower() == self.bot_output.team_name.lower():
-                team_repos = t.get_repos()
-                team_members = t.get_members()
-                for repo in team_repos:
-                    for member in team_members:
-                        pull_requests = self.get_pull_requests_for_team_member(repo, member)
-                        pull_requests = self.get_unreviewed_pull_requests(pull_requests)
-                        if pull_requests:
-                            self.bot_output.say("Open Pull Requests for " + member.login)
-                            self.bot_output.say('\n'.join(pull_requests))
+        team_repos = team.get_repos()
+        team_members = team.get_members()
+        for repo in team_repos:
+            for member in team_members:
+                team_pull_requests = self.get_pull_requests_for_team_member(repo, member)
+                unreviewed_pull_requests = self.get_unreviewed_pull_requests(team_pull_requests)
+                if unreviewed_pull_requests:
+                    self.bot_output.say("##Open Pull Requests for @" + member.login)
+                    self.bot_output.say('\n'.join(unreviewed_pull_requests))
 
     def get_unchecked_pull_requests_for_user(self, repo, github_name):
         search_string = "[ ] @{0}".format(github_name)
@@ -137,7 +132,7 @@ class GithubHelper(object):
         results = []
         user_pulls = self.get_pull_requests_for_team_member(repo, team_member)
         for pull in user_pulls:
-            results.append(" - {0} - {1}".format(pull.title, pull.html_url))
+            results.append("[{0}]({1})".format(pull.title, pull.html_url))
         return results
 
     def get_pull_requests_for_team_member(self, repo, team_member):
@@ -152,26 +147,20 @@ class GithubHelper(object):
             for pull in pull_requests:
                 if pull.body:
                     match = re.findall('(?<=\[ \] @)(\w+)', pull.body)
-                    results.append("{0} - {1}".format(pull.title, pull.html_url))
+                    results.append("[{0}]({1})".format(pull.title, pull.html_url))
                     for homie in match:
                         results.append(" - [ ] @{0}".format(homie))
         return results
 
     def get_stand_up_by_user(self, user):
-        github_api = Github(self.bot_input.bot.credentials["github"]["login"],
-                    self.bot_input.bot.credentials["github"]["password"])
-        org = github_api.get_organization("daptiv")
-        teams = org.get_teams()
         pull_requests = []
-
-        for t in teams:
-            if t.name.lower() == self.bot_output.team_name.lower():
-                team_repos = t.get_repos()
-                team_members = t.get_members()
-                for repo in team_repos:
-                    for member in team_members:
-                        if member.login == user:
-                            pull_requests += self.display_pull_requests_for_team_member(repo, member)
+        team = self.get_team()
+        team_repos = team.get_repos()
+        team_members = team.get_members()
+        for repo in team_repos:
+            for member in team_members:
+                if member.login == user:
+                    pull_requests += self.display_pull_requests_for_team_member(repo, member)
 
         return pull_requests
 
