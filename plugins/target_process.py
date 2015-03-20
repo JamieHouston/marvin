@@ -162,18 +162,12 @@ def get_stand_up_by_user(tp, gh, login):
         ('In Progress', 'In Review', 'Accepted'),
         datetime.date.today() - datetime.timedelta(days=days_previous))
 
-    """
     # github integration - current pull requests
     gh_name = gh.bot_input.bot.credentials["github"]["login"]
     pull_requests = gh.get_stand_up_by_user(gh_name)
 
-    print
-    print dir(pull_requests)
-
-    for pull in pull_requests:
-        print dir(pull)
-
-    """
+    if pull_requests:
+        output_string += '\n'.join(pull_requests)
 
     # print all stories and tasks edited in the last n days
     for user_story in stories:
