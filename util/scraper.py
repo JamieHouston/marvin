@@ -1,9 +1,9 @@
 from bs4 import BeautifulSoup
-import urllib2
+import urllib.request, urllib.error, urllib.parse
 
 class ScrapeTrivia():
     name = 'Random Trivia'
 
     trivia_site = 'http://www.randomtriviagenerator.com/'
-    soup = BeautifulSoup(urllib2.urlopen(trivia_site))
+    soup = BeautifulSoup(urllib.request.urlopen(trivia_site))
     questions = soup.find_all()

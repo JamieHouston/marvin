@@ -1,6 +1,6 @@
 from core. streaming_api import JSONStream
 from core import marvin
-from util import logger, web, dictionaryutils
+from util import logger, web
 import random
 
 class BotInput(object):
@@ -12,18 +12,17 @@ class BotInput(object):
 
 class BotOutput():
     def __init__(self, config):
+        self.users = []
+        self.user = None
         self.setup(config)
+        self.api_root = "https://api.gitter.im/v1/"
+        self.spoken = False
 
     def setup(self, config):
-        for k,v in config.iteritems():
+        for k,v in config.items():
             setattr(self, k, v)
 
-        self.users = []
-        self.api_root = "https://api.gitter.im/v1/"
-
     def filter_words(self, msg):
-        #filtered = web.get_text('http://www.purgomalum.com/service/plain?text={0}'.format(msg))
-        #return filtered
         return msg
 
     def say(self, msg):
@@ -34,16 +33,15 @@ class BotOutput():
         logger.log("sending message %s" % msg[:20])
         url = "%srooms/%s/chatMessages" % (self.api_root, self.room_id)
         data = {"text": msg}
-        response = web.post_json_secure(url, self.token, data)
+        web.post_json_secure(url, self.token, data)
         self.spoken = True
 
     def private_message(self, user, msg):
         logger.log("sending private message %s" % msg[:20])
         # TODO: Private message (listen and send)
-        #url = "https://api.flowdock.com/private/{0}/messages".format(user)
         url = "%srooms/%s/chatMessages" % (self.api_root, self.room_id)
         data = {"event": "message", "content": msg}
-        response = web.post_json(url, self.username, self.password, **data)
+        web.post_json(url, self.username, self.password, **data)
 
     def get_users(self):
         user_endpoint = "%srooms/%s/users" % (self.api_root, self.room_id)
@@ -69,7 +67,7 @@ class BotOutput():
         return {"nick": "anonymous", "id": 0}
 
     def get_rooms(self):
-        rooms_endpoint = "%srooms" % (self.api_root)
+        rooms_endpoint = "%srooms" % self.api_root
         return web.get_json_secure(rooms_endpoint, self.token)
 
     def get_user_by_email(self, user_email):

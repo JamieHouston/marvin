@@ -8,7 +8,7 @@ def _hook_add(func, add, name=''):
     func._hook.append(add)
 
     if not hasattr(func, '_filename'):
-        func._filename = func.func_code.co_filename
+        func._filename = func.__code__.co_filename
 
     if not hasattr(func, '_args'):
         argspec = inspect.getargspec(func)
@@ -39,7 +39,7 @@ def _hook_add(func, add, name=''):
 
 
 def sieve(func):
-    if func.func_code.co_argcount != 5:
+    if func.__code__.co_argcount != 5:
         raise ValueError(
                 'sieves must take 5 arguments: (bot, input, func, type, args)')
     _hook_add(func, ['sieve', (func,)])
@@ -50,7 +50,7 @@ def command(arg=None, **kwargs):
     args = {}
 
     def command_wrapper(func):
-        args.setdefault('name', func.func_name)
+        args.setdefault('name', func.__name__)
         _hook_add(func, ['command', (func, args)], 'command')
         return func
 
@@ -67,7 +67,7 @@ def event(arg=None, **kwargs):
     args = kwargs
 
     def event_wrapper(func):
-        args['name'] = func.func_name
+        args['name'] = func.__name__
         args.setdefault('events', ['*'])
         _hook_add(func, ['event', (func, args)], 'event')
         return func
@@ -92,18 +92,18 @@ def api_key(key):
     return annotate
 
 
-def regex(regex, flags=0, run_always=False, **kwargs):
+def regex(hook_regex, flags=0, run_always=False, **kwargs):
     args = kwargs
 
     def regex_wrapper(func):
-        args['name'] = func.func_name
-        args['regex'] = regex
+        args['name'] = func.__name__
+        args['regex'] = hook_regex
         args['run_always'] = run_always
-        args['re'] = re.compile(regex, flags)
+        args['re'] = re.compile(hook_regex, flags)
         _hook_add(func, ['regex', (func, args)], 'regex')
         return func
 
-    if inspect.isfunction(regex):
+    if inspect.isfunction(hook_regex):
         raise ValueError("regex decorators require a regex to match against")
     else:
         return regex_wrapper

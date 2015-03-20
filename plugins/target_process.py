@@ -1,11 +1,10 @@
 from util import hook
-import urllib
-import urllib2
 import json
 import textwrap
 import datetime
 import shlex
-from gitty import Github_Helper
+from urllib import request
+from gitty import GithubHelper
 
 """
 https://md5.tpondemand.com/api/v1/index/meta
@@ -21,15 +20,14 @@ class Target_Process():
         self.token = token
 
     def get_object(self, api_suffix):
-        auth_token = "&token=%s" % (self.token)
+        auth_token = "&token=%s" % self.token
         request_string = self.tp_uri + api_suffix + "&format=json" + auth_token
 
-        # TODO: remove debugging
-        print request_string
+        print(request_string)
 
-        request = urllib2.Request(request_string)
-        response = urllib2.urlopen(request)
-        return response.read()
+        tc_request = request.Request(request_string)
+        tc_response = request.urlopen(tc_request)
+        return tc_response.read()
 
 """
 Main command
@@ -37,8 +35,12 @@ Loads config named "target_process"
 """
 @hook.command
 def target_process(bot_input, bot_output):
-    ".target_process id [story id] -- gives details on the story\n.target_process su [tp name] - gives updates on the user\n.target_process team [team name] - show stories for the team that haven't changed in a day"
-    tp = Target_Process(bot_input.bot.credentials["target_process"]["url"], bot_input.bot.credentials["target_process"]["token"])
+    """.target_process id [story id] -- gives details on the story\n.
+    target_process su [tp name] - gives updates on the user\n.
+    target_process team [team name] - show stories for the team that haven't changed in a day"""
+    tp = Target_Process(
+        bot_input.bot.credentials["target_process"]["url"],
+        bot_input.bot.credentials["target_process"]["token"])
     user_input = bot_input.input_string.encode("utf-8")
     user_input = shlex.split(user_input)
     if len(user_input) < 1:
@@ -50,7 +52,7 @@ def target_process(bot_input, bot_output):
         if cmd == "id":
             output_string = get_story_by_id(tp, cmd_parameter)
         elif cmd == "su":
-            gh = Github_Helper(bot_input, bot_output)
+            gh = GithubHelper(bot_input, bot_output)
             output_string = get_stand_up_by_user(tp, gh, cmd_parameter)
         elif cmd == "team":
             output_string = get_stories_by_team(tp, cmd_parameter)
@@ -65,7 +67,7 @@ Internal Utilities
 def get_user_stories(tp, login, entity_state, date_modified=''):
     where = "(AssignedUser.Login eq '" + login + "')"
     where += "and (EntityState.Name in ('" + '\', \''.join(entity_state) + "'))"
-    if (date_modified):
+    if date_modified:
         where += "and (ModifyDate gte " + date_modified.strftime("'%Y-%m-%d'") + ")"
     query = "UserStories?include=[Name,EntityState,ModifyDate,Effort,Tasks]&where=" + urllib.quote_plus(where)
     return json.loads(tp.get_object(query))["Items"]
@@ -76,7 +78,7 @@ def get_task_history(tp, task_ids, days_edited_ago):
     yesterday = today - datetime.timedelta(days = days_edited_ago)
     where = "(Date gte %s)" % yesterday.strftime("'%Y-%m-%d'")
     where += "and (Task.Id in (%s))" % ", ".join(str(id) for id in task_ids)
-    where = urllib.quote_plus(where)
+    where = request.quote_plus(where)
     return json.loads(tp.get_object("TaskHistories?include=[Date,EntityState,Modifier,Task]&where=" + where))["Items"]
 
 # Shared formatting for story string
@@ -99,7 +101,7 @@ def get_stories_by_user(tp, login):
 
 def get_story_by_id(tp, id):
     output_string = ""
-    where = urllib.quote_plus("(Id eq '" + id + "')")
+    where = request.quote_plus("(Id eq '" + id + "')")
     query = "UserStories?include=[Name,EntityState,ModifyDate,Effort]&where=" + where
     result = json.loads(tp.get_object(query))
     for user_story in result["Items"]:
@@ -118,7 +120,7 @@ def get_stories_by_team(tp, team_name):
     where = "(Team.Name eq '" + team_name + "')" \
             + "and (EntityState.Name in ('" + '\', \''.join(active_states) + "'))"
 
-    query = "UserStories?include=[Name,EntityState,LastStateChangeDate,Effort]&where=" + urllib.quote_plus(where)
+    query = "UserStories?include=[Name,EntityState,LastStateChangeDate,Effort]&where=" + request.quote_plus(where)
     result = json.loads(tp.get_object(query))
     for user_story in result["Items"]:
         last_changed = json_date_as_datetime(user_story["LastStateChangeDate"])
@@ -185,7 +187,7 @@ def get_stand_up_by_user(tp, gh, login):
 # Old functionality
 @hook.regex(r'\bt(?:arget)?\ {0,2}p(?:rocess)?\ {1,2}recent\ {1,2}(?:(?P<days>\d{1,2})\ {0,2}da?y?s?|(?P<hours>\d{1,2})\ {0,2}ho?u?r?s?)\s*$', run_always=True)
 def get_stories_advanced(bot_input, bot_output):
-    print repr(bot_input)
+    print(repr(bot_input))
 
     tp = Target_Process(bot_input.credentials["url"], bot_input.credentials["token"])
 

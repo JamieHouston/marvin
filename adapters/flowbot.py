@@ -3,6 +3,7 @@ from core import marvin
 from util import logger, web, dictionaryutils
 import random
 
+
 class BotInput(object):
     def __getitem__(self, val):
         return self.__dict__[val]
@@ -14,16 +15,16 @@ class BotInput(object):
 class BotOutput():
 
     def __init__(self, config):
+        self.users = []
+        self.user = None
         self.setup(config)
+        self.spoken = False
 
     def setup(self, config):
-        self.users = []
-        for k,v in config.iteritems():
+        for k, v in config.items():
             setattr(self, k, v)
 
     def filter_words(self, msg):
-        #filtered = web.get_text('http://www.purgomalum.com/service/plain?text={0}'.format(msg))
-        #return filtered
         return msg
 
     def say(self, msg):
@@ -36,17 +37,15 @@ class BotOutput():
         channel_pieces = self.channel.split("/")
         url = "https://api.flowdock.com/flows/%s/%s/messages" % (channel_pieces[0], channel_pieces[1])
         data = {"event": "message", "content": msg}
-        response = web.post_json(url, self.username, self.password, **data)
+        web.post_json(url, self.username, self.password, **data)
         self.spoken = True
-
 
     def private_message(self, user, msg):
         logger.log("sending private message %s" % msg[:20])
         url = "https://api.flowdock.com/private/{0}/messages".format(user)
         data = {"event": "message", "content": msg}
-        response = web.post_json(url, self.username, self.password, **data)
+        web.post_json(url, self.username, self.password, **data)
         self.spoken = True
-
 
     def get_users(self):
         endpoint = "users"
@@ -57,7 +56,6 @@ class BotOutput():
         self.users = web.get_json(user_endpoint, self.username, self.password)
         return self.users
 
-
     def get_user_by_id(self, user_id):
         if not self.users:
             self.get_users()
@@ -66,7 +64,6 @@ class BotOutput():
             return user[0]
         return "anonymous"
 
-
     def get_user_by_name(self, user_name):
         if not self.users:
             self.get_users()
@@ -74,7 +71,6 @@ class BotOutput():
         if user and len(user):
             return user[0]
         return {"nick": "anonymous", "id": 0}
-
 
     def get_user_by_email(self, user_email):
         if not self.users:
@@ -98,7 +94,7 @@ class BotOutput():
                     bot_input.message = data["content"]
                 else:
                     break
-                if ("user" in data and int(data["user"]) > 0):
+                if "user" in data and int(data["user"]) > 0:
                     try:
                         bot_input.nick = self.get_user_by_id(data["user"])["nick"]
                         self.user_id = data["user"]
@@ -108,7 +104,7 @@ class BotOutput():
                     except Exception as e:
                         logger.error(e)
                         self.say(bot.responses["stranger"])
-                elif ("external_name" in data):
+                elif "external_name" in data:
                     bot_input.nick = data["external_name"]
                 else:
                     bot_input.nick = "anonymous"

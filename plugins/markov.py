@@ -1,4 +1,4 @@
-import os,sys
+import os
 import pickle
 import random
 import re
@@ -20,23 +20,22 @@ class Markov(object):
     activities = 0
 
     def __init__(self):
+        self.word_table = {}
         self.load_data()
 
     def _should_update(self):
         return self.activities > 3
 
     def load_data(self):
-        print "loading data"
+        print("loading data")
         if os.path.exists(self.filename):
-            self.word_table = pickle.load(open(self.filename, 'r'))
-        else:
-            self.word_table = {}
+            with open(self.filename, 'rb') as file_data:
+                self.word_table = pickle.load(file_data)
 
     def _save_data(self):
-        print "saving data"
-        fh = open(self.filename, 'w')
-        fh.write(pickle.dumps(self.word_table))
-        fh.close()
+        print("saving data")
+        with open(self.filename, 'wb') as fh:
+            fh.write(pickle.dumps(self.word_table))
 
     def split_message(self, message):
         words = message.split()
@@ -46,20 +45,20 @@ class Markov(object):
                 yield (words[i:i + self.chain_length + 1])
 
     def generate_message(self, person, size=15, seed_key=None):
-        print "trying to generate message for %s" % person
+        print("trying to generate message for %s" % person)
         person_words = len(self.word_table.get(person, {}))
         if person_words < size:
             return "not enough words %d" % person_words
 
         if not seed_key:
-            seed_key = random.choice(self.word_table[person].keys())
-            print "using seed key %s" % ','.join(seed_key)
+            seed_key = random.choice(list(self.word_table[person].keys()))
+            print("using seed key %s" % ','.join(seed_key))
 
         message = []
-        for i in xrange(self.messages_to_generate):
+        for i in range(self.messages_to_generate):
             words = seed_key
             gen_words = []
-            for i in xrange(size):
+            for j in range(size):
                 if words[0] == self.stop_word:
                     break
 
@@ -73,7 +72,7 @@ class Markov(object):
                 message = list(gen_words)
 
         result = ' '.join(message)
-        print "returning message %s" % result
+        print("returning message %s" % result)
         return result
 
 
@@ -125,7 +124,7 @@ class Markov(object):
                         generated = self.generate_message(person, seed_key=key)
                         if generated:
                             messages.append((person, generated))
-        self.activities = self.activities + 1
+        self.activities += 1
 
         if self._should_update():
             self._save_data()
@@ -141,7 +140,7 @@ class Markov(object):
             match = logline_re.search(line)
             if match:
                 sender, message = match.groups()
-                self.log(sender, message, '', False, None)
+                self.log(sender, message)
         fh.close()
 
 class BotInfo:

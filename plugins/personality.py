@@ -1,6 +1,6 @@
 import random
 import json
-from util import hook, logger
+from util import hook
 
 l = list()
 

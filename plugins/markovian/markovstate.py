@@ -1,8 +1,8 @@
 import time
 import itertools
 
-import tokenise
-import main
+from . import tokenise
+from . import main
 
 
 class MarkovStateError(Exception):
@@ -43,7 +43,7 @@ class MarkovState:
 
         if seed is None:
             seed = int(time.time())
-            print("Warning: using seed {}".format(seed))
+            print(("Warning: using seed {}".format(seed)))
 
         if len(prefix) > self.markov.n:
             print("Warning: truncating prefix")
@@ -61,7 +61,7 @@ class MarkovState:
                 out.append(tok)
                 if endchunkf(tok):
                     n -= 1
-            return(' '.join(out if not kill else out[:-kill]))
+            return ' '.join(out if not kill else out[:-kill])
 
         self.generator = gen
         return self.generator(chunks)

@@ -7,7 +7,7 @@ from plugins import markov_old, chat
 def match_command(commands, command):
 
     # do some fuzzy matching
-    prefix = filter(lambda x: x.startswith(command), commands)
+    prefix = [x for x in commands if x.startswith(command)]
     if len(prefix) == 1:
         return prefix[0]
     elif prefix and command not in prefix:
@@ -38,21 +38,21 @@ def process(bot_input, bot_output):
             return
 
     if input_command.startswith("!"):
-        if random.choice(range(3)) == 1:
+        if random.choice(list(range(3))) == 1:
             heckle = storage.get_list("hector")
             bot_output.say(random.choice(list(heckle)))
         else:
             storage.add_to_list("hector", input_command)
 
     if input_command.startswith("wheatley"):
-        if random.choice(range(3)) == 1:
+        if random.choice(list(range(3))) == 1:
             heckle = storage.get_list("wheatley")
             bot_output.say(random.choice(list(heckle)))
         else:
             storage.add_to_list("wheatley", input_command)
 
 
-    if (input_command.startswith(".")):
+    if input_command.startswith("."):
         input_command = input_command[1:]
         pieces = input_command.split(' ')
         command = match_command(list(bot_input.bot.commands), pieces[0])
@@ -62,8 +62,8 @@ def process(bot_input, bot_output):
             func, args = bot_input.bot.commands[command]
 
             try:
-                if func.func_name in bot_input.bot.credentials:
-                    bot_input.credentials = bot_input.bot.credentials[func.func_name]
+                if func.__name__ in bot_input.bot.credentials:
+                    bot_input.credentials = bot_input.bot.credentials[func.__name__]
                 input_string = " ".join(pieces[1:])
                 bot_input.input_string = input_string
                 func(bot_input, bot_output)
@@ -81,8 +81,8 @@ def process(bot_input, bot_output):
                     bot_input.groupdict = m.groupdict
                     bot_input.inp = m.groupdict()
                     bot_input.input_string = input_command
-                    if func.func_name in bot_input.bot.credentials:
-                        bot_input.credentials = bot_input.bot.credentials[func.func_name]
+                    if func.__name__ in bot_input.bot.credentials:
+                        bot_input.credentials = bot_input.bot.credentials[func.__name__]
                     func(bot_input, bot_output)
 
 

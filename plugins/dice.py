@@ -16,17 +16,17 @@ split_re = re.compile(r'([\d+-]*)d?(F|\d*)', re.I)
 
 
 def nrolls(count, n):
-    "roll an n-sided die count times"
+    """roll an n-sided die count times"""
     if n == "F":
-        return [random.randint(-1, 1) for x in xrange(min(count, 100))]
+        return [random.randint(-1, 1) for x in range(min(count, 100))]
     if n < 2:  # it's a coin
         if count < 5000:
-            return [random.randint(0, 1) for x in xrange(count)]
+            return [random.randint(0, 1) for x in range(count)]
         else:  # fake it
             return [int(random.normalvariate(.5*count, (.75*count)**.5))]
     else:
         if count < 5000:
-            return [random.randint(1, n) for x in xrange(count)]
+            return [random.randint(1, n) for x in range(count)]
         else:  # fake it
             return [int(random.normalvariate(.5*(1+n)*count,
                 (((n+1)*(2*n+1)/6.-(.5*(1+n))**2)*count)**.5))]
@@ -39,8 +39,8 @@ def dice(bot_input, bot_output):
     bot_output.say(response)
 
 def roll_dice(inp):
-    ".dice <diceroll> -- simulates dicerolls, e.g. .dice 2d20-d5+4 roll 2 " \
-        "D20s, subtract 1D5, add 4"
+    """.dice <diceroll> -- simulates dicerolls, e.g. .dice 2d20-d5+4 roll 2 " \
+        "D20s, subtract 1D5, add 4"""
 
     if "getting drunk" in inp:
         return "You rolled a 20 and passed out."
@@ -79,13 +79,13 @@ def roll_dice(inp):
             side = int(side)
             try:
                 if count > 0:
-                    dice = nrolls(count, side)
-                    rolls += map(str, dice)
-                    total += sum(dice)
+                    dice_roll = nrolls(count, side)
+                    rolls += list(map(str, dice_roll))
+                    total += sum(dice_roll)
                 else:
-                    dice = nrolls(-count, side)
+                    dice_roll = nrolls(-count, side)
                     rolls += [str(-x) for x in dice]
-                    total -= sum(dice)
+                    total -= sum(dice_roll)
             except OverflowError:
                 return "Thanks for overflowing a float, jerk >:["
 

@@ -3,13 +3,13 @@ from util import hook
 
 @hook.command(autohelp=False)
 def help(bot_input, bot_output):
-    ".help [command] -- gives a list of commands or help for a command if it's included"
+    """.help [command] -- gives a list of commands or help for a command if it's included"""
 
     bot = bot_input.bot
     funcs = {}
     #disabled = bot.config.get('disabled_plugins', [])
     #disabled_comm = bot.config.get('disabled_commands', [])
-    for command, (func, args) in bot.commands.iteritems():
+    for command, (func, args) in bot.commands.items():
         fn = re.match(r'^plugins.(.+).py$', func._filename)
         #if fn.group(1).lower() not in disabled:
             #if command not in disabled_comm:
@@ -20,7 +20,7 @@ def help(bot_input, bot_output):
             else:
                 funcs[func] = command
 
-    commands = dict((value, key) for key, value in funcs.iteritems())
+    commands = dict((value, key) for key, value in funcs.items())
 
     help_text = []
 

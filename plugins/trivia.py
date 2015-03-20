@@ -18,13 +18,13 @@ def new_question(category=None):
     current_trivia['guess'] = 0
     current_trivia['multiplier'] = 1
 
-def compare_values(guess, answer):
-    if textutils.is_int(answer) and textutils.is_int(guess):
-        return int(answer) == int(guess)
-    elif type(answer) is list:
-        return guess in answer
+def compare_values(guess, answer_given):
+    if textutils.is_int(answer_given) and textutils.is_int(guess):
+        return int(answer_given) == int(guess)
+    elif type(answer_given) is list:
+        return guess in answer_given
     else:
-        return textutils.equal_letters(guess, answer)
+        return textutils.equal_letters(guess, answer_given)
 
 @hook.command
 def trivia(bot_input, bot_output):
@@ -32,16 +32,17 @@ def trivia(bot_input, bot_output):
         storage.set_hash_value(list_name, bot_input.nick, 0)
         user_points[bot_input.nick] = 0
         bot_output.say("{0}'s score is now 0".format(bot_input.nick))
+    elif "reload" in bot_input.input_string:
+        load_questions()
     elif "score" in bot_input.input_string:
         get_points(bot_input, bot_output)
     elif "categories" in bot_input.input_string:
-        bot_output.say(', '.join(question_list.keys()))
+        bot_output.say(', '.join(list(question_list.keys())))
+    elif bot_input.input_string in question_list:
+        new_question(bot_input.input_string)
     else:
-        if not current_trivia.has_key('question'):
-            if bot_input.input_string in question_list:
-                new_question(bot_input.input_string)
-            else:
-                new_question()
+        if 'question' not in current_trivia:
+            new_question()
         else:
             bot_output.say("Use '.answer' to get the answer and a new question\nUse .trivia categories to see all categories\nUse .trivia <category name> to get questions from a certain category\nUse .trivia points to see current score\nUse birth control to prevent more wrong answers\n\nCurrent question:")
         bot_output.say('Category: %(category)s\n%(question)s?' % current_trivia)
@@ -54,7 +55,7 @@ def answer(bot_input, bot_output):
     else:
         bot_output.say("Okay, {0}.  The answer to {1} is {2}".format(bot_input.nick, current_trivia['question'], current_trivia['answer']))
         new_question()
-        if random.choice(range(20)) == 1:
+        if random.choice(list(range(20))) == 1:
             bot_output.say("NOISE NOISE NOISE\nDaily Double!\nThe next correct answer is worth 10 times the normal amount!\nThat's binary double, in case you're wondering.\nNOISE NOISE NOISE")
             current_trivia['multiplier'] = 10
         bot_output.say('Category: %(category)s\n%(question)s?' % current_trivia)
@@ -71,7 +72,6 @@ def check_trivia(bot_input, bot_output):
             else:
                 bot_output.say('1 point.')
                 add_point(bot_input.nick, 1)
-            get_points(bot_input, bot_output)
             new_question()
             bot_output.say('Next question\nCategory: %(category)s\n%(question)s?' % current_trivia)
         else:
@@ -88,17 +88,17 @@ def add_point(nick, points):
 
 def get_points(bot_input, bot_output):
     messages = []
-    for user, points in user_points.iteritems():
+    for user, points in user_points.items():
         messages.append("%s has %d" % (user,points))
     bot_output.say("Current Score: ")
     bot_output.say("\n".join(messages))
 
 
-def load_questions(category, file):
-    questions = open(file, 'r')
-    question_list[category] = json.load(questions)
+def load_questions():
+    files = os.listdir('trivia')
+    for file_name in files:
+        with open('trivia/' + file_name, 'r', encoding="utf-8") as questions:
+            question_list[file_name] = json.load(questions)
 
 
-files = os.listdir('trivia')
-for file_name in files:
-    load_questions(file_name, 'trivia/' + file_name)
+load_questions()

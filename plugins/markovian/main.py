@@ -41,7 +41,7 @@ class MarkovQuoter:
                 n, self.data = pickle.load(f)
 
                 if self.n > n:
-                    print("warning: changing n value to", n)
+                    print(("warning: changing n value to", n))
                     self.n = n
                 return True
             except:
@@ -90,7 +90,7 @@ class MarkovQuoter:
         total, choices = freqdict
         idx = random.randrange(total)
 
-        for token, freq in choices.items():
+        for token, freq in list(choices.items()):
             if idx <= freq:
                 return token
 

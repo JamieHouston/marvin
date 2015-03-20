@@ -1,21 +1,12 @@
-import urllib2, base64, urllib
-import requests
 from bs4 import BeautifulSoup
-import json
+from urllib import request
 import random
-
-
-def build_request(url, username=None, password=None):
-    request = urllib2.Request(url)
-    if username and password:
-        base64string = base64.encodestring('%s:%s' % (username, password)).replace('\n', '')
-        request.add_header("Authorization", "Basic %s" % base64string)
-    return request
-
+import requests
+import json
 
 def get_title(url):
     try:
-        soup = BeautifulSoup(urllib2.urlopen(url))
+        soup = BeautifulSoup(requests.get(url))
         return soup.title.string
     except:
         return None
@@ -23,8 +14,8 @@ def get_title(url):
 
 def get_text(url):
     try:
-        soup = BeautifulSoup(urllib2.urlopen(url))
-        return soup.string
+        response = requests.get(url)
+        return response.text
     except:
         error_messages = ("No way can I do that", "Why would I want to do that?", "Bank error in your favor", "You trying to kill me with that request??")
         return random.choice(error_messages)
@@ -45,8 +36,8 @@ def get_json(url, username=None, password=None):
 
 
 def get_raw(url, username=None, password=None):
-    request = build_request(url, username, password)
-    page = urllib2.urlopen(request)
+    raw_request = request.build_request(url, username, password)
+    page = request.urlopen(raw_request)
     data = page.read().decode("utf-8-sig")
     if data:
         return data
@@ -72,11 +63,7 @@ def get_json_secure(url, token):
     return None
 
 def post_json(url, username, password, **kwargs):
-    request = build_request(url, username, password)
-    request.add_data(urllib.urlencode(kwargs))
-
-    page = urllib2.urlopen(request)
-    data = page.read()
-    if data:
-        return json.loads(data)
-    return data
+    response = requests.post(url, auth=(username, password), data=kwargs)
+    if response and response.json:
+        return response.json()
+    return response.text

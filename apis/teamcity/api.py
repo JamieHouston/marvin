@@ -3,7 +3,7 @@ RESTful api definition: http://${TeamCity}/guestAuth/app/rest/application.wadl
 """
 
 import json
-import urllib2
+from urllib import request
 import base64
 from datetime import datetime, timedelta
 
@@ -14,7 +14,7 @@ class TeamCityRESTApiClient:
         self.userpass = '%s:%s' % (username, password)
         self.locators = {}
         self.parameters = {}
-
+        self.resource = self.TC_REST_URL
 
     # count:<number> - serve only the specified number of builds
     def set_count(self, count):
@@ -31,68 +31,61 @@ class TeamCityRESTApiClient:
         self.locators['running'] = running
         return self
 
-
     # buildType:(<buildTypeLocator>) - only the builds of the specified build configuration
     def set_build_type(self, bt):
         self.locators['buildType'] = bt
         return self
-
 
     # tags:<tags> - ","(comma) -delimited list of build tags (only builds containing all the specified tags are returned)
     def set_tags(self, tags):
         self.locators['tags'] = tags
         return self
 
-
     # status:<SUCCESS/FAILURE/ERROR> - list the builds with the specified status only
     def set_status(self, status):
         self.locators['status'] = status
         return self
-
 
     # user:(<userLocator>) - limit the builds to only those triggered by user specified
     def set_user(self, user):
         self.locators['user'] = user
         return self
 
-
     # personal:<true/false/any> - limit the builds by personal flag.
     def set_personal(self, personal):
         self.locators['personal'] = personal
         return self
-
 
     # canceled:<true/false/any> - limit the builds by canceled flag.
     def set_canceled(self, canceled):
         self.locators['canceled'] = canceled
         return self
 
-
     # pinned:<true/false/any> - limit the builds by pinned flag.
     def set_pinned(self, pinned):
         self.locators['pinned'] = pinned
         return self
 
-
-    # branch:<branch locator> - since TeamCity 7.1 limit the builds by branch. <branch locator> can be branch name (displayed in UI, or "(name:<name>,default:<true/false/any>,unspecified:<true/false/any>,branched:<true/false/any>)". If not specified, only builds from default branch are returned.
+    # branch:<branch locator> - since TeamCity 7.1 limit the builds by branch. <branch locator>
+    # can be branch name (displayed in UI, or "(name:<name>,default:<true/false/any>,
+    # unspecified:<true/false/any>,branched:<true/false/any>)". If not specified,
+    # only builds from default branch are returned.
     def set_branch(self, branch):
         self.locators['branch'] = branch
         return self
-
 
     # agentName:<name> - agent name to return only builds ran on the agent with name specified
     def set_agent_name(self, agent_name):
         self.locators['agentName'] = agent_name
         return self
 
-
     # sinceBuild:(<buildLocator>) - limit the list of builds only to those after the one specified
     def set_since_build(self, since_build):
         self.locators['sinceBuild'] = since_build
         return self
 
-
-    # sinceDate:<date> - limit the list of builds only to those started after the date specified. The date should in the same format as dates returned by REST API.
+    # sinceDate:<date> - limit the list of builds only to those started after the date specified.
+    # The date should in the same format as dates returned by REST API.
     def set_since_date(self, minutes):
         minutes_delta = timedelta(minutes=minutes)
         minutes_ago = datetime.now() - minutes_delta
@@ -101,28 +94,24 @@ class TeamCityRESTApiClient:
         self.locators['sinceDate'] = minutes_ago.strftime('%Y%m%dT%H%M%S') + '-0500'
         return self
 
-
     # start:<number> - list the builds from the list starting from the position specified (zero-based)
     def set_start(self, start):
         self.parameters['start'] = start
         return self
 
-
-    # lookupLimit:<number> - since TeamCity 7.0 limit processing to the latest N builds only. If none of the latest N builds match other specified criteria of the build locator, 404 response is returned.
+    # lookupLimit:<number> - since TeamCity 7.0 limit processing to the latest N builds only.
+    # If none of the latest N builds match other specified criteria of the build locator, 404 response is returned.
     def set_lookup_limit(self, lookup_limit):
         self.locators['lookupLimit'] = lookup_limit
         return self
-
 
     def set_tc_server(self, url, port):
         self.TC_REST_URL = "http://%s:%s/httpAuth/app/rest/" % (url, port)
         return self
 
-
     def set_resource(self, resource):
         self.resource = self.TC_REST_URL + resource
         return self
-
 
     def compose_resource_path(self):
         """
@@ -134,13 +123,13 @@ class TeamCityRESTApiClient:
         if self.locators:
             locators = 'locator=' + ','.join([
                 "%s:%s" % (k, v)
-                for k, v in self.locators.iteritems()
+                for k, v in self.locators.items()
             ])
         else:
             locators = ''
         get_args = '&'.join([locators] + [
             '%s=%s' % (k, v)
-            for k, v in self.parameters.iteritems()
+            for k, v in self.parameters.items()
         ])
         if get_args:
             full_resource_url = full_resource_url + '?' + get_args
@@ -156,17 +145,16 @@ class TeamCityRESTApiClient:
         :return: the Python dictionary which represents the JSON response.
         """
         full_resource_url = self.compose_resource_path()
-        print full_resource_url
-        req = urllib2.Request(full_resource_url)
-        base64string = base64.encodestring(self.userpass).replace('\n', '')
+        print(full_resource_url)
+        req = request.Request(full_resource_url)
+        base64string = base64.encodebytes(self.userpass).replace('\n', '')
         req.add_header("Authorization", "Basic %s" % base64string)
         req.add_header('Accept', 'application/json')
-        response = urllib2.urlopen(req)
+        response = request.urlopen(req)
         res = response.read()
         data = json.loads(res)
         response.close()
         return data
-
 
     def get_server_info(self):
         """
@@ -175,7 +163,6 @@ class TeamCityRESTApiClient:
         :return: an instance of the Client with `resource = <url>/server`.
         """
         return self.set_resource('server')
-
 
     def get_all_plugins(self):
         """
@@ -211,7 +198,7 @@ class TeamCityRESTApiClient:
         """
         self.set_count(count)
         self.set_start(start)
-        return self.set_resource('buildTypes/id:%s/builds/' % (btId))
+        return self.set_resource('buildTypes/id:%s/builds/' % btId)
 
     def get_build_by_build_id(self, bId):
         """
@@ -247,7 +234,7 @@ class TeamCityRESTApiClient:
         :param bId: the build to get changes of in the format [0-9]+
         :return: an instance of the Client with `resource = <url>/changes/build:id:<bId>`.
         """
-        self.parameters['build'] = 'id:%s' % (bId)
+        self.parameters['build'] = 'id:%s' % bId
         return self.set_resource('changes')
 
     def get_all_build_types(self):

@@ -4,7 +4,7 @@ import os
 import sys
 import adapters
 import time
-from datetime import datetime,timedelta
+from datetime import datetime
 from adapters import console,flowbot,gitter
 from util import logger
 import logging
@@ -12,6 +12,7 @@ import argparse
 from plugins import personality
 from core import reload, config
 import traceback
+
 
 def run_bot():
 
@@ -42,21 +43,21 @@ def run_bot():
         logger.log("no config found for bot", logging.ERROR)
         exit()
 
-    logger.log("Connecting to IRC")
+    logger.log("Connecting")
 
     bot.conns = {}
     bot.credentials = {}
     try:
         if adapter_name in bot.config['adapters']:
-            for room, conf in bot.config['adapters'][adapter_name]["rooms"].iteritems():
+            for room, conf in bot.config['adapters'][adapter_name]["rooms"].items():
                 conf["responses"] = personality.load_personality(conf["personality"].lower())
                 bot.conns[room] = adapter_class.BotOutput(conf)
         else:
             error_message = "Adapter not found in config: {0}".format(adapter_name)
             print(error_message)
-            logger.error(error_message, logging.ERROR)
+            logger.error(error_message)
             sys.exit()
-        for name, conf in bot.config['credentials'].iteritems():
+        for name, conf in bot.config['credentials'].items():
             bot.credentials[name] = conf
     except Exception as e:
         logger.log("malformed config file %s" % e, logging.ERROR)
@@ -73,14 +74,12 @@ def run_bot():
 
     while (last_error - last_run).seconds > 10:
         reload.reload(bot)  # these functions only do things
-        config.config(bot)  # if changes have occured
+        config.config(bot)  # if changes have occurred
 
-        for conn in bot.conns.itervalues():
+        for conn, adapter in bot.conns.items():
             try:
                 last_run = datetime.now()
-                conn.run(bot)
-                #out = conn.out.get_nowait()
-                #main(conn, out)
+                adapter.run(bot)
             except SystemExit as ex:
                 last_error = last_run
             except Exception as e:
