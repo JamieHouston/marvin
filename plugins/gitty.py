@@ -40,20 +40,8 @@ def github(bot_input, bot_output):
 def create_pull_request(bot_input, bot_output):
     branch = bot_input.groupdict()["branch"]
     helper = GithubHelper(bot_input, bot_input)
-    github_api = Github(bot_input.bot.credentials["github"]["login"], bot_input.bot.credentials["github"]["password"])
-    org = github_api.get_organization("daptiv")
-    repo = org.get_repo("Ppm")
-    master_branch = "master"
-
-    team = helper.get_team()
-    random_member = random.choice(team.get_members())
-    body = " - [ ] @{0}".format(random_member.login)
-
-    new_pull_request = repo.create_pull(title=branch, body=body, base=master_branch,
-                                        head=branch)
-
+    new_pull_request = helper.create_pull_request(branch)
     bot_output.say(new_pull_request.url)
-
 
 class GithubHelper(object):
     def __init__(self, bot_input, bot_output):
@@ -68,16 +56,55 @@ class GithubHelper(object):
             self.bot_input.bot.credentials["github"]["login"],
             self.bot_input.bot.credentials["github"]["password"])
 
+    def create_pull_request_from_partial_name(self, branch_name):
+        branch, repo = self.get_branch_and_repo(branch_name)
+        if branch and repo:
+            return self.create_pull_request(repo, branch)
+        return None
+
+    def create_pull_request(self, repo, branch):
+        master_branch = "master"
+
+        # TODO: This doesn't guarantee the story number - only if it's 12345-story-name
+        story_number = branch.name.split('-')[0]
+        team = self.get_team()
+        members = team.get_members()
+        random_member = random.choice([member for member in members])
+
+        body = "{0}\n - [ ] @{1}".format(story_number, random_member.login)
+
+        new_pull_request =  repo.create_pull(title=branch.name, body=body, base=master_branch,
+                                        head=branch.name)
+
+        return new_pull_request
+
+
     def get_organization(self):
         return self.github_api.get_organization(self.organization)
 
-    def pull_requests(self, github_name):
+    # Get all repos for the current team or organization if team isn't available
+    def get_repos(self):
         team = self.get_team()
         if team:
             repos = team.get_repos()
         else:
             org = self.get_organization()
             repos = org.get_repos()
+
+        return repos
+
+    # Pass in partial branch name (like story number) and get back branch
+    def get_branch_and_repo(self, branch_name):
+        repos = self.get_repos()
+        for repo in repos:
+            branches = repo.get_branches()
+            matching_branch = [branch for branch in branches if branch_name in branch.name]
+            if matching_branch:
+                return matching_branch[0], repo
+        return None
+
+    def pull_requests(self, github_name):
+        repos = self.get_repos()
 
         for repo in repos:
             yield from self.get_unchecked_pull_requests_for_user(repo, github_name)

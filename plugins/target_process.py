@@ -4,31 +4,6 @@ import textwrap
 import datetime
 import shlex
 from urllib import parse
-from gitty import GithubHelper
-
-"""
-https://md5.tpondemand.com/api/v1/index/meta
-"""
-
-
-class TargetProcess():
-    user = ''
-    tp_uri = ''
-    token = ''
-
-    def __init__(self, tp_uri, token):
-        self.data = []
-        self.tp_uri = tp_uri
-        self.token = token
-
-    def get_object(self, api_suffix):
-        auth_token = "&token=%s" % self.token
-        request_string = self.tp_uri + api_suffix + "&format=json" + auth_token
-
-        print(request_string)
-
-        return web.get_text(request_string)
-
 
 """
 Main command
@@ -41,271 +16,166 @@ def target_process(bot_input, bot_output):
     """.target_process id [story id] -- gives details on the story\n.
     target_process su [tp name] - gives updates on the user\n.
     target_process team [team name] - show stories for the team that haven't changed in a day"""
-    tp = TargetProcess(
-        bot_input.bot.credentials["target_process"]["url"],
-        bot_input.bot.credentials["target_process"]["token"])
     user_input = bot_input.input_string
     user_input = shlex.split(user_input)
     output_string = "I don't recognize that command, {0}.\nTry .help target_process"
+    tp = TargetProcess(bot_input, bot_output)
 
     if len(user_input) > 1:
         cmd = user_input[0]
         cmd_parameter = user_input[1]
         if cmd == "id":
-            output_string = get_story_by_id(tp, cmd_parameter)
+            output_string = tp.get_story_by_id(cmd_parameter)
         elif cmd == "su":
-            gh = GithubHelper(bot_input, bot_output)
-            output_string = get_stand_up_by_user(tp, gh, cmd_parameter)
+            output_string = tp.get_stand_up_by_user(cmd_parameter)
         elif cmd == "team":
-            output_string = get_stories_by_team(tp, cmd_parameter)
+            output_string = tp.get_stories_by_team(cmd_parameter)
 
     bot_output.say(output_string)
 
-
 """
-Internal Utilities
-"""
-
-# Functions that fetch objects
-def get_user_stories(tp, login, entity_state, date_modified=''):
-    where = "(AssignedUser.Login eq '" + login + "')"
-    where += "and (EntityState.Name in ('" + '\', \''.join(entity_state) + "'))"
-    if date_modified:
-        where += "and (ModifyDate gte " + date_modified.strftime("'%Y-%m-%d'") + ")"
-    query = "UserStories?include=[Name,EntityState,ModifyDate,Effort,Tasks]&where=" + parse.quote_plus(where)
-    result = tp.get_object(query)
-    return json.loads(result)["Items"]
-
-
-# https://md5.tpondemand.com/api/v1/TaskHistories/meta
-def get_task_history(tp, task_ids, days_edited_ago):
-    today = datetime.date.today()
-    yesterday = today - datetime.timedelta(days=days_edited_ago)
-    where = "(Date gte %s)" % yesterday.strftime("'%Y-%m-%d'")
-    where += "and (Task.Id in (%s))" % ", ".join(str(tid) for tid in task_ids)
-    where = parse.quote_plus(where)
-    result = tp.get_object("TaskHistories?include=[Date,EntityState,Modifier,Task]&where=" + where)
-    return json.loads(result)["Items"]
-
-
-# Shared formatting for story string
-def get_story_string(user_story):
-    story_id = str(user_story["Id"])
-    padding = " " * len(story_id + " - ")
-    return "\n\t" + ("\n\t" + padding).join(textwrap.wrap(story_id + " - " + user_story["Name"]
-                                                          + " [" + str(user_story["Effort"]) + "pt, " +
-                                                          user_story["EntityState"]["Name"] + "]", 80)) + "\n"
-
-
-"""
-Functions that return strings (bot output)
+https://md5.tpondemand.com/api/v1/index/meta
 """
 
 
-def get_stories_by_user(tp, login):
-    output_string = ""
-    stories = get_user_stories(tp, login, 'In Progress')
-    for user_story in stories:
-        output_string += get_story_string(user_story)
+class TargetProcess():
+    user = ''
+    tp_uri = ''
+    token = ''
 
-    return output_string
+    def __init__(self, bot_input, bot_output):
+        url = bot_input.bot.credentials["target_process"]["url"]
+        token = bot_input.bot.credentials["target_process"]["token"]
 
+        self.data = []
+        self.tp_uri = url
+        self.token = token
 
-def get_story_by_id(tp, id):
-    output_string = ""
-    where = parse.quote_plus("(Id eq '" + id + "')")
-    query = "UserStories?include=[Name,EntityState,ModifyDate,Effort]&where=" + where
-    story_data = tp.get_object(query)
-    result = json.loads(story_data)
+    def get_object(self, api_suffix):
+        auth_token = "&token=%s" % self.token
+        request_string = self.tp_uri + api_suffix + "&format=json" + auth_token
 
-    for user_story in result["Items"]:
-        output_string += get_story_string(user_story)
-    if not output_string:
-        output_string = "Story not found: " + id
+        print(request_string)
 
-    return output_string
+        return web.get_text(request_string)
 
+    # Functions that fetch objects
+    def get_user_stories(self, login, entity_state, date_modified=''):
+        where = "(AssignedUser.Login eq '" + login + "')"
+        where += "and (EntityState.Name in ('" + '\', \''.join(entity_state) + "'))"
+        if date_modified:
+            where += "and (ModifyDate gte " + date_modified.strftime("'%Y-%m-%d'") + ")"
+        query = "UserStories?include=[Name,EntityState,ModifyDate,Effort,Tasks]&where=" + parse.quote_plus(where)
+        result = self.get_object(query)
+        return json.loads(result)["Items"]
 
-def get_stories_by_team(tp, team_name):
-    stories = []
-    active_states = ('In Progress', 'In Review', 'Testing', 'Blocked', 'Done')
+    # https://md5.tpondemand.com/api/v1/TaskHistories/meta
+    def get_task_history(self, task_ids, days_edited_ago):
+        today = datetime.date.today()
+        yesterday = today - datetime.timedelta(days=days_edited_ago)
+        where = "(Date gte %s)" % yesterday.strftime("'%Y-%m-%d'")
+        where += "and (Task.Id in (%s))" % ", ".join(str(tid) for tid in task_ids)
+        where = parse.quote_plus(where)
+        result = self.get_object("TaskHistories?include=[Date,EntityState,Modifier,Task]&where=" + where)
+        return json.loads(result)["Items"]
 
-    today = datetime.datetime.today()
-
-    where = "(Team.Name eq '" + team_name + "')" \
-            + "and (EntityState.Name in ('" + '\', \''.join(active_states) + "'))"
-
-    query = "UserStories?include=[Name,EntityState,LastStateChangeDate,Effort]&where=" + parse.quote_plus(where)
-    result = json.loads(tp.get_object(query))
-    for user_story in result["Items"]:
-        last_changed = json_date_as_datetime(user_story["LastStateChangeDate"])
-        if (today - last_changed).days > 1:
-            stories.append("Last Changed: " + last_changed.strftime("'%m-%d-%Y %H:%M'"))
-            stories.append(get_story_string(user_story))
-    return '\n'.join(stories)
-
-
-def get_stand_up_by_user(tp, gh, login):
-    # Get all stories for user
-    # Get all tasks
-    # Get history of tasks
-    # Display any changes done to tasks yesterday
-    # Determine what in progress means based on role of assigned user
-    output_string = ""
-
-    # how many days into the past to check
-    days_previous = 2
-
-    # TODO: change based on the user type
-    stories = get_user_stories(
-        tp, login,
-        ('In Progress', 'In Review', 'Accepted'),
-        datetime.date.today() - datetime.timedelta(days=days_previous))
-
-    # github integration - current pull requests
-    gh_name = gh.bot_input.bot.credentials["github"]["login"]
-    pull_requests = gh.get_stand_up_by_user(gh_name)
-
-    if pull_requests:
-        output_string += '\n'.join(pull_requests)
-
-    # print all stories and tasks edited in the last n days
-    for user_story in stories:
-        output_string += get_story_string(user_story)
-
-        task_ids = []
-        for task in user_story['Tasks']['Items']:
-            task_ids.append(task["Id"])
-
-        task_history = get_task_history(tp, task_ids, days_previous)
-        # history_list = []
-        for history in task_history:
-            #history_list.append(['Task']['Id'])
-            #history_list[history['Task']['Id']][history["Modifier"]["Id"]]['EntityState'].append(history["EntityState"]["Name"])
-
-            output_string += "\t\t" \
-                             + json_date_as_datetime(history["Date"]).strftime("%d-%b-%Y") \
-                             + "\t " + history['Modifier']['FirstName'] \
-                             + "\t " + history["EntityState"]["Name"] \
-                             + "\t\t " + history["Task"]["Name"] \
-                             + "\n"
-
-    return output_string
-
-
-# Old functionality
-@hook.regex(
-    r'\bt(?:arget)?\ {0,2}p(?:rocess)?\ {1,2}recent\ {1,2}(?:(?P<days>\d{1,2})\ {0,2}da?y?s?|(?P<hours>\d{1,2})\ {0,2}ho?u?r?s?)\s*$',
-    run_always=True)
-def get_stories_advanced(bot_input, bot_output):
-    print(repr(bot_input))
-
-    tp = TargetProcess(bot_input.credentials["url"], bot_input.credentials["token"])
-
-    # days = bot_input.groupdict()["days"]
-    #hours = bot_input.groupdict()["hours"]
-
-    days = "4"
-    hours = "1"
-    if days is not None:
-        comparison_date = datetime.datetime.now() + datetime.timedelta(-1 * int(days))
-        output_string = "Stories modified in the last " + days + " days: \n"
-        bug_string = "Bugs modified in the last " + days + " days: \n"
-    else:
-        comparison_date = datetime.datetime.now() + datetime.timedelta(0, 0, 0, 0, 0, -1 * int(hours))
-        output_string = "Stories modified in the last " + hours + " hours: \n"
-        bug_string = "Bugs modified in the last " + hours + " hours: \n"
-
-    for user_story in json.loads(tp.get_object(
-                                            "UserStories?include=[Name,EntityState,ModifyDate,Effort]&where=(ModifyDate%20gte%20" + comparison_date.strftime(
-                                            "'%Y-%m-%d'") + ")%20and%20(Team.Name%20eq%20'" + bot_input.credentials[
-                        "team_name"] + "')"))["Items"]:
-
+    # Shared formatting for story string
+    def get_story_string(self, user_story):
         story_id = str(user_story["Id"])
         padding = " " * len(story_id + " - ")
+        return "\n\t" + ("\n\t" + padding).join(textwrap.wrap(story_id + " - " + user_story["Name"]
+                                                              + " [" + str(user_story["Effort"]) + "pt, " +
+                                                              user_story["EntityState"]["Name"] + "]", 80)) + "\n"
 
-        if json_date_as_datetime(user_story["ModifyDate"]) < comparison_date:
-            continue
+    def get_stories_by_team(self, team_name, active_states):
+        where = "(Team.Name eq '" + team_name + "')" \
+                + "and (EntityState.Name in ('" + '\', \''.join(active_states) + "'))"
 
-        output_string += "\n\t" + ("\n\t" + padding).join(textwrap.wrap(
-            story_id + " - " + user_story["Name"] + " [" + str(user_story["Effort"]) + "pt, " +
-            user_story["EntityState"]["Name"] + "]", 80)) + "\n"
+        query = "UserStories?include=[Name,EntityState,LastStateChangeDate,Effort]&where=" + parse.quote_plus(where)
+        result = json.loads(self.get_object(query))
+        return result
 
-        lastEffort = None
-        lastState = None
 
-        for user_story_history in json.loads(tp.get_object(
-                        "UserStoryHistories/?include=[Effort,EntityState,Modifier,Date]&where=UserStory.Id%20eq%20" + story_id))[
-            "Items"]:
+    """
+    Functions that return strings (bot output)
+    """
 
-            modifiedDate = json_date_as_datetime(user_story_history["Date"])
-            modifiedDateStr = modifiedDate.strftime("%m/%d/%y %I:%M%p").replace(" 0", " ")
+    def get_stories_by_team_description(self, team_name):
+        stories = []
 
-            state = user_story_history["EntityState"]["Name"]
-            effort = str(user_story_history["Effort"]) + "pt"
+        today = datetime.datetime.today()
 
-            if json_date_as_datetime(user_story_history["Date"]) < comparison_date:
-                lastState = state
-                lastEffort = effort
-                continue
+        active_states = ('In Progress', 'In Review', 'Testing', 'Blocked', 'Done')
+        stories = self.get_stories_by_team_description(team_name, active_states)
 
-            user = user_story_history["Modifier"]["FirstName"] + " " + user_story_history["Modifier"]["LastName"]
+        for user_story in stories["Items"]:
+            last_changed = json_date_as_datetime(user_story["LastStateChangeDate"])
+            if (today - last_changed).days > 1:
+                stories.append("Last Changed: " + last_changed.strftime("'%m-%d-%Y %H:%M'"))
+                stories.append(self.get_story_string(user_story))
+        return '\n'.join(stories)
 
-            if lastState:
-                if lastState != state:
-                    output_string += padding + " => " + user + " modified the state from " + lastState + " -> " + state + " on " + modifiedDateStr + "\n"
-                if lastEffort != effort:
-                    output_string += padding + " => " + user + " changed the effort from " + lastEffort + " -> " + effort + " on " + modifiedDateStr + "\n"
-            else:
-                output_string += padding + " => " + user + " added this " + effort + " story on " + modifiedDateStr + "\n"
+    def get_stories_by_user(self, login):
+        output_string = ""
+        stories = self.get_user_stories(login, 'In Progress')
+        for user_story in stories:
+            output_string += self.get_story_string(user_story)
 
-            lastEffort = effort
-            lastState = state
+        return output_string
 
-    bot_output.say(output_string.encode('UTF-8'))
-    output_string = bug_string
+    def get_story_by_id(self, story_id):
+        output_string = ""
+        where = parse.quote_plus("(Id eq '" + story_id + "')")
+        query = "UserStories?include=[Name,EntityState,ModifyDate,Effort]&where=" + where
+        story_data = self.get_object(query)
+        result = json.loads(story_data)
 
-    for bug in json.loads(tp.get_object(
-                                            "Bugs?include=[Name,UserStory,EntityState,ModifyDate]&where=(ModifyDate%20gte%20" + comparison_date.strftime(
-                                            "'%Y-%m-%d'") + ")%20and%20(Team.Name%20eq%20'" + bot_input.credentials[
-                        "team_name"] + "')"))["Items"]:
+        for user_story in result["Items"]:
+            output_string += self.get_story_string(user_story)
+        if not output_string:
+            output_string = "Story not found: " + story_id
 
-        bug_id = str(bug["Id"])
-        story_id = str(bug["UserStory"]["Id"])
-        padding = " " * len(bug_id + " - ")
+        return output_string
 
-        if json_date_as_datetime(bug["ModifyDate"]) < comparison_date:
-            continue
+    def get_stand_up_by_user(self, login):
+        # Get all stories for user
+        # Get all tasks
+        # Get history of tasks
+        # Display any changes done to tasks yesterday
+        # Determine what in progress means based on role of assigned user
+        output_string = ""
 
-        output_string += "\n\t" + ("\n\t" + padding).join(textwrap.wrap(
-            bug_id + " - " + bug["Name"] + " [" + bug["EntityState"]["Name"] + ", Story " + story_id + "]", 80)) + "\n"
+        # how many days into the past to check
+        days_previous = 2
 
-        lastState = None
+        # TODO: change based on the user type
+        stories = self.get_user_stories(
+            login,
+            ('In Progress', 'In Review', 'Accepted'),
+            datetime.date.today() - datetime.timedelta(days=days_previous))
 
-        for bug_history in \
-        json.loads(tp.get_object("BugHistories/?include=[EntityState,Modifier,Date]&where=Bug.Id%20eq%20" + bug_id))[
-            "Items"]:
+        # print all stories and tasks edited in the last n days
+        for user_story in stories:
+            output_string += self.get_story_string(user_story)
 
-            modifiedDate = json_date_as_datetime(bug_history["Date"])
-            modifiedDateStr = modifiedDate.strftime("%m/%d/%y %I:%M%p").replace(" 0", " ")
+            task_ids = []
+            for task in user_story['Tasks']['Items']:
+                task_ids.append(task["Id"])
 
-            state = bug_history["EntityState"]["Name"]
+            task_history = self.get_task_history(task_ids, days_previous)
+            # history_list = []
+            for history in task_history:
+                #history_list.append(['Task']['Id'])
+                #history_list[history['Task']['Id']][history["Modifier"]["Id"]]['EntityState'].append(history["EntityState"]["Name"])
 
-            if json_date_as_datetime(bug_history["Date"]) < comparison_date:
-                lastState = state
-                continue
+                output_string += "\t\t" \
+                                 + json_date_as_datetime(history["Date"]).strftime("%d-%b-%Y") \
+                                 + "\t " + history['Modifier']['FirstName'] \
+                                 + "\t " + history["EntityState"]["Name"] \
+                                 + "\t\t " + history["Task"]["Name"] \
+                                 + "\n"
 
-            user = bug_history["Modifier"]["FirstName"] + " " + bug_history["Modifier"]["LastName"]
-
-            if lastState:
-                if lastState != state:
-                    output_string += padding + " => " + user + " modified the state from " + lastState + " -> " + state + " on " + modifiedDateStr + "\n"
-            else:
-                output_string += padding + " => " + user + " created this bug on " + modifiedDateStr + "\n"
-
-            lastState = state
-
-    bot_output.say(output_string.encode('UTF-8'))
+        return output_string
 
 
 # Utilities
