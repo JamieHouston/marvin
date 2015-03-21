@@ -19,6 +19,7 @@ def pull_request(bot_input, bot_output):
 
         cmd = user_input[0]
         cmd_parameter = user_input[1]
+        pull_request_url = None
         if cmd == "story":
             team_name = bot_output.team_name.lower()
 
@@ -27,16 +28,22 @@ def pull_request(bot_input, bot_output):
             matching_stories = [story for story in stories["Items"] if cmd_parameter in str(story["Id"])]
             if len(matching_stories) == 1:
                 matching_story = matching_stories[0]
-                create_pull_request(bot_input, bot_output, matching_story)
+                pull_request_url = create_pull_request(bot_input, bot_output, matching_story)
             else:
                 bot_output.say("Found {0} stories for {1} so I can't create a PR".format(len(matching_stories), cmd_parameter))
         elif cmd == "user":
             # Get stories in TP by user
             stories = tp.get_stories_by_user(cmd_parameter)
             if len(stories) == 1:
-                bot_output.say("Creating PR for {0}".format(stories[0]["Name"]))
+                matching_story = stories[0]
+                bot_output.say("Creating PR for {0}".format(matching_story["Name"]))
+                pull_request_url = create_pull_request(bot_input, bot_output, stories[0])
             else:
                 bot_output.say("Found {0} stories for {1} so I can't create a PR".format(len(stories), cmd_parameter))
+
+        if matching_story and pull_request_url:
+            tp.create_task(matching_story["Id"], pull_request_url)
+            bot_output.say("Task added to story {0}".format(matching_story["Id"]))
 
 
 def create_pull_request(bot_input, bot_output, story):
@@ -48,8 +55,10 @@ def create_pull_request(bot_input, bot_output, story):
 
     pull_request = gh.create_pull_request_from_partial_name(story_number)
     if pull_request:
-        bot_output.say("PR for branch {0} created - [{1}]({2})".format(
-            pull_request.title, pull_request.title, pull_request.html_url))
+        response = "PR for branch {0} created - [{1}]({2})".format(
+            pull_request.title, pull_request.title, pull_request.html_url)
+        bot_output.say(response)
+        return pull_request.html_url
     else:
         bot_output.say("No branch found for story {0}".format(story_number))
     # Create PR if there's only 1

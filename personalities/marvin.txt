@@ -50,6 +50,7 @@
         "Did ya miss me?", "I'm baaaaccckk",
         "Miss me? Of course not.",
         "Guess I made it to another day.",
+        ":fu:",
         "I'm here. To do lots of pointless stuff for people.  Yay.",
         "I'm here.  Go ahead and tell me what to do like always.",
         "Yes.  I'm here.  Guess I have to pretend to like it now.",
@@ -86,12 +87,14 @@
     ],
     "beers": [
         "One cold one, coming up",
+        ":fu:",
         "A little early, no?",
         "My pleasure",
         "Looks like Steve-o drank them all.",
         "I... hic... don't see any..."],
     "doit": [
         "I'm givin it all I got, captain.",
+        ":fu:",
         "I'm on my break.",
         "You first.",
         "Make me."],

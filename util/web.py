@@ -67,3 +67,6 @@ def post_json(url, username, password, **kwargs):
     if response and response.json:
         return response.json()
     return response.text
+
+def post_json(url, body):
+    return requests.post(url, data=json.dumps(body))

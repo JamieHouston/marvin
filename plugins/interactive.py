@@ -22,11 +22,11 @@ def beer_me(bot_input, bot_output):
 def dance(bot_input, bot_output):
     bot_output.say(':(-<')
     bot_output.say(':(\-<')
-    bot_output.say('>:o/-<')
+    bot_output.say(':o/-<')
     bot_output.say(':(\-<')
     bot_output.say(':-(/-<')
     bot_output.say(':(\-<')
-    bot_output.say('>:o{-<')
+    bot_output.say(':o-<')
 
 
 @hook.regex(r'(do it)?(now|right away|hurry up)[!]*?$', run_always=True)

@@ -30,6 +30,8 @@ def target_process(bot_input, bot_output):
             output_string = tp.get_stand_up_by_user(cmd_parameter)
         elif cmd == "team":
             output_string = tp.get_stories_by_team(cmd_parameter)
+        elif cmd == "task":
+            output_string = tp.create_task(cmd_parameter, "test task for " + cmd_parameter)
 
     bot_output.say(output_string)
 
@@ -58,6 +60,12 @@ class TargetProcess():
         print(request_string)
 
         return web.get_text(request_string)
+
+    def create_task(self, story_number, task_title):
+        body = {"Name": task_title, "UserStory": {"Id": story_number}}
+        url = "{0}{1}?token={2}&format=json".format(self.tp_uri, "tasks", self.token)
+        result = web.post_json(url, body)
+        return result
 
     # Functions that fetch objects
     def get_user_stories(self, login, entity_state, date_modified=''):
@@ -192,3 +200,4 @@ def json_date_as_datetime(jd):
         ms += (hh * 60 + mm) * 60000
     return datetime.datetime(1970, 1, 1) \
            + datetime.timedelta(microseconds=ms * 1000)
+
