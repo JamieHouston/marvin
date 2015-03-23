@@ -86,13 +86,13 @@ class GithubHelper(object):
         tp_story_url = "https://daptiv.tpondemand.com/entity/{0}".format(story_number)
 
         body = "{0}\n" \
-               "#Code Review\n" \
+               "=== Code Review ===\n" \
                " - [ ] @{1}\n" \
-               " - [ ] [Teamcity Tests Pass]({2}\n" \
-               "#Test" \
-               "\n - [ ] @{3}" \
-               "#Additional" \
-               " - [ ] [Feature is dev complete]({4}" \
+               " - [ ] [Teamcity Tests Pass]({2})\n\n" \
+               "=== Test ===\n" \
+               " - [ ] @{3}\n\n" \
+               "=== Additional === \n" \
+               " - [ ] [Feature is dev complete]({4})" \
             .format(story_number,
                     random_member,
                     tc_test_url,
