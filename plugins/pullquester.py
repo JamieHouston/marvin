@@ -2,48 +2,62 @@ import shlex
 from plugins.gitty import GithubHelper
 from plugins.target_process import TargetProcess
 
-from util import hook
+from util import hook, userinfo
+
+@hook.regex("create a pull request for (?P<story_number>[\w]*)")
+def personal_pull_request(bot_input, bot_output):
+    """
+        Create a pull request for [story number] -- creates a pull request for branch with story number (in string search)
+    """
+
+    pull_request(bot_input, bot_output)
 
 @hook.command
 def pull_request(bot_input, bot_output):
     """
-    .pull_request story [story id] -- creates a pull request for branch with story id (in string search)
-    .pull_request user [username] -- creates a pull request for story in dev or review for username (in string search)
+    .pull_request [story number] -- creates a pull request for branch with story number (in string search)
     """
 
-    user_input = bot_input.input_string
-    user_input = shlex.split(user_input)
+    if bot_input.groupdict():
+        story_number = bot_input.groupdict()["story_number"]
+    else:
+        story_number = bot_input.input_string
 
-    if len(user_input) > 1:
-        tp = TargetProcess(bot_input, bot_output)
+    if not story_number:
+        bot_output.say("Not sure what story number you're asking me to create a pull request for...")
+        return
 
-        cmd = user_input[0]
-        cmd_parameter = user_input[1]
-        pull_request_url = None
-        if cmd == "story":
-            team_name = bot_output.team_name.lower()
+    tp = TargetProcess(bot_input, bot_output)
 
-            # Get stories in TP by story number
-            stories = tp.get_stories_by_team(team_name, ('In Progress', 'In Review'))
-            matching_stories = [story for story in stories["Items"] if cmd_parameter in str(story["Id"])]
-            if len(matching_stories) == 1:
-                matching_story = matching_stories[0]
-                pull_request_url = create_pull_request(bot_input, bot_output, matching_story)
-            else:
-                bot_output.say("Found {0} stories for {1} so I can't create a PR".format(len(matching_stories), cmd_parameter))
-        elif cmd == "user":
-            # Get stories in TP by user
-            stories = tp.get_stories_by_user(cmd_parameter)
-            if len(stories) == 1:
-                matching_story = stories[0]
-                bot_output.say("Creating PR for {0}".format(matching_story["Name"]))
-                pull_request_url = create_pull_request(bot_input, bot_output, stories[0])
-            else:
-                bot_output.say("Found {0} stories for {1} so I can't create a PR".format(len(stories), cmd_parameter))
+    pull_request_url = None
+    team_name = userinfo.get_user_info(bot_output.nick)
 
-        if matching_story and pull_request_url:
-            tp.create_task(matching_story["Id"], pull_request_url)
-            bot_output.say("Task added to story {0}".format(matching_story["Id"]))
+    if not team_name:
+        bot_output.say("Not sure what team you're on {0}.  Try telling me by saying 'I'm on team [team name]'"
+                       .format(bot_output.nick))
+        return
+
+    # Get stories in TP by story number
+    stories = tp.get_stories_by_team(team_name, ('In Progress', 'In Review'))
+    matching_stories = [story for story in stories["Items"] if story_number in str(story["Id"])]
+    if len(matching_stories) == 1:
+        matching_story = matching_stories[0]
+        pull_request_url = create_pull_request(bot_input, bot_output, matching_story)
+    else:
+        bot_output.say("Found {0} stories for {1} so I can't create a PR".format(len(matching_stories), story_number))
+    # elif cmd == "user":
+    #     # Get stories in TP by user
+    #     stories = tp.get_stories_by_user(cmd_parameter)
+    #     if len(stories) == 1:
+    #         matching_story = stories[0]
+    #         bot_output.say("Creating PR for {0}".format(matching_story["Name"]))
+    #         pull_request_url = create_pull_request(bot_input, bot_output, stories[0])
+    #     else:
+    #         bot_output.say("Found {0} stories for {1} so I can't create a PR".format(len(stories), cmd_parameter))
+
+    if matching_story and pull_request_url:
+        tp.create_task(matching_story["Id"], pull_request_url)
+        bot_output.say("Task added to story {0}".format(matching_story["Id"]))
 
 
 def create_pull_request(bot_input, bot_output, story):

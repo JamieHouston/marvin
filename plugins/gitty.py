@@ -1,4 +1,4 @@
-from util import hook, storage
+from util import hook, userinfo
 from github import Github
 import random
 import re
@@ -50,7 +50,7 @@ class GithubHelper(object):
 
         # TODO: Get org from config
         self.organization = "daptiv"
-        self.team_name = self.bot_output.team_name.lower()
+        self.team_name = userinfo.get_user_team(bot_output.nick) or self.bot_output.team_name.lower()
 
         self.github_api = Github(
             self.bot_input.bot.credentials["github"]["login"],
@@ -67,7 +67,7 @@ class GithubHelper(object):
 
         # TODO: This doesn't guarantee the story number - only if it's 12345-story-name
         story_number = branch.name.split('-')[0]
-        team = self.get_team()
+        team = userinfo.get_user_team(self.bot_output.nick)
         members = team.get_members()
         random_member = random.choice([member for member in members])
 

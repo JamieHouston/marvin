@@ -1,9 +1,10 @@
 import redis
 
 try:
-    server = redis.StrictRedis(host='pub-redis-14854.us-east-1-2.2.ec2.garantiadata.com', port=14854, db=0,
-                               password="marvin")
-    server.ping()
+    server = redis.Redis(host='pub-redis-10118.us-east-1-2.4.ec2.garantiadata.com', port=10118, db=0,
+                              password="P@ssw0rd", decode_responses=True)
+    # server = redis.StrictRedis(host='localhost', port=6379)
+    # server.ping()
 except:
     server = None
 
@@ -55,6 +56,11 @@ def get_hash_value(hash_list_name, hash_key):
     if server:
         return server.hget(hash_list_name, hash_key)
     return None
+
+
+def get_hash(hash_list_name):
+    if server:
+        return server.hgetall(hash_list_name)
 
 
 def set_hash_value(hash_list_name, key, value):
