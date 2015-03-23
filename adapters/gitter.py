@@ -78,6 +78,7 @@ class BotOutput():
             return user[0]
         return {"nick": user_email}
 
+    # TODO: I believe bot is self... need to be clearer about what is in bot_input and output
     def _parse_stream(self, bot):
         stream = JSONStream(self.token, self.room_id)
         gen = stream.fetch()

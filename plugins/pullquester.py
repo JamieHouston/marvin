@@ -18,7 +18,7 @@ def pull_request(bot_input, bot_output):
     .pull_request [story number] -- creates a pull request for branch with story number (in string search)
     """
 
-    if bot_input.groupdict():
+    if hasattr(bot_input, 'groupdict'):
         story_number = bot_input.groupdict()["story_number"]
     else:
         story_number = bot_input.input_string
@@ -30,11 +30,11 @@ def pull_request(bot_input, bot_output):
     tp = TargetProcess(bot_input, bot_output)
 
     pull_request_url = None
-    team_name = userinfo.get_user_info(bot_output.nick)
+    team_name = userinfo.get_user_team(bot_input.nick)
 
     if not team_name:
         bot_output.say("Not sure what team you're on {0}.  Try telling me by saying 'I'm on team [team name]'"
-                       .format(bot_output.nick))
+                       .format(bot_input.nick))
         return
 
     # Get stories in TP by story number
@@ -56,7 +56,8 @@ def pull_request(bot_input, bot_output):
     #         bot_output.say("Found {0} stories for {1} so I can't create a PR".format(len(stories), cmd_parameter))
 
     if matching_story and pull_request_url:
-        tp.create_task(matching_story["Id"], pull_request_url)
+        tp.create_task(story_number, pull_request_url)
+        tp.update_story_state(story_number, "Ready for Review")
         bot_output.say("Task added to story {0}".format(matching_story["Id"]))
 
 
@@ -67,12 +68,12 @@ def create_pull_request(bot_input, bot_output, story):
 
     gh = GithubHelper(bot_input, bot_output)
 
-    pull_request = gh.create_pull_request_from_partial_name(story_number)
-    if pull_request:
+    new_pull_request = gh.create_pull_request_from_partial_name(story_number)
+    if new_pull_request:
         response = "PR for branch {0} created - [{1}]({2})".format(
-            pull_request.title, pull_request.title, pull_request.html_url)
+            new_pull_request.title, new_pull_request.title, new_pull_request.html_url)
         bot_output.say(response)
-        return pull_request.html_url
+        return new_pull_request.html_url
     else:
         bot_output.say("No branch found for story {0}".format(story_number))
     # Create PR if there's only 1

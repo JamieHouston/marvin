@@ -1,7 +1,7 @@
 from util import hook, userinfo
 
 
-@hook.regex(r"(?:who is) (?P<username>[\w\d]*)", run_always=True)
+@hook.regex(r"(?:who is) (?P<username>[\w\d]*)(?:\?)?$", run_always=True)
 def who_is_user(bot_input, bot_output):
     """who is [username] -- get information about username"""
 
@@ -24,7 +24,7 @@ def who_is_user(bot_input, bot_output):
         bot_output.say("Did you slur?")
 
 
-@hook.regex(r"(?:who is on) (?:team )?(?P<team_name>[\w\d]*)", run_always=True)
+@hook.regex(r"(?:who is on) (?:the )?(?:team )?(?P<team_name>[\w\d]*)(?: team)?(?:\?)?", run_always=True)
 def who_is_team(bot_input, bot_output):
     """who is [username] -- get information about username"""
 
@@ -57,7 +57,7 @@ def username_is(bot_input, bot_output):
     input_parameters = bot_input.groupdict()
 
     if input_parameters:
-        username = input_parameters["username"] if "username" in input_parameters else bot_output.nick
+        username = input_parameters["username"] if "username" in input_parameters else bot_input.nick
         if username.startswith("who"):
             return
         team_name = input_parameters["team_name"]

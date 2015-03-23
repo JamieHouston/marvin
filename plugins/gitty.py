@@ -3,6 +3,7 @@ from github import Github
 import random
 import re
 
+
 @hook.command
 def github(bot_input, bot_output):
     """.github [username] -- gives a list of pending pull requests for user. Omitting username uses last one passed in
@@ -43,6 +44,7 @@ def create_pull_request(bot_input, bot_output):
     new_pull_request = helper.create_pull_request(branch)
     bot_output.say(new_pull_request.url)
 
+
 class GithubHelper(object):
     def __init__(self, bot_input, bot_output):
         self.bot_input = bot_input
@@ -50,7 +52,7 @@ class GithubHelper(object):
 
         # TODO: Get org from config
         self.organization = "daptiv"
-        self.team_name = userinfo.get_user_team(bot_output.nick) or self.bot_output.team_name.lower()
+        self.team_name = userinfo.get_user_team(bot_input.nick) or self.bot_output.team_name.lower()
 
         self.github_api = Github(
             self.bot_input.bot.credentials["github"]["login"],
@@ -63,18 +65,43 @@ class GithubHelper(object):
         return None
 
     def create_pull_request(self, repo, branch):
+        # TODO: This should be stored in userinfo as well, so it works in flowdock
+        # Add command to "my github username is [username] or something
+
+        github_name = self.bot_input.nick
         master_branch = "master"
 
         # TODO: This doesn't guarantee the story number - only if it's 12345-story-name
         story_number = branch.name.split('-')[0]
-        team = userinfo.get_user_team(self.bot_output.nick)
-        members = team.get_members()
-        random_member = random.choice([member for member in members])
+        team_members = userinfo.get_user_team_members(github_name)
 
-        body = "{0}\n - [ ] @{1}".format(story_number, random_member.login)
+        random_member = random.choice(
+            [member for (member, role) in team_members.items() if role == "developer" and member != github_name])
+        testers = [member for (member, role) in team_members.items() if role == "tester"]
 
-        new_pull_request =  repo.create_pull(title=branch.name, body=body, base=master_branch,
-                                        head=branch.name)
+        tc_test_url = \
+            "http://teamcity.hq.daptiv.com/project.html?projectId=PpmFeatureBranches&tab=projectOverview&branch_PpmFeatureBranches={0}" \
+                .format(branch.name)
+
+        tp_story_url = "https://daptiv.tpondemand.com/entity/{0}".format(story_number)
+
+        body = "{0}\n" \
+               "#Code Review\n" \
+               " - [ ] @{1}\n" \
+               " - [ ] [Teamcity Tests Pass]({2}\n" \
+               "#Test" \
+               "\n - [ ] @{3}" \
+               "#Additional" \
+               " - [ ] [Feature is dev complete]({4}" \
+            .format(story_number,
+                    random_member,
+                    tc_test_url,
+                    "| @".join(testers),
+                    tp_story_url)
+
+        # TODO: Add link to TC and TP
+        new_pull_request = repo.create_pull(title=branch.name, body=body, base=master_branch,
+                                            head=branch.name)
 
         return new_pull_request
 

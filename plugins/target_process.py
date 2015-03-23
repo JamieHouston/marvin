@@ -67,6 +67,18 @@ class TargetProcess():
         result = web.post_json(url, body)
         return result
 
+    def update_story_state(self, story_number, new_state):
+        # TODO: Grab this from API!
+        entity_states = {
+            'in review': 438
+        }
+        entity_state_id = entity_states[new_state.lower()]
+
+        body = {"Id": story_number, "EntityState": {"Id": entity_state_id}}
+        url = "{0}{1}?token={2}&format=json".format(self.tp_uri, "userstories", self.token)
+        result = web.post_json(url, body)
+        return result
+
     # Functions that fetch objects
     def get_user_stories(self, login, entity_state, date_modified=''):
         where = "(AssignedUser.Login eq '" + login + "')"
