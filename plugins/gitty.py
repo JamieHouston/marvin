@@ -6,8 +6,8 @@ import re
 
 @hook.command
 def github(bot_input, bot_output):
-    """.github [username] -- gives a list of pending pull requests for user. Omitting username uses last one passed in
-    .github teamstatus -- gives a list of pending pull requests for user. Omitting teamnames uses last one passed in"""
+    """.github [username] -- gives a list of pending pull requests for user. Omitting username uses nick of user making request
+.github teamstatus -- gives a list of pending pull requests for user."""
 
     input_argument = bot_input.input_string
 
@@ -22,17 +22,15 @@ def github(bot_input, bot_output):
         github_name = input_argument.lower()
 
     if not github_name:
-        bot_output.say("Who the hell are you?  Try .github <username>.\
-          And if you pass in angle brackets I will return you to sender, postage unpaid.")
-        return
+        github_name = bot_input.nick
 
     bot_output.say(random.choice(bot_output.responses["github"]))
 
     pull_requests = gh.pull_requests(github_name)
 
     for pull_request in pull_requests:
-        formatt_request = "[{0}]({1})".format(pull_request.title, pull_request.html_url)
-        bot_output.say(formatt_request)
+        format_request = "[{0}]({1})".format(pull_request.title, pull_request.html_url)
+        bot_output.say(format_request)
 
     bot_output.say('All done {0}. Good luck with that.')
 

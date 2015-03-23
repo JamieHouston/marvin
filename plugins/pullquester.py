@@ -6,17 +6,13 @@ from util import hook, userinfo
 
 @hook.regex("create a pull request for (?P<story_number>[\w]*)")
 def personal_pull_request(bot_input, bot_output):
-    """
-        Create a pull request for [story number] -- creates a pull request for branch with story number (in string search)
-    """
 
     pull_request(bot_input, bot_output)
 
 @hook.command
 def pull_request(bot_input, bot_output):
-    """
-    .pull_request [story number] -- creates a pull request for branch with story number (in string search)
-    """
+    """.pull_request [story number] -- creates a pull request for branch with story number
+Create a pull request for [story number] -- creates a pull request for branch with story number """
 
     if hasattr(bot_input, 'groupdict'):
         story_number = bot_input.groupdict()["story_number"]
