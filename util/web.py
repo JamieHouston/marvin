@@ -1,7 +1,7 @@
 from bs4 import BeautifulSoup
 from urllib import request
 import random
-import requests
+from external import requests
 import json
 
 def get_title(url):

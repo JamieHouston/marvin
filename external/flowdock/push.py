@@ -1,5 +1,5 @@
 # coding: utf-8
-import requests
+from external import requests
 from re import match, IGNORECASE
 
 PUSH_TEAM_INBOX_API_URL = "https://api.flowdock.com/v1/messages/team_inbox/%s"

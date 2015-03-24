@@ -1,6 +1,6 @@
 # coding: utf-8
 import json
-import requests
+from external import requests
 from util import logger
 import traceback
 import sys

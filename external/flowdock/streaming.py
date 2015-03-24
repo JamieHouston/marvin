@@ -1,6 +1,6 @@
 # coding: utf-8
 import json
-import requests
+from external import requests
 
 STREAMING_API_URL = 'https://stream.flowdock.com/flows'
 DEFAULT_CONTENT_TYPE = 'application/json'
