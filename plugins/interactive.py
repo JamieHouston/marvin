@@ -123,3 +123,8 @@ def welcome_back(bot_input, bot_output):
 @hook.regex('i give up')
 def give_up(bot_input, bot_ouput):
     bot_ouput.say('how French of you, {0}'.format(bot_input.nick))
+
+
+@hook.regex('thank god', run_always=True)
+def give_up(bot_input, bot_ouput):
+    bot_ouput.say("you're welcome, {0}".format(bot_input.nick))

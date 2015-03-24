@@ -4,11 +4,14 @@ Marvin
 [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/foresterh/marvin?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)  (opens in same tab)
 
 Python bot for fun and usefulness.
+
 Got it's attitude from the Hitchhiker's Guide to the Galaxy
 
 Got it's roots from pyFlowbot and Phenny and a few other distant cousins.
 
 Now it's own bot.
+
+Works (mostly) with python 3.4.  No guarantee for earlier (or 2.*) versions
 
 -To use
 (optionally) install and run redis (in separate tab)

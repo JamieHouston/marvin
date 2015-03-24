@@ -168,7 +168,7 @@
         "I am a banana",
         "You smell like a fart, {0}",
         "You need a shave {0}",
-        "Hey @all, {0} thinks they can say whatever they want!",
+        "Hey @/all, {0} thinks they can say whatever they want!",
         "Let me think about it.... No."],
     "youre_welcome": [
         "You're welcome, {0}",

@@ -16,8 +16,9 @@ def add_to_list(bot_input, bot_output):
 def search_list(bot_input, bot_output):
     if bot_input.groupdict():
         list_name = bot_input.groupdict()["request"]
-        if list_name in storage:
-            bot_output.say(", ".join(storage.get_list(list_name)))
+        list_items =  storage.get_list(list_name)
+        if list_items:
+            bot_output.say(", ".join(list_items))
         else:
             bot_output.say("There's as many items on that list as there are friends in your phone.")
 
