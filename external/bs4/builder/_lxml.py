@@ -7,8 +7,8 @@ from io import BytesIO
 from io import StringIO
 import collections
 from lxml import etree
-from bs4.element import Comment, Doctype, NamespacedAttribute
-from bs4.builder import (
+from ..element import Comment, Doctype, NamespacedAttribute
+from ..builder import (
     FAST,
     HTML,
     HTMLTreeBuilder,
@@ -16,7 +16,7 @@ from bs4.builder import (
     ParserRejectedMarkup,
     TreeBuilder,
     XML)
-from bs4.dammit import EncodingDetector
+from ..dammit import EncodingDetector
 
 LXML = 'lxml'
 

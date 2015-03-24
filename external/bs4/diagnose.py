@@ -2,9 +2,9 @@
 import cProfile
 from io import StringIO
 from html.parser import HTMLParser
-import bs4
-from bs4 import BeautifulSoup, __version__
-from bs4.builder import builder_registry
+import external.bs4
+from . import BeautifulSoup, __version__
+from .builder import builder_registry
 
 import os
 import pstats
