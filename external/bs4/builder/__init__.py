@@ -288,7 +288,7 @@ class HTMLTreeBuilder(TreeBuilder):
 def register_treebuilders_from(module):
     """Copy TreeBuilders from the given module into this module."""
     # I'm fairly sure this is not the best way to do this.
-    this_module = sys.modules['..builder']
+    this_module = sys.modules['external.bs4.builder']
     for name in module.__all__:
         obj = getattr(module, name)
 
