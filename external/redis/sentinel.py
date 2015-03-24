@@ -2,10 +2,10 @@ import os
 import random
 import weakref
 
-from redis.client import StrictRedis
-from redis.connection import ConnectionPool, Connection
-from redis.exceptions import ConnectionError, ResponseError, ReadOnlyError
-from redis._compat import iteritems, nativestr, xrange
+from external.redis.client import StrictRedis
+from external.redis.connection import ConnectionPool, Connection
+from external.redis.exceptions import ConnectionError, ResponseError, ReadOnlyError
+from external.redis._compat import iteritems, nativestr, xrange
 
 
 class MasterNotFoundError(ConnectionError):
@@ -138,7 +138,7 @@ class Sentinel(object):
     """
     Redis Sentinel cluster client
 
-    >>> from redis.sentinel import Sentinel
+    >>> from external.redis.sentinel import Sentinel
     >>> sentinel = Sentinel([('localhost', 26379)], socket_timeout=0.1)
     >>> master = sentinel.master_for('mymaster', socket_timeout=0.1)
     >>> master.set('foo', 'bar')

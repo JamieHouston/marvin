@@ -14,10 +14,10 @@ try:
 except ImportError:
     ssl_available = False
 
-from redis._compat import (b, xrange, imap, byte_to_chr, unicode, bytes, long,
+from external.redis._compat import (b, xrange, imap, byte_to_chr, unicode, bytes, long,
                            BytesIO, nativestr, basestring, iteritems,
                            LifoQueue, Empty, Full, urlparse, parse_qs)
-from redis.exceptions import (
+from external.redis.exceptions import (
     RedisError,
     ConnectionError,
     TimeoutError,
@@ -29,7 +29,7 @@ from redis.exceptions import (
     ExecAbortError,
     ReadOnlyError
 )
-from redis.utils import HIREDIS_AVAILABLE
+from external.redis.utils import HIREDIS_AVAILABLE
 if HIREDIS_AVAILABLE:
     import hiredis
 
@@ -902,7 +902,7 @@ class BlockingConnectionPool(ConnectionPool):
     """
     Thread-safe blocking connection pool::
 
-        >>> from redis.client import Redis
+        >>> from external.redis.client import Redis
         >>> client = Redis(connection_pool=BlockingConnectionPool())
 
     It performs the same function as the default
