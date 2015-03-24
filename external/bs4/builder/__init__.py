@@ -1,7 +1,7 @@
 from collections import defaultdict
 import itertools
 import sys
-from bs4.element import (
+from ..element import (
     CharsetMetaAttributeValue,
     ContentMetaAttributeValue,
     whitespace_re
