@@ -1,5 +1,5 @@
 from util import hook, userinfo
-from github import Github
+from external.github import Github
 import random
 import re
 
