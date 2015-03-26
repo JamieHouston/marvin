@@ -1,4 +1,4 @@
-from external.flowdock import JSONStream
+from flowdock import JSONStream
 from core import marvin
 from util import logger, web, dictionaryutils
 import random

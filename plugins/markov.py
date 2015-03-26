@@ -4,6 +4,11 @@ import random
 import re
 from util import hook, textutils
 
+# TODO:
+# Change to use sets
+# Insert every saying in "all" and in the <username> list
+# Key: markov:all:<first_work>:<second_word> Value: <third_word>
+# Key: markov:<username>:<first_work>:<second_word> Value: <third_word>
 
 class Markov(object):
     """

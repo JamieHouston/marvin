@@ -1,4 +1,4 @@
-from external import redis
+import redis
 
 try:
     server = redis.Redis(host='pub-redis-10118.us-east-1-2.4.ec2.garantiadata.com', port=10118, db=0,
