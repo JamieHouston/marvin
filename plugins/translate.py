@@ -1,4 +1,5 @@
-from util import hook, web
+from util import hook, web, web2
+import json
 
 languages = {
     "af": "Afrikaans",
@@ -68,23 +69,77 @@ languages = {
 }
 
 
+def get_language_code(language_name):
+    if len(language_name) == 2:
+        return language_name
+
+    code = [k for k, v in languages.items() if v.lower() == language_name.lower()]
+    if code:
+        return code[0]
+
+    return None
+
+
 @hook.regex(r'do you speak (?P<language>\w*)')
 def do_you_speak(bot_input, bot_output):
-    language = bot_input.inp['language']
-    target = [k for k, v in languages.items() if v.lower() == language.lower()]
-    term = "yes, {0}.  Why?".format(bot_input.nick)
-    if target:
-        translation = translate(target=target, term=term)
+    language_name = bot_input.inp['language']
+    to_language = get_language_code(language_name)
+    sentence = "Yes. Do you speak english, {0}?".format(bot_input.nick)
+    if to_language:
+        translation = translate(sentence, 'en', to_language)
         bot_output.say(translation)
     else:
         bot_output.say("No I don't speak %(language)s, {0}.  Do you speak English?" % bot_input.inp)
 
 
-def translate(origin='en', target='es', term='translate this'):
-    url = "https://translate.google.com/translate_a/single"
+@hook.regex(r'how do you say (?P<sentence>\w*) in (?P<language>\w*)')
+def how_do_you_say(bot_input, bot_output):
+    if hasattr(bot_input, 'groupdict'):
+        translate_parameters = bot_input.groupdict()
+        sentence = translate_parameters["sentence"]
+        language = translate_parameters["language"]
+        to_language = get_language_code(language)
+        result = translate(sentence, 'en', to_language)
+        bot_output.say(result)
 
-    params = dict(client='t', sl=origin, tl=target, hl='en', ssel=0, tsel=0, ie='UTF-8', oe='UTF-8', otf='2',
-                  tk='517129|678405', q=term)
-    response = web.get_json_with_querystring(url, params)
-    return response
 
+def translate(text_to_translate, from_language="auto", to_language=None):
+    phonetic = False
+
+    if from_language is None:
+        from_language = "en"
+
+    text = text_to_translate.strip('" ')
+    page = web2.request(
+        "http://translate.google.com/translate_a/t",
+        modern=True,
+        query = {
+            "client": "t",
+            "hl": "en",
+            "sl": from_language,
+            "tl": to_language,
+            "multires": "1",
+            "otf": "1",
+            "ssel": "0",
+            "tsel": "0",
+            "sc": "1",
+            "text": text
+        })
+
+    result = page["text"]
+    while ",," in result:
+        result = result.replace(",,", ",null,")
+    result = result.replace("[,", "[null,")
+    result = result.replace(",]", ",null]")
+
+    try:
+        js = json.loads(result)
+    except ValueError:
+        return "What do you care?"
+
+    if phonetic:
+        translation = js[0][0][3] or js[0][0][0]
+    else:
+        translation = "".join(t[0] for t in js[0])
+
+    return translation.replace(" ,", ",")

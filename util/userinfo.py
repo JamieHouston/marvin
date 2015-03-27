@@ -34,9 +34,10 @@ def get_user_team(username):
     if user_info and "team" in user_info:
         return user_info["team"]
 
+
 def get_user_team_members(username):
     team = get_user_team(username)
     if team:
         members = get_team_members(team)
         return members
-        #members_except_user = [(member, role) in members.items() if member is not username]
+        # members_except_user = [(member, role) in members.items() if member is not username]

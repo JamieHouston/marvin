@@ -12,6 +12,7 @@ Got it's roots from pyFlowbot and Phenny and a few other distant cousins.
 Now it's own bot.
 
 Works (mostly) with python 3.4.  No guarantee for earlier (or 2.*) versions
+I recommend using [pyenv](https://github.com/yyuu/pyenv) to run separate versions of python concurrently.
 
 -To use
 (optionally) install and run redis (in separate tab)

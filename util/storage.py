@@ -1,8 +1,8 @@
 import redis
 
 try:
-    server = redis.Redis(host='pub-redis-10118.us-east-1-2.4.ec2.garantiadata.com', port=10118, db=0,
-                              password="P@ssw0rd", decode_responses=True)
+    server = redis.StrictRedis(host='pub-redis-10118.us-east-1-2.4.ec2.garantiadata.com', port=10118, db=0,
+                               password="P@ssw0rd", decode_responses=True)
     # server = redis.StrictRedis(host='localhost', port=6379)
     # server.ping()
 except:
