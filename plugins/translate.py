@@ -1,4 +1,4 @@
-from util import hook, web, web2
+from util import hook, web2, textutils
 import json
 
 languages = {
@@ -91,7 +91,7 @@ def do_you_speak(bot_input, bot_output):
     else:
         bot_output.say("No I don't speak %(language)s, {0}.  Do you speak English?" % bot_input.inp)
 
-
+@hook.regex(r'how do you say (?P<sentence>\"[\w\s\W]*\") in (?P<language>\w*)')
 @hook.regex(r'how do you say (?P<sentence>\w*) in (?P<language>\w*)')
 def how_do_you_say(bot_input, bot_output):
     if hasattr(bot_input, 'groupdict'):
@@ -143,3 +143,9 @@ def translate(text_to_translate, from_language="auto", to_language=None):
         translation = "".join(t[0] for t in js[0])
 
     return translation.replace(" ,", ",")
+
+
+@hook.regex(r'what languages')
+@hook.command
+def language_list(bot_input, bot_ouput):
+    bot_ouput.say("I know {0}".format(', '.join(languages.values())))

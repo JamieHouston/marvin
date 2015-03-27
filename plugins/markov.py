@@ -9,6 +9,8 @@ from util import hook, textutils
 # Insert every saying in "all" and in the <username> list
 # Key: markov:all:<first_work>:<second_word> Value: <third_word>
 # Key: markov:<username>:<first_work>:<second_word> Value: <third_word>
+# or
+# change to use sqlite (or another rdb)
 
 class Markov(object):
     """
