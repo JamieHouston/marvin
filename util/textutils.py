@@ -19,8 +19,3 @@ def strip(text):
 
 def equal_letters(first, second):
     return strip(first).lower() == strip(second).lower()
-
-
-def fix_quotes(input_string):
-    input_string.replace('“', '"').replace('”', '"')
-    return input_string

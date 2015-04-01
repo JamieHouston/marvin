@@ -13,7 +13,7 @@
         "I can't get that. I'm in the zone.",
         "That's fascinating",
         "Are you a bot too?  Cause I'm not"],
-    "welcome_messages": [
+    "welcome_messages_temp": [
         "I'm completely operational and all my circuits are functioning normally",
         "Yeah, they're real.",
         "It's got a hemi",

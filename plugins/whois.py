@@ -1,7 +1,7 @@
 from util import hook, userinfo
 
 
-@hook.regex(r"(?:who is) (?P<username>[\w\d]*)(?:\?)?$", run_always=True)
+@hook.regex(r"(?:who is) (?P<username>[\w\d]*)(?:\?)?$")
 def who_is_user(bot_input, bot_output):
     """who is [username] -- get information about username"""
 
@@ -24,7 +24,7 @@ def who_is_user(bot_input, bot_output):
         bot_output.say("Did you slur?")
 
 
-@hook.regex(r"(?:who is on) (?:the )?(?:team )?(?P<team_name>[\w\d]*)(?: team)?(?:\?)?", run_always=True)
+@hook.regex(r"(?:who is on) (?:the )?(?:team )?(?P<team_name>[\w\d]*)(?: team)?(?:\?)?")
 def who_is_team(bot_input, bot_output):
     """who is [username] -- get information about username"""
 
@@ -42,13 +42,11 @@ def who_is_team(bot_input, bot_output):
         bot_output.say("Did you slur?")
 
 
-@hook.regex(r"i('m| am)(?P<remove_user> not)?(?: a )?(?P<role>[\w]*) on( team)? (?P<team_name>[\w\d]*)",
-            run_always=True)
+@hook.regex(r"i('m| am)(?P<remove_user> not)?(?: a )?(?P<role>[\w]*) on( team)? (?P<team_name>[\w\d]*)")
 def i_am(bot_input, bot_output):
     username_is(bot_input, bot_output)
 
-@hook.regex(r'(?P<username>[\w\d]*) is(?P<remove_user> not)?(?: a )?(?P<role>[\w]*) on( team)? (?P<team_name>[\w\d]*)',
-            run_always=True)
+@hook.regex(r'(?P<username>[\w\d]*) is(?P<remove_user> not)?(?: a )?(?P<role>[\w]*) on( team)? (?P<team_name>[\w\d]*)')
 def username_is(bot_input, bot_output):
     """
         [username] is on team [team_name] -- specify which team user is on (for github, target process, etc)

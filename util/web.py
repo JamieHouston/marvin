@@ -7,9 +7,10 @@ from bs4 import BeautifulSoup
 
 def get_title(url):
     try:
-        soup = BeautifulSoup(requests.get(url))
+        page = requests.get(url)
+        soup = BeautifulSoup(page.content)
         return soup.title.string
-    except:
+    except Exception as e:
         return None
         # return "Not logged in or bad url"
 

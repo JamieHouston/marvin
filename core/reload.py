@@ -92,7 +92,7 @@ def reload(bot, init=False):
             changed = True
 
             try:
-                code = compile(open(filename, 'U').read(), filename, 'exec')
+                code = compile(open(filename, encoding='latin-1').read(), filename, 'exec')
                 namespace = {}
                 eval(code, namespace)
             except Exception:

@@ -72,7 +72,7 @@ class TargetProcess():
         entity_states = {
             'in review': 438
         }
-        entity_state_id = entity_states[new_state.lower()]
+        entity_state_id = entity_states[new_state]
 
         body = {"Id": story_number, "EntityState": {"Id": entity_state_id}}
         url = "{0}{1}?token={2}&format=json".format(self.tp_uri, "userstories", self.token)

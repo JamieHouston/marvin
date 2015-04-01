@@ -86,7 +86,7 @@ class Markov(object):
     def imitate(self, bot_input, bot_output):
         person = bot_input.input_string.lower()
         if person != bot_output.nick.lower():
-            return self.generate_message(person)
+            return self.generate_message(person[:10])
 
     def cite(self, bot_input, bot_output):
         if self.last:
@@ -127,8 +127,8 @@ class Markov(object):
                 for person in self.word_table:
                     if person == sender:
                         continue
-                    if key in self.word_table[person]:
-                        generated = self.generate_message(person, seed_key=key)
+                    if key in self.word_table[person[:10]]:
+                        generated = self.generate_message(person[:10], seed_key=key)
                         if generated:
                             messages.append((person, generated))
         self.activities += 1
