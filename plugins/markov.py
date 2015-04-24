@@ -82,7 +82,6 @@ class Markov(object):
         print("returning message %s" % result)
         return result
 
-
     def imitate(self, bot_input, bot_output):
         person = bot_input.input_string.lower()
         if person != bot_output.nick.lower():

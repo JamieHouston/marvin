@@ -107,7 +107,8 @@ class TargetProcess():
                                                               + " [" + str(user_story["Effort"]) + "pt, " +
                                                               user_story["EntityState"]["Name"] + "]", 80)) + "\n"
 
-    def get_stories_by_team(self, team_name, active_states):
+    def get_stories_by_team(self, team_name, active_states=None):
+        active_states = active_states or ('In Progress', 'In Review', 'Testing', 'Blocked', 'Done')
         where = "(Team.Name eq '" + team_name + "')" \
                 + "and (EntityState.Name in ('" + '\', \''.join(active_states) + "'))"
 
@@ -125,8 +126,7 @@ class TargetProcess():
 
         today = datetime.datetime.today()
 
-        active_states = ('In Progress', 'In Review', 'Testing', 'Blocked', 'Done')
-        stories = self.get_stories_by_team_description(team_name, active_states)
+        stories = self.get_stories_by_team_description(team_name)
 
         for user_story in stories["Items"]:
             last_changed = json_date_as_datetime(user_story["LastStateChangeDate"])
@@ -173,6 +173,9 @@ class TargetProcess():
             login,
             ('In Progress', 'In Review', 'Accepted'),
             datetime.date.today() - datetime.timedelta(days=days_previous))
+
+        if not stories:
+            return "You got nothing, {0}"
 
         # print all stories and tasks edited in the last n days
         for user_story in stories:

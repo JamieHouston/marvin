@@ -12,6 +12,8 @@ def url_title(bot_input, bot_output):
         pass
 
 @hook.regex('gif')
+@hook.regex('jpg')
+@hook.regex('jpeg')
 def gif(bot_input, bot_output):
     more_picture_messages = [
         "Not another picture",

@@ -37,21 +37,6 @@ def process(bot_input, bot_output):
             time.sleep(30)
             return
 
-    if input_command.startswith("!"):
-        if random.choice(list(range(3))) == 1:
-            heckle = storage.get_list("hector")
-            bot_output.say(random.choice(list(heckle)))
-        else:
-            storage.add_to_list("hector", input_command)
-
-    if input_command.startswith("wheatley"):
-        if random.choice(list(range(3))) == 1:
-            heckle = storage.get_list("wheatley")
-            bot_output.say(random.choice(list(heckle)))
-        else:
-            storage.add_to_list("wheatley", input_command)
-
-
     if input_command.startswith("."):
         input_command = input_command[1:]
         pieces = input_command.split(' ')
@@ -84,7 +69,6 @@ def process(bot_input, bot_output):
                     if func.__name__ in bot_input.bot.credentials:
                         bot_input.credentials = bot_input.bot.credentials[func.__name__]
                     func(bot_input, bot_output)
-
 
         if direct_message and not bot_output.spoken:
             bot_output.say(random.choice(bot_output.responses["answers"]).format(bot_input.nick))

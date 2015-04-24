@@ -14,7 +14,7 @@ def command(bot_input, bot_output):
 
 
 @hook.regex("feature flag")
-def command(bot_input, bot_output):
+def feature_flag(bot_input, bot_output):
     result = ["Feature flag for enabling soft booking on bulk edit:",
               "TaskSettings.NewAssignmentEditorOnBulkTaskEdit_FeatureIsEnabled",
               "Feature flag for enabling soft booking:",
