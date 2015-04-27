@@ -12,6 +12,7 @@ def github(bot_input, bot_output):
     input_argument = bot_input.input_string
 
     gh = GithubHelper(bot_input, bot_output)
+    github_name = bot_input.nick
 
     if input_argument:
         if hasattr(gh, input_argument):
@@ -20,9 +21,6 @@ def github(bot_input, bot_output):
                 method()
                 return
         github_name = input_argument.lower()
-
-    if not github_name:
-        github_name = bot_input.nick
 
     bot_output.say(random.choice(bot_output.responses["github"]))
 
