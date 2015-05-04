@@ -23,4 +23,4 @@ def commit(bot_input, bot_output):
     commits = random_repo.get_commits(since=start_date)
     random_commit = commits[random.randrange(100)]
 
-    bot_output.say("Who said:\n[{0}]({1})".format(random_commit.commit.message, random_commit.url))
+    bot_output.say("Who said:\n{0}\n[Answer]({1})".format(random_commit.commit.message, random_commit.html_url))
