@@ -136,5 +136,5 @@ def give_up(bot_input, bot_ouput):
 
 @hook.command
 @hook.regex('suck', run_always=False)
-@def suck(bot_input, bot_output):
-    bot_output(random.choice(bot_output.responses["suck"]))
+def suck(bot_input, bot_output):
+    bot_output.say(random.choice(bot_output.responses["suck"]))
