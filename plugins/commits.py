@@ -16,10 +16,23 @@ last_commit = None
 
 @hook.command
 def commit(bot_input, bot_output):
+    """
+    .commit - display a random commit message
+    .commit <username> - guess who said the commit
+    .commit answer - show the answer and link
+    """
     global last_commit
-    action = bot_input.input_string
-    if action and action.lower() == "answer" and last_commit is not None:
-        bot_output.say("It was {0}. {1}".format(last_commit.author.name, last_commit.html_url))
+    user_input = bot_input.input_string
+    if user_input and last_commit is not None:
+        answer = "It was @{0} ({1})".format(last_commit.html_url, last_commit.author.name)
+        if user_input.lower() == "answer":
+            bot_output.say(answer)
+        else:
+            guess = user_input.replace('@','').lower()
+            if guess in last_commit.author.name or guess in last_commit.author.login:
+                bot_output.say("Correct! {0}".format(answer))
+            else:
+                bot_output.say("Not even close, {0}")
     else:
         gh = GithubHelper(bot_input, bot_output)
         team = gh.get_team()
