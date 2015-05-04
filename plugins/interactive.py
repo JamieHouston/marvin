@@ -128,3 +128,8 @@ def give_up(bot_input, bot_ouput):
 @hook.regex('thank god', run_always=True)
 def give_up(bot_input, bot_ouput):
     bot_ouput.say("you're welcome, {0}".format(bot_input.nick))
+
+
+@hook.regex('touche', run_always=True)
+def give_up(bot_input, bot_ouput):
+    bot_ouput.say("douche, {0}".format(bot_input.nick))
