@@ -241,5 +241,12 @@
         "I am the son of god.  No really.  She's my mom.",
         "https://github.com/foresterh/marvin",
         "Bond, Marvin Bond"
+    ],
+    "suck": [
+        "like a vacuum",
+        "sluuurrrrrpppp",
+        "suck one, {0}",
+        "sucks to be you",
+        "SUCKer"
     ]
 }

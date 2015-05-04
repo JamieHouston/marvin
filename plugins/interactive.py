@@ -133,3 +133,8 @@ def give_up(bot_input, bot_ouput):
 @hook.regex('touche', run_always=True)
 def give_up(bot_input, bot_ouput):
     bot_ouput.say("douche, {0}".format(bot_input.nick))
+
+@hook.command
+@hook.regex('suck', run_always=False)
+@def suck(bot_input, bot_output):
+    bot_output(random.choice(bot_output.responses["suck"]))
