@@ -24,7 +24,7 @@ def commit(bot_input, bot_output):
     global last_commit
     user_input = bot_input.input_string
     if user_input and last_commit is not None:
-        answer = "It was @{0} ({1})".format(last_commit.html_url, last_commit.author.name)
+        answer = "It was @{0} ({1})\n{2}".format(last_commit.author.login, last_commit.author.name, last_commit.html_url)
         if user_input.lower() == "answer":
             bot_output.say(answer)
         else:
