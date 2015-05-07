@@ -2,7 +2,7 @@ PyGithub
 beautifulsoup4
 redis
 requests
-APScheduler
 pyFlowdock
-Scrapy
 moment
+chatterbot
+python-Levenshtein

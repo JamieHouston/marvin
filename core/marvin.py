@@ -60,7 +60,7 @@ def process(bot_input, bot_output):
     else:
         for func, args in bot_input.bot.plugs['regex']:
             m = args['re'].search(bot_input["message"])
-            if m:
+            if m and not bot_output.spoken:
                 if args['run_always'] or direct_message or bot_output.chattiness > random.random():
                     # todo: update groupdict with inp
                     bot_input.groupdict = m.groupdict
