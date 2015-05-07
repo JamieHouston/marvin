@@ -10,5 +10,5 @@ def chat(bot_input, bot_output):
 
     message = bot_input.input_string.replace(bot_output.nick.lower(), '')
     response = chatty.get_response(message)
-    if response:
+    if bot_input.direct_message and response:
         bot_output.say(response)
