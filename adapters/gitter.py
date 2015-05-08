@@ -84,7 +84,8 @@ class BotOutput():
         gen = stream.fetch()
         for data in gen:
             process_message = type(data) == dict and ("text" in data)
-            if process_message and ("fromUser" in data and self.nick != data["fromUser"]["username"]):
+            bot_input.bot_speaking = self.nick.lower() == data["fromUser"]["username"].lower()
+            if process_message and ("fromUser" in data and bot_input.bot_speaking):
                 from_user = data["fromUser"]["username"]
                 self.spoken = False
                 bot_input = BotInput()
