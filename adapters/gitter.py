@@ -84,15 +84,14 @@ class BotOutput():
         gen = stream.fetch()
         for data in gen:
             process_message = type(data) == dict and ("text" in data)
-            bot_input.bot_speaking = self.nick.lower() == data["fromUser"]["username"].lower()
-            if process_message and ("fromUser" in data and bot_input.bot_speaking):
+            if process_message and ("fromUser" in data):
                 from_user = data["fromUser"]["username"]
                 self.spoken = False
                 bot_input = BotInput()
                 bot_input.message = data["text"]
                 try:
                     bot_input.nick = from_user
-                    bot_input.displayName = data["fromUser"]["displayName"]
+                    bot_input.bot_speaking = from_user.lower().startswith(self.nick.lower())
                     self.user_id = data["fromUser"]["id"]
                     if random.random() < (self.chattiness / 100):
                         logger.log("Randomly sending message to %s" % bot_input.nick)
