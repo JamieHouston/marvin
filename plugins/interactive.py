@@ -67,6 +67,7 @@ def lame(bot_input, bot_output):
 
 @hook.regex("(lol|haha|ha ha|rofl|hehe|rolfmao|lmao)")
 def laugh(bot_input, bot_output):
+    if random.randrange(5) == 1:
         bot_output.say(random.choice(bot_output.responses["funny"]))
 
 
@@ -85,10 +86,9 @@ def rules(bot_input, bot_output):
     for rule in three_rules:
         bot_output.say(rule)
 
-@hook.regex(r'(did|are|is|can|what|where|when|why|will).*?$')
-def questions(bot_input, bot_output):
-     bot_output.say(random.choice(bot_output.responses["answers"]))
-
+# @hook.regex(r'(did|are|is|can|what|where|when|why|will).*?$')
+# def questions(bot_input, bot_output):
+#      bot_output.say(random.choice(bot_output.responses["answers"]))
 
 @hook.command
 def slap(bot_input, bot_output):
@@ -111,7 +111,7 @@ def thanks(bot_input, bot_output):
 @hook.regex(r'(yes|no)')
 def yes_no(bot_input, bot_output):
     yesno = ("Of course not.", "Wrong answer!", "Why?", "Are you sure?")
-    if random.choice(list(range(3))) == 1:
+    if random.randrange(5) == 1:
         bot_output.say(random.choice(yesno))
 
 

@@ -1,7 +1,7 @@
 import time
 import random
 import sys
-from util import logger,storage
+from util import logger
 from plugins import markov_old, chat
 
 def match_command(commands, command):

@@ -1,4 +1,4 @@
-from util import hook
+from util import hook, logger
 from chatterbot import ChatBot
 
 chatty = ChatBot("Marvin")
@@ -10,5 +10,6 @@ def chat(bot_input, bot_output):
 
     message = bot_input.input_string.replace(bot_output.nick.lower(), '')
     response = chatty.get_response(message)
+#    logger.log("direct_message:{0}. Chatbot response: {1}".format(bot_input.direct_message, response))
     if bot_input.direct_message and response:
         bot_output.say(response)
