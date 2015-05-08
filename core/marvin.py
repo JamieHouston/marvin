@@ -24,7 +24,7 @@ def process(bot_input, bot_output):
     # try:
     input_command = bot_input["message"].lower()
 
-    bot_input.direct_message = bot_output.nick.lower().replace('@', '') in input_command
+    bot_input.direct_message = bot_output.nick.lower().replace('@', '') in input_command and bot_output.nick.lower() != bot_input.nick.lower()
 
     if bot_output.master.lower() in bot_input.nick.lower():
         if "take off" in input_command or "go home" in input_command or "go away" in input_command:
