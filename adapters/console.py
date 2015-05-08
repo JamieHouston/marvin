@@ -20,7 +20,7 @@ class BotOutput():
 
     def say(self, msg):
         if hasattr(self, 'nick'):
-            msg = msg.format(self.nick)
+            msg = msg.format(user_nick=self.nick)
 
         print(msg)
         self.spoken = True

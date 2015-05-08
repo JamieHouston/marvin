@@ -29,7 +29,7 @@ class BotOutput():
         if not msg or len(msg) < 1:
             return
         if hasattr(self, 'user_nick'):
-            msg = msg.format(self.user_nick)
+            msg = msg.format(user_nick=self.user_nick)
         logger.log("sending message %s" % msg[:20])
         url = "%srooms/%s/chatMessages" % (self.api_root, self.room_id)
         data = {"text": msg}

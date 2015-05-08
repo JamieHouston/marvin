@@ -18,7 +18,7 @@ def target_process(bot_input, bot_output):
     target_process team [team name] - show stories for the team that haven't changed in a day"""
     user_input = bot_input.input_string
     user_input = shlex.split(user_input)
-    output_string = "I don't recognize that command, {0}.\nTry .help target_process"
+    output_string = "I don't recognize that command, {user_nick}.\nTry .help target_process"
     tp = TargetProcess(bot_input, bot_output)
 
     if len(user_input) > 1:
@@ -175,7 +175,7 @@ class TargetProcess():
             datetime.date.today() - datetime.timedelta(days=days_previous))
 
         if not stories:
-            return "You got nothing, {0}"
+            return "You got nothing, {user_nick}"
 
         # print all stories and tasks edited in the last n days
         for user_story in stories:

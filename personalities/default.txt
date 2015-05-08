@@ -21,15 +21,15 @@
         "Pardon my French, but, Au Revoir"
     ],
     "awesome_sauce": [
-        "No, you're awesome, {0}!",
-        "Indeed it is awesome, {0}!"
+        "No, you're awesome, {user_nick}!",
+        "Indeed it is awesome, {user_nick}!"
     ],
     "beers": [
         "One cold one, coming up",
         "Right away, human"
     ],
     "doit": [
-        "I'm sorry, {0}. I'm afraid I can't do that",
+        "I'm sorry, {user_nick}. I'm afraid I can't do that",
         "Right away, human"
     ],
     "doh": [
@@ -42,42 +42,42 @@
         "I blame myself, human"
     ],
     "good_morning":[
-        "Top of the morning, {0}",
+        "Top of the morning, {user_nick}",
         "Is it already morning?",
         "Yes it is.",
         "Not here it isn't.",
-        "And a very good morning to you, {0}"],
+        "And a very good morning to you, {user_nick}"],
     "good_night": [
         "I shall see you in the morning",
-        "Good night {0}.  I hope you sleep well",
+        "Good night {user_nick}.  I hope you sleep well",
         "Please close the door on your way out",
         "I guess we can't all put in 24 hours a day",
         "You'll be back"],
     "ignore": [
         "My pleasure",
         "I already am",
-        "I've tried {0}, it doesn't work."],
+        "I've tried {user_nick}, it doesn't work."],
     "funny": [
         "Very funny human",
         "I am laughing out loud, human",
-        "Hilarious, {0}",
+        "Hilarious, {user_nick}",
         "That is one of the funiest things I have ever had the pleasure of hearing"
     ],
     "not_me": [
-        "If not {0}, then who?",
+        "If not {user_nick}, then who?",
         "If everyone said not me, we would be left with a bot"
     ],
     "answers": [
-        "I'm not sure, {0}",
-        "Very good question, {0}",
+        "I'm not sure, {user_nick}",
+        "Very good question, {user_nick}",
         "I'm intrigued"
     ],
     "youre_welcome": [
-        "You're welcome, {0}",
-        "For what {0}?",
-        "No problem, {0}",
-        "Why {0}?",
-        "Okay, {0}"
+        "You're welcome, {user_nick}",
+        "For what {user_nick}?",
+        "No problem, {user_nick}",
+        "Why {user_nick}?",
+        "Okay, {user_nick}"
     ],
     "yes_no": [
         "Of course not.",
@@ -109,7 +109,7 @@
     ],
     "feelings":[
         "I'm feeling very well, human.  Thank you for asking, human.",
-        "Very good, {0}",
+        "Very good, {user_nick}",
         "I am, as the American's say, feeling peachy, human."
     ],
     "stranger": [
@@ -118,14 +118,14 @@
         "There's a new sherrif in town"
     ],
     "github": [
-        "looking now, {0}.",
-        "Let me check the trailer, {0}.",
-        "Looking for pull requests, {0}."
+        "looking now, {user_nick}.",
+        "Let me check the trailer, {user_nick}.",
+        "Looking for pull requests, {user_nick}."
     ],
     "who_am_i": [
         "I'm a failed hackday experiment.",
         "I'm the butler",
-        "I'm actually your son, {0}",
+        "I'm actually your son, {user_nick}",
         "https://github.com/foresterh/marvin",
         "Bond, Alfred Bond"
     ]

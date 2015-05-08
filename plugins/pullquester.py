@@ -29,8 +29,7 @@ Create a pull request for [story number] -- creates a pull request for branch wi
     team_name = userinfo.get_user_team(bot_input.nick)
 
     if not team_name:
-        bot_output.say("Not sure what team you're on {0}.  Try telling me by saying 'I'm on team [team name]'"
-                       .format(bot_input.nick))
+        bot_output.say("Not sure what team you're on {user_nick}.  Try telling me by saying 'I'm on team [team name]'")
         return
 
     # Get stories in TP by story number

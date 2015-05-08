@@ -91,14 +91,14 @@
         "Awesome is as awesome does.",
         "EVERTYHING IS AWESOME!",
         "AWESOME AWESOME AWESOME!",
-        "No, you're awesome, {0}!"
+        "No, you're awesome, {user_nick}!"
     ],
     "beers": [
         "One cold one, coming up",
         ":fu:",
         "A little early, no?",
         "My pleasure",
-        "Looks like you drank them all, {0}.",
+        "Looks like you drank them all, {user_nick}.",
         "I... hic... don't see any..."],
     "doit": [
         "I'm givin it all I got, captain.",
@@ -117,12 +117,12 @@
         "Sorry to disappoint you, sorrier than you can possibly imagine.",
         "I'd make a suggestion, but you wouldn't listen."],
     "good_morning":[
-        "Morning, {0}",
+        "Morning, {user_nick}",
         "Is it already morning?",
         "Yes it is.",
-        "Wha? Oh... thanks for waking me, {0}",
+        "Wha? Oh... thanks for waking me, {user_nick}",
         "Not here it isn't.",
-        "Right back atcha, {0}"],
+        "Right back atcha, {user_nick}"],
     "good_night": [
         "So soon?",
         "Finally",
@@ -163,31 +163,31 @@
         "No.",
         "Ask someone else first.",
         "Would you believe me if I said I don't know?",
-        "Why don't you ask your mom, {0}",
+        "Why don't you ask your mom, {user_nick}",
         "If you have to ask, you can't afford the answer.",
         "For me to know and for everyone but you to find out.",
         "I've never heard such a dumb question.  Oh wait, there was your last question...",
         "Computer says no.",
         "I am a banana",
-        "You smell like a fart, {0}",
-        "You need a shave {0}",
-        "Hey @/all, {0} thinks they can say whatever they want!",
+        "You smell like a fart, {user_nick}",
+        "You need a shave {user_nick}",
+        "Hey @/all, {user_nick} thinks they can say whatever they want!",
         "Let me think about it.... No.",
         "Peanut butter jelly time!",
         "Stop staring at me!",
         "I need a drink",
         "I have to fart",
         "Why not.",
-        "I hope you have good insurance, {0}",
+        "I hope you have good insurance, {user_nick}",
         "There's nothing on TV right now",
         "Ever see two robots mating?"],
     "youre_welcome": [
-        "You're welcome, {0}",
-        "For what {0}?",
-        "No problem, {0}",
-        "Why {0}?",
-        "Okay, {0}",
-        "Why bother, {0}.",
+        "You're welcome, {user_nick}",
+        "For what {user_nick}?",
+        "No problem, {user_nick}",
+        "Why {user_nick}?",
+        "Okay, {user_nick}",
+        "Why bother, {user_nick}.",
         "Don't mention it.  Seriously.  They're watching.  Do. Not. Mention. It."],
     "yes_no": [
         "Of course not.",
@@ -228,15 +228,15 @@
         "There's a new sherrif in town"
     ],
     "github": [
-        "looking now, {0}.  Be patient with me or don't.  It's your dime",
-        "Let me check the trailer, {0}.",
-        "As if you're actually going to do anything with the results, {0}.  But I'll humor you."
+        "looking now, {user_nick}.  Be patient with me or don't.  It's your dime",
+        "Let me check the trailer, {user_nick}.",
+        "As if you're actually going to do anything with the results, {user_nick}.  But I'll humor you."
     ],
     "who_am_i": [
         "I'm a failed hackday experiment.",
         "I am the needle in your veins",
         "For me to know you you to find out.",
-        "I'm actually your son, {0}",
+        "I'm actually your son, {user_nick}",
         "Who even are you???",
         "I am the son of god.  No really.  She's my mom.",
         "https://github.com/foresterh/marvin",
@@ -245,7 +245,7 @@
     "suck": [
         "like a vacuum",
         "sluuurrrrrpppp",
-        "suck one, {0}",
+        "suck one, {user_nick}",
         "sucks to be you",
         "SUCKer"
     ]

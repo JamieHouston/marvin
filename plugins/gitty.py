@@ -30,7 +30,7 @@ def github(bot_input, bot_output):
         format_request = "[{0}]({1})".format(pull_request.title, pull_request.html_url)
         bot_output.say(format_request)
 
-    bot_output.say('All done {0}. Good luck with that.')
+    bot_output.say('All done {user_nick}. Good luck with that.')
 
 
 @hook.regex(r'create pull request (?P<branch>.*)', run_always=True)

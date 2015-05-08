@@ -122,17 +122,17 @@ def welcome_back(bot_input, bot_output):
 
 @hook.regex('i give up')
 def give_up(bot_input, bot_ouput):
-    bot_ouput.say('how French of you, {0}'.format(bot_input.nick))
+    bot_ouput.say('how French of you, {user_nick}'.format(bot_input.nick))
 
 
 @hook.regex('thank god', run_always=True)
 def give_up(bot_input, bot_ouput):
-    bot_ouput.say("you're welcome, {0}".format(bot_input.nick))
+    bot_ouput.say("you're welcome, {user_nick}".format(bot_input.nick))
 
 
 @hook.regex('touche', run_always=True)
 def give_up(bot_input, bot_ouput):
-    bot_ouput.say("douche, {0}".format(bot_input.nick))
+    bot_ouput.say("douche, {user_nick}".format(bot_input.nick))
 
 @hook.command
 @hook.regex('suck', run_always=False)

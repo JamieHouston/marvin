@@ -41,7 +41,7 @@ def commit(bot_input, bot_output):
             if guess in last_commit.author.name.lower() or guess in last_commit.author.login:
                 bot_output.say("Correct! {0}".format(answer))
             else:
-                bot_output.say("Not even close, {0}")
+                bot_output.say("Not even close, {user_nick}")
     else:
         commits = get_commits(bot_input, bot_output)
         last_commit = commits[random.randrange(100)]
