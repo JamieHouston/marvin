@@ -1,7 +1,6 @@
 from core. streaming_api import JSONStream
 from core import marvin
 from util import logger, web
-import random
 
 class BotInput(object):
     def __getitem__(self, val):
@@ -29,7 +28,7 @@ class BotOutput():
         if not msg or len(msg) < 1:
             return
         if hasattr(self, 'user_nick'):
-            msg = msg.format(user_nick=self.user_nick)
+            msg = msg.format(user_nick='@' + self.user_nick)
         logger.log("sending message %s" % msg[:20])
         url = "%srooms/%s/chatMessages" % (self.api_root, self.room_id)
         data = {"text": msg}
@@ -56,7 +55,6 @@ class BotOutput():
         if user and len(user):
             return user[0]
         return "anonymous"
-
 
     def get_user_by_name(self, user_name):
         if not self.users:
@@ -91,11 +89,10 @@ class BotOutput():
                 bot_input.message = data["text"]
                 try:
                     bot_input.nick = from_user
-                    bot_input.bot_speaking = from_user.lower().startswith(self.nick.lower())
+                    #bot_input.bot_speaking = from_user.lower().startswith(self.nick.lower())
+                    if from_user.lower().startswith(self.nick.lower()):
+                        continue
                     self.user_id = data["fromUser"]["id"]
-                    if random.random() < (self.chattiness / 100):
-                        logger.log("Randomly sending message to %s" % bot_input.nick)
-                        #self.private_message(data["user"], random.choice(self.responses["private_messages"]))
                 except Exception as e:
                     logger.error(e)
                     self.say(bot.responses["stranger"])
@@ -103,7 +100,6 @@ class BotOutput():
                 self.user_nick = bot_input.nick
 
                 marvin.process(bot_input, self)
-
 
     def run(self, bot):
         self.user = str(self.get_user_by_name(self.nick)["id"])
