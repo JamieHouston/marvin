@@ -4,7 +4,7 @@ import random
 
 @hook.regex(r'awesome')
 def awesome(bot_input, bot_output):
-    bot_output.say(random.choice(bot_output.responses["awesome_sauce"]).format(bot_input.nick))
+    bot_output.say(random.choice(bot_output.responses["awesome_sauce"]))
 
 @hook.regex('how do you feel')
 def feelings(bot_input, bot_output):
@@ -12,7 +12,7 @@ def feelings(bot_input, bot_output):
 
 @hook.regex('who are you')
 def who_am_i(bot_input, bot_output):
-    bot_output.say(random.choice(bot_output.responses["who_am_i"]).format(bot_input.nick))
+    bot_output.say(random.choice(bot_output.responses["who_am_i"]))
 
 @hook.regex(r'beer me', run_always=True)
 def beer_me(bot_input, bot_output):
@@ -46,7 +46,7 @@ def fail(bot_input, bot_output):
 
 @hook.regex(r'good morning*', run_always=True)
 def good_morning(bot_input, bot_output):
-    message = random.choice(bot_output.responses["good_morning"]).format(bot_input.nick)
+    message = random.choice(bot_output.responses["good_morning"])
     bot_output.say(message)
 
 
@@ -105,7 +105,7 @@ def sandwich(bot_input, bot_output):
 
 @hook.regex(r'thank(s| you)')
 def thanks(bot_input, bot_output):
-    bot_output.say(random.choice(bot_output.responses["youre_welcome"]).format(bot_input.nick))
+    bot_output.say(random.choice(bot_output.responses["youre_welcome"]))
 
 
 @hook.regex(r'(yes|no)')
@@ -122,17 +122,17 @@ def welcome_back(bot_input, bot_output):
 
 @hook.regex('i give up')
 def give_up(bot_input, bot_ouput):
-    bot_ouput.say('how French of you, {user_nick}'.format(bot_input.nick))
+    bot_ouput.say('how French of you, {user_nick}')
 
 
 @hook.regex('thank god', run_always=True)
 def give_up(bot_input, bot_ouput):
-    bot_ouput.say("you're welcome, {user_nick}".format(bot_input.nick))
+    bot_ouput.say("you're welcome, {user_nick}")
 
 
 @hook.regex('touche', run_always=True)
 def give_up(bot_input, bot_ouput):
-    bot_ouput.say("douche, {user_nick}".format(bot_input.nick))
+    bot_ouput.say("douche, {user_nick}")
 
 @hook.command
 @hook.regex('suck', run_always=False)
