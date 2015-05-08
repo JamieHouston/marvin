@@ -2,7 +2,7 @@ import time
 import random
 import sys
 from util import logger
-from plugins import markov_old, chat
+from plugins import chatbot
 
 def match_command(commands, command):
 
@@ -16,7 +16,9 @@ def match_command(commands, command):
     return None
 
 def say_hi(bot_output):
-    bot_output.say(random.choice(bot_output.responses["welcome_messages"]))
+    welcome_message = (random.choice(bot_output.responses["welcome_messages"]))
+    response = chatbot.chatty.get_response(welcome_message)
+    bot_output.say(response)
 
 def process(bot_input, bot_output):
     # try:

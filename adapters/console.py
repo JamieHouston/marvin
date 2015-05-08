@@ -34,8 +34,7 @@ class BotOutput():
 
 
     def run(self, bot):
-        nick = self.master
-        print("Well hello there {}.  What can I do for you?".format(nick))
+        marvin.say_hi(self)
         while True:
             self.spoken = False
             message = input("> ")
