@@ -1,7 +1,7 @@
 from util import hook
 import random
 
-emojis = {
+emoticons = {
     "smile": ["face", "happy", "joy", "funny", "haha", "laugh", "like"],
     "grinning": ["face", "smile", "happy", "joy"],
     "smiley": ["face", "happy", "joy", "haha"],
@@ -891,7 +891,7 @@ emojis = {
 }
 
 @hook.command
-def emoji(bot_input, bot_output):
+def emoticon(bot_input, bot_output):
     """.emoticon - display random emoticon """
-    random_emoji = random.choice(list(emojis))
-    bot_output.say(":{0}:".format(random_emoji))
+    random_emoticon = random.choice(list(emoticons))
+    bot_output.say(":{0}:".format(random_emoticon))
