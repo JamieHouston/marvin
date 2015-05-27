@@ -3,7 +3,12 @@ from util import hook
 @hook.command
 def chattiness(bot_input, bot_output):
     if bot_input.input_string:
-        new_chattiness = int(bot_input.input_string)
+        new_setting = bot_input.input_string
+        if type(new_setting) is not int:
+            bot_output.say("Nice try, {user_nick}.")
+            return
+
+        new_chattiness = int(new_setting)
         if type(new_chattiness) is int and 0 <= new_chattiness <= 100:
             old_chattiness = int(bot_output.chattiness * 100)
             new_chattiness = new_chattiness

@@ -1,7 +1,7 @@
 from util import hook
 
 #@hook.regex("what(')?(s| is) the command for (?P<command_name>\w*)", run_always=True)
-@hook.regex("dbdeploy", run_always=True)
+@hook.regex("dbdeploy")
 def command(bot_input, bot_output):
     #if "dbdeploy" in bot_input.input_string:
     result = ["For creating:",
