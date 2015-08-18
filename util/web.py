@@ -38,9 +38,6 @@ def get_json(url, username=None, password=None):
         return json.loads(data)
     return None
 
-def get_json_with_headers(url, headers):
-
-
 def get_raw(url, username=None, password=None):
     raw_request = request.build_request(url, username, password)
     page = request.urlopen(raw_request)
