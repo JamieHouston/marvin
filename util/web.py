@@ -1,4 +1,3 @@
-from urllib import request
 import random
 import json
 import requests
@@ -33,15 +32,14 @@ def get_json_with_querystring(url, params):
 
 
 def get_json(url, username=None, password=None):
-    data = get_raw(url, username, password)
+    data = requests.get(url, auth=(username, password))
     if data:
-        return json.loads(data)
+        return data.json()
     return None
 
-
 def get_raw(url, username=None, password=None):
-    raw_request = request.build_request(url, username, password)
-    page = request.urlopen(raw_request)
+    page = requests.get(url, auth=(username, password))
+    #page = request.urlopen(raw_request)
     data = page.read().decode("utf-8-sig")
     if data:
         return data
