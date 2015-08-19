@@ -10,4 +10,4 @@ def joke(bot_input, bot_output):
     #     "Accept": "application/json"
     #     })
     story = web.get_json("http://webknox.com/api/jokes/random")#?apiKey=bdihdcabiccdmcxpkltuvoeyaqbzcgx")
-    bot_output.say("This one's called " + story["title"] + "\n" + story["joke"])
+    bot_output.say(story["joke"])
