@@ -248,5 +248,13 @@
         "suck one, {user_nick}",
         "sucks to be you",
         "SUCKer"
+    ],
+    "fart": [
+        "PPPPPFFFFFFFFFFTTTTTTT",
+        "Red beans red beans, in a pot, the more I eat the more I shit my pants",
+        "Tilt",
+        "I think I just shat my pants",
+        "Less than a tablespoon doesn't count.",
+        "Best. Fart. Ever"
     ]
 }
