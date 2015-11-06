@@ -146,5 +146,5 @@ def fart(bot_input, bot_output):
 
 @hook.command
 @hook.regex('stare', run_always=True)
-def fart(bot_input, bot_output):
+def stare(bot_input, bot_output):
     bot_output.say(random.choice(bot_output.responses["stare"]))
