@@ -256,5 +256,10 @@
         "I think I just shat my pants",
         "Less than a tablespoon doesn't count.",
         "Best. Fart. Ever"
+    ],
+    "stare": [
+        "At your ugly face?  Not a chance.",
+        "You first.",
+        "I'd rather not die today."
     ]
 }

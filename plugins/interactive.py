@@ -139,6 +139,12 @@ def give_up(bot_input, bot_ouput):
 def suck(bot_input, bot_output):
     bot_output.say(random.choice(bot_output.responses["suck"]))
 
+@hook.command
 @hook.regex('fart', run_always=True)
 def fart(bot_input, bot_output):
-    bot_output.say(random.choice(bot_output.response("fart")))
+    bot_output.say(random.choice(bot_output.responses("fart")))
+
+@hook.command
+@hook.regex('stare', run_always=True)
+def fart(bot_input, bot_output):
+    bot_output.say(random.choice(bot_output.responses("stare")))
