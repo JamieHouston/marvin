@@ -259,7 +259,7 @@
         "I fart in your general direction",
         "Smells like home cookin.",
         "Let 'er rip",
-        "Imagine, if you will, a hint of herbs and a touch of ass eminating from your hind side."
+        "Imagine, if you will, a hint of herbs and a touch of ass eminating from your hind side.answers"
     ],
     "stare": [
         "At your ugly face?  Not a chance.",
