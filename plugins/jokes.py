@@ -10,7 +10,7 @@ def joke(bot_input, bot_output):
     #     "Accept": "application/json"
     #     })
 
-    url = "https://webknox-jokes.p.mashape.com/jokes/search?&keywords=" + bot_input.input_string + "minRating=5&numJokes=1"
+    url = "https://webknox-jokes.p.mashape.com/jokes/search?&keywords=" + bot_input.input_string + "&minRating=5&numJokes=1"
     headers={
         "X-Mashape-Key": "LM6TApHaSPmshsDRI2S9h2W5eYvNp1Iin3Vjsn2ZncHbuAbsHt",
         "Accept": "application/json"
