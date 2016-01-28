@@ -18,5 +18,5 @@ def joke(bot_input, bot_output):
     story = web.get_json_with_headers(url, headers)
     if story and len(story):
         bot_output.say(story[0]["joke"])
-    else
+    else:
         bot_output.say("Couldn't find a joke or you're out of free jokes for the day (limit 5)")
