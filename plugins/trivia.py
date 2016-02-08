@@ -10,6 +10,18 @@ list_name = "trivia:points"
 question_list = {}
 
 def new_question(category=None):
+    url = 'https://privnio-trivia.p.mashape.com/exec?category=' + bot_input.input_string + '&method=getQuestions&v=1'
+    headers={
+        "X-Mashape-Key": "LM6TApHaSPmshsDRI2S9h2W5eYvNp1Iin3Vjsn2ZncHbuAbsHt",
+        "Accept": "application/json"
+    }
+
+    result = web.get_json_with_headers(url, headers)
+    if not result or not result["success"]:
+        bot_output.say("Couldn't get the questions.  Maybe you're over your quota?")
+        return
+
+
     questionPage = web.get_raw('http://www.quinterest.org/php/studyresults.php?amount=1&categ=All&difficulty=MS&tournamentyear=All')
 
     current_trivia['question'] = re.search("<p><em>Question:</em>(.*)</p>").groups()[0]

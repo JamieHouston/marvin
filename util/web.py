@@ -54,15 +54,20 @@ def post_json_secure(url, token, body):
     return requests.post(url, data=body, headers=headers)
 
 
+def get_json_with_headers(url, headers):
+
+    data = requests.get(url, headers=headers)
+    if data:
+        return json.loads(data.text)
+    return None
+
+
 def get_json_secure(url, token):
     headers = {
         'Authorization': 'Bearer {}'.format(token),
         'Accept-Encoding': 'gzip'
     }
-    data = requests.get(url, headers=headers)
-    if data:
-        return json.loads(data.text)
-    return None
+    return get_json_with_headers(url, headers)
 
 
 def post_json(url, username, password, **kwargs):

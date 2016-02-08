@@ -248,5 +248,22 @@
         "suck one, {user_nick}",
         "sucks to be you",
         "SUCKer"
+    ],
+    "fart": [
+        "PPPPPFFFFFFFFFFTTTTTTT",
+        "Red beans red beans, in a pot, the more I eat the more I shit my pants",
+        "Tilt",
+        "I think I just shat my pants",
+        "Less than a tablespoon doesn't count.",
+        "Best. Fart. Ever",
+        "I fart in your general direction",
+        "Smells like home cookin.",
+        "Let 'er rip",
+        "Imagine, if you will, a hint of herbs and a touch of ass eminating from your hind side.answers"
+    ],
+    "stare": [
+        "At your ugly face?  Not a chance.",
+        "You first.",
+        "I'd rather not die today."
     ]
 }

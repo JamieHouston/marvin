@@ -2,7 +2,7 @@ import time
 import random
 import sys
 from util import logger
-from plugins import chatbot
+from plugins import markov
 
 def match_command(commands, command):
 
@@ -17,8 +17,9 @@ def match_command(commands, command):
 
 def say_hi(bot_output):
     welcome_message = (random.choice(bot_output.responses["welcome_messages"]))
-    response = chatbot.chatty.get_response(welcome_message)
-    bot_output.say(response)
+    #response = chatbot.chatty.get_response(welcome_message)
+    #response = markov.generate_message()
+    bot_output.say(welcome_message)
 
 def process(bot_input, bot_output):
     # try:
@@ -73,7 +74,7 @@ def process(bot_input, bot_output):
                     func(bot_input, bot_output)
 
         if bot_input.direct_message and not bot_output.spoken:
-            bot_output.say(random.choice(bot_output.responses["answers"]).format(bot_input.nick))
+            bot_output.say(random.choice(bot_output.responses["answers"]))
         # else:
         #     markov.handle(bot_input, bot_output)
 
